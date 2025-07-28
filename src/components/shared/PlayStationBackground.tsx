@@ -1,5 +1,8 @@
 import { useModeStore } from '../../store/modeStore';
 import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { interpolateRgb } from 'd3-interpolate';
+
 
 // Renk paletleri
 const programmingPalettes = [
@@ -18,46 +21,69 @@ const civilPalettes = [
 function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t;
 }
-function lerpColor(a: string, b: string, t: number) {
-  const ah = a.startsWith('#') ? a.substring(1) : a;
-  const bh = b.startsWith('#') ? b.substring(1) : b;
-  const av = [parseInt(ah.substring(0,2),16),parseInt(ah.substring(2,4),16),parseInt(ah.substring(4,6),16)];
-  const bv = [parseInt(bh.substring(0,2),16),parseInt(bh.substring(2,4),16),parseInt(bh.substring(4,6),16)];
-  const rv = av.map((v,i) => Math.round(v + (bv[i]-v)*t));
-  return `rgb(${rv[0]},${rv[1]},${rv[2]})`;
-}
+// function lerpColor(a: string, b: string, t: number) {
+//   const ah = a.startsWith('#') ? a.substring(1) : a;
+//   const bh = b.startsWith('#') ? b.substring(1) : b;
+//   const av = [parseInt(ah.substring(0,2),16), parseInt(ah.substring(2,4),16), parseInt(ah.substring(4,6),16)];
+//   const bv = [parseInt(bh.substring(0,2),16), parseInt(bh.substring(2,4),16), parseInt(bh.substring(4,6),16)];
+//   const rv = av.map((v, i) => {
+//     const val = Math.round(lerp(v, bv[i], t));
+//     return Math.max(0, Math.min(255, val)); // clamp
+//   });
+//   return `rgb(${rv[0]},${rv[1]},${rv[2]})`;
+// }
 
-function useAnimatedPalette(palettes: string[][], duration = 10_000, ease = 0.08) {
-  // Paletlerin sonuna ilk paleti ekleyerek döngüyü kapat
+
+function useAnimatedPalette(palettes: string[][], duration = 10_000, ease = 0.07) {
   const cyclicPalettes = React.useMemo(() => [...palettes, palettes[0]], [palettes]);
-  const [current, setCurrent] = useState(cyclicPalettes[0]);
-  const target = useRef(cyclicPalettes[1]);
+  const [colors, setColors] = useState(cyclicPalettes[0]);
   const idx = useRef(0);
-
-  // Palet değişirse current'ı sıfırla
-  useEffect(() => {
-    setCurrent(cyclicPalettes[0]);
-    target.current = cyclicPalettes[1] || cyclicPalettes[0];
-    idx.current = 0;
-  }, [cyclicPalettes]);
+  const progress = useRef(0);
+  const lastUpdate = useRef(Date.now());
 
   useEffect(() => {
     let frame: number;
-    let lastSwitch = Date.now();
     function animate() {
-      setCurrent(prev => prev.map((c, i) => lerpColor(c, target.current[i], ease)));
-      frame = requestAnimationFrame(animate);
-      if (Date.now() - lastSwitch > duration) {
-        idx.current = (idx.current + 1) % (cyclicPalettes.length - 1); // son palet tekrar ilk palet
-        target.current = cyclicPalettes[idx.current + 1];
-        lastSwitch = Date.now();
+      const now = Date.now();
+      const delta = now - lastUpdate.current;
+      lastUpdate.current = now;
+
+      progress.current += delta / duration;
+      let t = progress.current;
+      if (t >= 1) {
+        t = 1;
+      }
+
+      const from = cyclicPalettes[idx.current];
+      const to = cyclicPalettes[idx.current + 1];
+
+      const newColors = from.map((color, i) => {
+        const targetColor = to[i % to.length]; // wrap around
+        const interp = interpolateRgb(color, targetColor);
+        return interp(t);
+      });
+
+      setColors(newColors);
+
+      if (progress.current >= 1) {
+        progress.current = 0;
+        idx.current = (idx.current + 1) % (cyclicPalettes.length - 1);
+        // Son frame'de renkler tam olarak hedef paletteye eşitlensin
+        setColors(to);
+      } else {
+        frame = requestAnimationFrame(animate);
       }
     }
+
     frame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frame);
   }, [cyclicPalettes, duration, ease]);
-  return current;
+
+  return colors;
 }
+
+
+ 
 
 // Organik şekil için border-radius stringi üret
 function organicRadius(t: number, phase = 0) {
