@@ -1,6 +1,5 @@
-import { motion } from 'framer-motion'
 import { Dialog, Transition, Listbox } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect, useRef } from 'react'
 import { 
   EnvelopeIcon, 
   PhoneIcon, 
@@ -10,6 +9,9 @@ import {
   XMarkIcon
 } from '@heroicons/react/24/outline'
 import { useModeStore } from '../../store/modeStore'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+gsap.registerPlugin(ScrollTrigger)
 
 const contactMethods = [
   { id: 'email', name: 'E-posta', icon: EnvelopeIcon, value: 'contact@bizzatben.com' },
@@ -34,6 +36,94 @@ export default function Contact() {
     message: ''
   })
 
+  // GSAP refs
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const descRef = useRef<HTMLParagraphElement>(null)
+  const infoRef = useRef<HTMLDivElement>(null)
+  const formRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // Title animasyonu (scroll ile)
+    if (titleRef.current) {
+      gsap.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+    // Açıklama animasyonu (scroll ile)
+    if (descRef.current) {
+      gsap.fromTo(
+        descRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          delay: 0.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: descRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+    // Info animasyonu (scroll ile)
+    if (infoRef.current) {
+      gsap.fromTo(
+        infoRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          delay: 0.3,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: infoRef.current,
+            start: 'top 95%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+    // Form animasyonu (scroll ile)
+    if (formRef.current) {
+      gsap.fromTo(
+        formRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          delay: 0.4,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: formRef.current,
+            start: 'top 95%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill())
+    }
+  }, [currentMode])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Form gönderme işlemi burada yapılacak
@@ -43,44 +133,36 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="section-padding">
+    <section id="contact" className="section-padding" ref={sectionRef}>
       <div className="container-custom">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <h2 className={`text-4xl font-bold mb-4 ${
+        <div className="text-center mb-12">
+          <h2 ref={titleRef} className={`text-4xl font-bold mb-4 ${
             currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
           }`}>
             İletişim
           </h2>
-          <p className={`text-xl max-w-3xl mx-auto ${
+          <p ref={descRef} className={`text-xl max-w-3xl mx-auto ${
             currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
           }`}>
             Projeleriniz için benimle iletişime geçin
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+          <div
             className={`backdrop-blur-2xl rounded-2xl border p-8 ${
               currentMode === 'programming' 
                 ? 'bg-prog-dark/50 border-prog-neon/30' 
                 : 'bg-civil-dark/50 border-civil-gold/30'
             }`}
+            ref={infoRef}
           >
             <h3 className={`text-2xl font-bold mb-6 ${
               currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
             }`}>
               İletişim Bilgileri
             </h3>
-            
             <div className="space-y-6">
               {contactMethods.map((method) => (
                 <ContactMethod 
@@ -90,10 +172,7 @@ export default function Contact() {
                 />
               ))}
             </div>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={() => setIsFormOpen(true)}
               className={`w-full mt-8 px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer ${
                 currentMode === 'programming'
@@ -102,26 +181,23 @@ export default function Contact() {
               }`}
             >
               Mesaj Gönder
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
 
           {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+          <div
             className={`backdrop-blur-2xl rounded-2xl border p-8 ${
               currentMode === 'programming' 
                 ? 'bg-prog-dark/50 border-prog-neon/30' 
                 : 'bg-civil-dark/50 border-civil-gold/30'
             }`}
+            ref={formRef}
           >
             <h3 className={`text-2xl font-bold mb-6 ${
               currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
             }`}>
               Hızlı İletişim
             </h3>
-            
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
@@ -196,20 +272,18 @@ export default function Contact() {
                 />
               </div>
 
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 type="submit"
-                                  className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer ${
-                    currentMode === 'programming'
-                      ? 'bg-prog-primary/90 text-white hover:bg-prog-secondary/90 shadow-lg shadow-prog-primary/50'
-                      : 'bg-civil-primary/90 text-white hover:bg-civil-secondary/90 shadow-lg shadow-civil-primary/50'
-                  }`}
+                className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer ${
+                  currentMode === 'programming'
+                    ? 'bg-prog-primary/90 text-white hover:bg-prog-secondary/90 shadow-lg shadow-prog-primary/50'
+                    : 'bg-civil-primary/90 text-white hover:bg-civil-secondary/90 shadow-lg shadow-civil-primary/50'
+                }`}
               >
                 Gönder
-              </motion.button>
+              </button>
             </form>
-          </motion.div>
+          </div>
         </div>
       </div>
 

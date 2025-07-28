@@ -1,8 +1,11 @@
-import { motion } from 'framer-motion'
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect, useRef } from 'react'
 import { EyeIcon, CodeBracketIcon, ArrowTopRightOnSquareIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useModeStore } from '../../store/modeStore'
+import { gsap } from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 interface Project {
   id: string
@@ -77,21 +80,87 @@ export default function Projects() {
 
   const projects = currentMode === 'programming' ? programmingProjects : civilProjects
 
+  // GSAP refs
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([])
+  const titleRef = useRef<HTMLHeadingElement>(null)
+  const descRef = useRef<HTMLParagraphElement>(null)
+  const gridRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // Başlık animasyonu (scrollTrigger ile)
+    if (titleRef.current) {
+      gsap.fromTo(
+        titleRef.current,
+        { opacity: 0, y: 60 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+    // Açıklama animasyonu (scrollTrigger ile)
+    if (descRef.current) {
+      gsap.fromTo(
+        descRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          delay: 0.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: descRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        }
+      )
+    }
+    // Kartlar: sadece her biri için scrollTrigger ile animasyon (stagger efekti için delay kullan)
+    cardsRef.current.forEach((card, i) => {
+      if (card) {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 60 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            delay: 0.4 + i * 0.15,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top 98%',
+              toggleActions: 'play none none none',
+            },
+          }
+        )
+      }
+    })
+
+    return () => {
+      ScrollTrigger.getAll().forEach(t => t.kill())
+    }
+  }, [currentMode, projects])
+
   return (
     <section id="projects" className="section-padding">
       <div className="container-custom">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
-          <h2 className={`text-4xl font-bold mb-4 ${
+        <div className="text-center mb-12">
+          <h2 ref={titleRef} className={`text-4xl font-bold mb-4 ${
             currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
           }`}>
             Projeler
           </h2>
-          <p className={`text-xl max-w-3xl mx-auto ${
+          <p ref={descRef} className={`text-xl max-w-3xl mx-auto ${
             currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
           }`}>
             {currentMode === 'programming' 
@@ -99,17 +168,21 @@ export default function Projects() {
               : 'Tasarladığım yapı projeleri ve mühendislik çözümleri'
             }
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <ProjectCard 
+            <div
               key={project.id}
-              project={project}
-              index={index}
-              currentMode={currentMode}
-              onViewDetails={() => setSelectedProject(project)}
-            />
+              ref={el => { cardsRef.current[index] = el; }}
+            >
+              <ProjectCard 
+                project={project}
+                index={index}
+                currentMode={currentMode}
+                onViewDetails={() => setSelectedProject(project)}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -137,10 +210,7 @@ function ProjectCard({
   onViewDetails: () => void
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+    <div
       className={`group relative overflow-hidden rounded-2xl backdrop-blur-xl border ${
         currentMode === 'programming' 
           ? 'bg-prog-dark/50 border-prog-neon/30' 
@@ -205,7 +275,6 @@ function ProjectCard({
             <EyeIcon className="w-4 h-4" />
             Detaylar
           </button>
-          
           {project.github && (
             <a
               href={project.github}
@@ -223,7 +292,7 @@ function ProjectCard({
           )}
         </div>
       </div>
-    </motion.div>
+    </div>
   )
 }
 
@@ -370,4 +439,4 @@ function ProjectModal({
       </Dialog>
     </Transition>
   )
-} 
+}

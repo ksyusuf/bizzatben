@@ -1,4 +1,3 @@
-import { motion, AnimatePresence } from 'framer-motion'
 import { useModeStore } from './store/modeStore'
 import Navbar from './components/shared/Navbar'
 import Footer from './components/shared/Footer'
@@ -20,41 +19,22 @@ function App() {
       <Navbar />
       
       <main className="pt-14 relative z-10">
-        {/* Hero Section */}
-        <Hero />
-        
-        {/* About Section */}
-        <AnimatePresence mode="wait">
-          {currentMode === 'programming' ? (
-            <motion.div
-              key="programming"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <ProgrammingAbout />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="civil"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <CivilAbout />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Projects Section */}
-        <Projects />
-
-        {/* Contact Section */}
-        <Contact />
+        {currentMode === 'programming' ? (
+          <div key="programming">
+            <Hero />
+            <ProgrammingAbout />
+            <Projects/>
+            <Contact />
+          </div>
+        ) : (
+          <div key="civil">
+            <Hero />
+            <CivilAbout />
+            <Projects/>
+            <Contact />
+          </div>
+        )}
       </main>
-
       <Footer />
     </div>
   )

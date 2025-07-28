@@ -1,14 +1,10 @@
-import { motion } from 'framer-motion'
 import { useModeStore } from '../../store/modeStore'
 
 export default function Footer() {
   const { currentMode } = useModeStore()
 
   return (
-    <motion.footer 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+    <footer 
       className={`py-8 backdrop-blur-2xl border-t ${
         currentMode === 'programming' 
           ? 'bg-black/40 border-prog-neon/50 shadow-lg shadow-prog-neon/20' 
@@ -18,14 +14,13 @@ export default function Footer() {
       <div className="container-custom px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between">
           {/* Copyright */}
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
+          <div 
             className={`text-sm ${
               currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
             }`}
           >
             © 2024 BizzatBen. Tüm hakları saklıdır.
-          </motion.div>
+          </div>
 
           {/* Social Links */}
           <div className="flex items-center space-x-6 mt-4 md:mt-0">
@@ -36,7 +31,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </motion.footer>
+    </footer>
   )
 }
 
@@ -44,10 +39,8 @@ function SocialLink({ href, icon, label }: { href: string; icon: string; label: 
   const { currentMode } = useModeStore()
   
   return (
-    <motion.a
+    <a
       href={href}
-      whileHover={{ scale: 1.1, y: -2 }}
-      whileTap={{ scale: 0.95 }}
       className={`text-2xl transition-all duration-200 hover:opacity-80 ${
         currentMode === 'programming' 
           ? 'text-prog-light hover:text-prog-neon hover:animate-glow' 
@@ -56,6 +49,6 @@ function SocialLink({ href, icon, label }: { href: string; icon: string; label: 
       aria-label={label}
     >
       {icon}
-    </motion.a>
+    </a>
   )
 } 
