@@ -3,16 +3,16 @@ import React, { useEffect, useRef, useState } from 'react';
 
 // Renk paletleri
 const programmingPalettes = [
-  ['#10B981', '#8B5CF6', '#6b90cc', '#ec4899'],
-  ['#8B5CF6', '#6b90cc', '#ec4899', '#10B981'],
-  ['#6b90cc', '#ec4899', '#10B981', '#8B5CF6'],
-  ['#ec4899', '#10B981', '#8B5CF6', '#6b90cc'],
+  ['#4F378B', '#7C3AED', '#38BDF8', '#FBBF24'],
+  ['#833AB4', '#C13584', '#E1306C', '#F56040'], // Instagram mor-pembe-turuncu
+  ['#405DE6', '#5851DB', '#FFDC80', '#FD1D1D'], // Instagram mavi-mor-sarı-kırmızı
+  ['#FBBF24', '#4F378B', '#34D399', '#38BDF8'],
 ];
 const civilPalettes = [
-  ['#D97706', '#F59E0B', '#FFAA5A', '#4B5563'],
-  ['#F59E0B', '#FFAA5A', '#4B5563', '#D97706'],
-  ['#FFAA5A', '#4B5563', '#D97706', '#F59E0B'],
-  ['#4B5563', '#D97706', '#F59E0B', '#FFAA5A'],
+  ['#B45309', '#F59E42', '#B91C1C', '#1E3A8A'], // koyu sarı, parlak sarı-turuncu, koyu kırmızı, koyu mavi
+  ['#F59E42', '#B91C1C', '#1E3A8A', '#D1FAE5'], // az açık yeşil
+  ['#B91C1C', '#1E3A8A', '#D1FAE5', '#B45309'],
+  ['#1E3A8A', '#D1FAE5', '#B45309', '#F59E42'],
 ];
 
 function lerp(a: number, b: number, t: number) {
@@ -154,9 +154,9 @@ export default function PlayStationBackground() {
   const { currentMode } = useModeStore();
   // --- Animasyonlu geçiş için local state ---
   const [displayedMode, setDisplayedMode] = useState(currentMode);
-  // İlk başta opacity 0, scale 1'den başlasın (eski hali)
+  // İlk başta opacity 0, scale 1.5'ten başlasın
   const [opacity, setOpacity] = useState(0);
-  const [transitionScale, setTransitionScale] = useState(1);
+  const [isScaled, setIsScaled] = useState(true); // true: 1.5, false: 1
   const [isFadingIn, setIsFadingIn] = useState(false);
   const fadeOutDuration = 400; // ms - kaybolma daha hızlı
   const fadeInDuration = 5000; // ms - doğma daha yavaş
@@ -167,9 +167,12 @@ export default function PlayStationBackground() {
   useEffect(() => {
     if (!initialFadeInDone.current) {
       setIsFadingIn(true);
-      setOpacity(1);
-      setTransitionScale(1.5); // büyükten başla
-      setTimeout(() => setTransitionScale(1), 20); // scale animasyonu
+      setOpacity(0); // Başlangıçta görünmez
+      setIsScaled(true); // büyükten başla
+      requestAnimationFrame(() => setIsScaled(false)); // bir sonraki frame'de 1'e in
+      setTimeout(() => {
+        setOpacity(1); // scale animasyonu bittikten sonra görünür yap
+      }, 900); // transform transition süresiyle aynı olmalı
       initialFadeInDone.current = true;
     }
   }, []);
@@ -178,18 +181,17 @@ export default function PlayStationBackground() {
   useEffect(() => {
     if (!initialFadeInDone.current) return; // İlk fade-in bitmeden mode değişimi olursa atla
     if (currentMode !== displayedMode) {
-      // Önce fade out (küçülerek kaybol)
+      // Önce fade out (sadece opacity ile kaybol)
       setIsFadingIn(false);
       setOpacity(0);
-      setTransitionScale(0.1); // tamamen 0 yerine biraz görünür kal
       // Fade out bitince displayedMode'u güncelle, fade in başlat
       if (fadeTimeout.current) clearTimeout(fadeTimeout.current);
       fadeTimeout.current = setTimeout(() => {
         setDisplayedMode(currentMode);
         setIsFadingIn(true);
         setOpacity(1);
-        setTransitionScale(1.5); // daha büyük başla
-        setTimeout(() => setTransitionScale(1), 20);
+        setIsScaled(true); // tekrar büyük başla
+        requestAnimationFrame(() => setIsScaled(false)); // bir sonraki frame'de 1'e in
       }, fadeOutDuration);
     }
     return () => {
@@ -207,33 +209,33 @@ export default function PlayStationBackground() {
   const innerColors = useAnimatedPalette([...palettes.slice(1), palettes[0]], 9000, 0.09);
   const coreColors = useAnimatedPalette([...palettes.slice(2), palettes[0], palettes[1]], 7000, 0.12);
   // Organik animasyonlar
-  const mainAnim = useOrganicAnimation({ duration: 16000, blur: 80, scaleBase: 1, scaleVar: 0.18, rotateVar: 18, leftBase: 38, leftVar: 10, topBase: 44, topVar: 8, phase: 0 });
-  const innerAnim = useOrganicAnimation({ duration: 12000, blur: 60, scaleBase: 1, scaleVar: 0.22, rotateVar: 22, leftBase: 62, leftVar: 10, topBase: 56, topVar: 10, phase: 0.33 });
-  const coreAnim = useOrganicAnimation({ duration: 9000, blur: 40, scaleBase: 1, scaleVar: 0.28, rotateVar: 28, leftBase: 54, leftVar: 12, topBase: 32, topVar: 12, phase: 0.66 });
+  const mainAnim = useOrganicAnimation({ duration: 16000, blur: 80, scaleBase: 1, scaleVar: 0.18, rotateVar: 18, leftBase: 38, leftVar: 5, topBase: 44, topVar: 4, phase: 0 });
+  const innerAnim = useOrganicAnimation({ duration: 12000, blur: 60, scaleBase: 1, scaleVar: 0.22, rotateVar: 22, leftBase: 62, leftVar: 5, topBase: 56, topVar: 5, phase: 0.33 });
+  const coreAnim = useOrganicAnimation({ duration: 9000, blur: 40, scaleBase: 1, scaleVar: 0.28, rotateVar: 28, leftBase: 54, leftVar: 6, topBase: 32, topVar: 6, phase: 0.66 });
 
   // Global scale ile organik scale'ı çarp: scaleX, scaleY
   function getTransform(anim: any) {
-    const sx = anim.scaleX * transitionScale;
-    const sy = anim.scaleY * transitionScale;
+    const sx = anim.scaleX * (isScaled ? 1.5 : 1);
+    const sy = anim.scaleY * (isScaled ? 1.5 : 1);
     return `translate(-50%, -50%) scale(${sx},${sy}) rotate(${anim.rotate}deg)`;
   }
 
   // Gradyanlar
   const mainGradient = `
-    radial-gradient(circle at 15% 15%, ${mainColors[0]} 0%, ${mainColors[0]} 45%, transparent 75%),
-    radial-gradient(circle at 85% 85%, ${mainColors[1]} 0%, ${mainColors[1]} 45%, transparent 75%),
-    radial-gradient(circle at 50% 50%, ${mainColors[2]} 0%, ${mainColors[2]} 55%, transparent 85%),
-    radial-gradient(circle at 10% 90%, ${mainColors[3]} 0%, ${mainColors[3]} 40%, transparent 70%)
+    radial-gradient(circle at 15% 15%, ${mainColors[0]} 0%, ${mainColors[0]} 30%, transparent 60%),
+    radial-gradient(circle at 85% 85%, ${mainColors[1]} 0%, ${mainColors[1]} 30%, transparent 60%),
+    radial-gradient(circle at 50% 50%, ${mainColors[2]} 0%, ${mainColors[2]} 35%, transparent 70%),
+    radial-gradient(circle at 10% 90%, ${mainColors[3]} 0%, ${mainColors[3]} 25%, transparent 55%)
   `;
   const innerGradient = `
-    radial-gradient(circle at 25% 25%, ${innerColors[0]} 0%, ${innerColors[0]} 55%, transparent 85%),
-    radial-gradient(circle at 75% 75%, ${innerColors[1]} 0%, ${innerColors[1]} 55%, transparent 85%),
-    radial-gradient(circle at 50% 50%, ${innerColors[2]} 0%, ${innerColors[2]} 65%, transparent 95%),
-    radial-gradient(circle at 15% 85%, ${innerColors[3]} 0%, ${innerColors[3]} 50%, transparent 80%)
+    radial-gradient(circle at 25% 25%, ${innerColors[0]} 0%, ${innerColors[0]} 35%, transparent 70%),
+    radial-gradient(circle at 75% 75%, ${innerColors[1]} 0%, ${innerColors[1]} 35%, transparent 70%),
+    radial-gradient(circle at 50% 50%, ${innerColors[2]} 0%, ${innerColors[2]} 40%, transparent 80%),
+    radial-gradient(circle at 15% 85%, ${innerColors[3]} 0%, ${innerColors[3]} 30%, transparent 65%)
   `;
   const coreGradient = `
-    radial-gradient(circle at 50% 50%, ${coreColors[0]} 0%, ${coreColors[0]} 75%, transparent 95%),
-    radial-gradient(circle at 50% 50%, ${coreColors[1]} 0%, ${coreColors[1]} 75%, transparent 95%)
+    radial-gradient(circle at 50% 50%, ${coreColors[0]} 0%, ${coreColors[0]} 50%, transparent 80%),
+    radial-gradient(circle at 50% 50%, ${coreColors[1]} 0%, ${coreColors[1]} 50%, transparent 80%)
   `;
 
   return (
@@ -246,12 +248,12 @@ export default function PlayStationBackground() {
           borderRadius: mainAnim.borderRadius,
           left: mainAnim.left,
           top: mainAnim.top,
-          width: '80vw',
-          height: '80vw',
+          width: '72vw',
+          height: '72vw',
           pointerEvents: 'none',
           zIndex: 1,
           backgroundImage: mainGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform ${activeDuration}ms cubic-bezier(.4,0,.2,1)`,
+          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform 900ms cubic-bezier(.4,0,.2,1)`,
           opacity,
           transform: getTransform(mainAnim),
         }}
@@ -263,12 +265,12 @@ export default function PlayStationBackground() {
           borderRadius: innerAnim.borderRadius,
           left: innerAnim.left,
           top: innerAnim.top,
-          width: '60vw',
-          height: '60vw',
+          width: '54vw',
+          height: '54vw',
           pointerEvents: 'none',
           zIndex: 2,
           backgroundImage: innerGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform ${activeDuration}ms cubic-bezier(.4,0,.2,1)`,
+          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform 900ms cubic-bezier(.4,0,.2,1)`,
           opacity,
           transform: getTransform(innerAnim),
         }}
@@ -280,12 +282,12 @@ export default function PlayStationBackground() {
           borderRadius: coreAnim.borderRadius,
           left: coreAnim.left,
           top: coreAnim.top,
-          width: '38vw',
-          height: '38vw',
+          width: '34vw',
+          height: '34vw',
           pointerEvents: 'none',
           zIndex: 3,
           backgroundImage: coreGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform ${activeDuration}ms cubic-bezier(.4,0,.2,1)`,
+          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform 900ms cubic-bezier(.4,0,.2,1)`,
           opacity,
           transform: getTransform(coreAnim),
         }}
