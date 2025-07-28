@@ -41,7 +41,7 @@ export default function Hero() {
             x: 60,
             scale: 0.7,
             stagger: 0.08,
-            duration: 0.4,
+            duration: 0.2,
             ease: 'power2.in',
           })
         } else if (from === 'civil' && to === 'programming') {
@@ -51,7 +51,7 @@ export default function Hero() {
             y: -40,
             scale: 0.7,
             stagger: 0.08,
-            duration: 0.4,
+            duration: 0.2,
             ease: 'power2.in',
           })
         }
@@ -65,7 +65,7 @@ export default function Hero() {
             opacity: 0,
             y: 40,
             stagger: 0.01,
-            duration: 0.25,
+            duration: 0.125,
             ease: 'power1.in',
           })
         } else if (from === 'civil' && to === 'programming') {
@@ -74,10 +74,17 @@ export default function Hero() {
             opacity: 0,
             x: -30,
             stagger: 0.01,
-            duration: 0.25,
+            duration: 0.125,
             ease: 'power1.in',
           })
         }
+      }
+      // Çıkış animasyonlarından sonra x ve y transformlarını sıfırla
+      if (titleRef.current) {
+        gsap.set(titleRef.current.querySelectorAll('span.gsap-title-word'), { x: 0, y: 0 });
+      }
+      if (descRef.current) {
+        gsap.set(descRef.current.querySelectorAll('span.gsap-char'), { x: 0, y: 0 });
       }
       if (!isCancelled) setDisplayMode(currentMode)
       lastMode.current = currentMode
@@ -91,21 +98,21 @@ export default function Hero() {
       gsap.fromTo(
         contentRef.current,
         { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }
       )
     }
     if (btn1Ref.current) {
       gsap.fromTo(
         btn1Ref.current,
         { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.8, delay: 0.5, ease: 'power3.out' }
+        { opacity: 1, scale: 1, duration: 0.4, delay: 0.25, ease: 'power3.out' }
       )
     }
     if (btn2Ref.current) {
       gsap.fromTo(
         btn2Ref.current,
         { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.8, delay: 0.7, ease: 'power3.out' }
+        { opacity: 1, scale: 1, duration: 0.4, delay: 0.35, ease: 'power3.out' }
       )
     }
     if (titleRef.current) {
@@ -115,19 +122,19 @@ export default function Hero() {
         // Soldan gel
         gsap.fromTo(words,
           { opacity: 0, scale: 0.7, x: -60 },
-          { opacity: 1, scale: 1, x: 0, stagger: 0.18, duration: 0.7, delay: 0.7, ease: 'back.out(1.7)' }
+          { opacity: 1, scale: 1, x: 0, stagger: 0.18, duration: 0.35, delay: 0.35, ease: 'back.out(1.7)' }
         )
       } else if (lastMode.current === 'civil' && displayMode === 'programming') {
         // Aşağıdan gel
         gsap.fromTo(words,
           { opacity: 0, scale: 0.7, y: 40 },
-          { opacity: 1, scale: 1, y: 0, stagger: 0.18, duration: 0.7, delay: 0.7, ease: 'back.out(1.7)' }
+          { opacity: 1, scale: 1, y: 0, stagger: 0.18, duration: 0.35, delay: 0.35, ease: 'back.out(1.7)' }
         )
       } else {
         // İlk yükleme veya fallback
         gsap.fromTo(words,
           { opacity: 0, scale: 0.7, y: 40 },
-          { opacity: 1, scale: 1, y: 0, stagger: 0.18, duration: 0.7, delay: 0.7, ease: 'back.out(1.7)' }
+          { opacity: 1, scale: 1, y: 0, stagger: 0.18, duration: 0.35, delay: 0.35, ease: 'back.out(1.7)' }
         )
       }
     }
@@ -138,19 +145,19 @@ export default function Hero() {
         // Yukarıdan gel
         gsap.fromTo(chars,
           { opacity: 0, y: -30 },
-          { opacity: 1, y: 0, stagger: 0.025, duration: 0.5, delay: 1, ease: 'power2.out' }
+          { opacity: 1, y: 0, stagger: 0.025, duration: 0.25, delay: 0.5, ease: 'power2.out' }
         )
       } else if (lastMode.current === 'civil' && displayMode === 'programming') {
         // Sağdan gel
         gsap.fromTo(chars,
           { opacity: 0, x: 30 },
-          { opacity: 1, x: 0, stagger: 0.025, duration: 0.5, delay: 1, ease: 'power2.out' }
+          { opacity: 1, x: 0, stagger: 0.025, duration: 0.25, delay: 0.5, ease: 'power2.out' }
         )
       } else {
         // İlk yükleme veya fallback
         gsap.fromTo(chars,
           { opacity: 0, y: 20, x: 30 },
-          { opacity: 1, y: 0, x: 0, stagger: 0.025, duration: 0.5, delay: 1, ease: 'power2.out' }
+          { opacity: 1, y: 0, x: 0, stagger: 0.025, duration: 0.25, delay: 0.5, ease: 'power2.out' }
         )
       }
     }
