@@ -33,7 +33,7 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl ${
+      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-sm ${
         currentMode === 'programming'
           ? 'bg-black/20 shadow-lg shadow-prog-accent/20'
           : 'bg-black/20 shadow-lg shadow-civil-primary/20'

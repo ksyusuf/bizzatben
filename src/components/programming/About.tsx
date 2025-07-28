@@ -113,9 +113,6 @@ export default function About() {
       id="about"
       className="section-padding relative overflow-hidden"
       ref={sectionRef}
-      style={{
-        background: 'linear-gradient(to bottom, rgba(24,24,27,0) 0%, rgba(24,24,27,0.5) 10%, rgba(255,24,255,0.1) 50%,  rgba(24,24,27,0.5) 90%, rgba(24,24,27,0) 100%)'
-      }}
     >
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">

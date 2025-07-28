@@ -5,10 +5,13 @@ export default function Footer() {
 
   return (
     <footer 
-      className={`py-8 backdrop-blur-2xl border-t ${
+    style={{
+      background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%)'
+    }}
+      className={`py-8 backdrop-blur-xs ${
         currentMode === 'programming' 
-          ? 'bg-black/40 border-prog-neon/50 shadow-lg shadow-prog-neon/20' 
-          : 'bg-black/40 border-civil-gold/50 shadow-lg shadow-civil-gold/20'
+          ? '' 
+          : 'bg-black/30'
       }`}
     >
       <div className="container-custom px-4 sm:px-6 lg:px-8">
