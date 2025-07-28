@@ -38,7 +38,7 @@ const Switch = () => {
               </div>
             </div>
             <div className="toggle-data">
-              <div className="data-text off">PROG</div>
+              <div className="data-text off">DEV.</div>
               <div className="data-text on">CIVIL</div>
               <div className="status-indicator off" />
               <div className="status-indicator on" />

@@ -6,29 +6,6 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        // Programming mode colors - Yeşil, mavi, mor, pembe tonları
-        'prog-primary': '#10B981',      // Yeşil
-        'prog-secondary': '#059669',     // Koyu yeşil
-        'prog-accent': '#8B5CF6',       // Mor
-        'prog-dark': '#1F2937',          // Koyu gri
-        'prog-darker': '#0F0F0F',        // Çok koyu gri
-        'prog-light': '#6B7280',         // Orta gri
-        'prog-blue': '#3B82F6',          // Mavi
-        'prog-pink': '#EC4899',          // Pembe
-        'prog-purple': '#8B5CF6',        // Mor
-        
-        // Civil mode colors - Sarı tonları
-        'civil-primary': '#D97706',      // Koyu sarı
-        'civil-secondary': '#F59E0B',    // Orta sarı
-        'civil-accent': '#FEF3C7',       // Açık sarı
-        'civil-dark': '#4B5563',         // Koyu gri
-        'civil-darker': '#0F0F0F',       // Çok koyu gri
-        'civil-light': '#9CA3AF',        // Orta gri
-        'civil-gold': '#F59E0B',         // Altın sarısı
-        'civil-amber': '#F59E0B',        // Amber
-        'civil-yellow': '#FEF3C7',       // Açık sarı
-      },
       fontFamily: {
         'sans': ['Inter', 'system-ui', 'sans-serif'],
         'mono': ['JetBrains Mono', 'monospace'],
