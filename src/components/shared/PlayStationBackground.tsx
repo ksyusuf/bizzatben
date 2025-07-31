@@ -1,40 +1,17 @@
 import { useModeStore } from '../../store/modeStore';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import gsap from 'gsap';
 import { interpolateRgb } from 'd3-interpolate';
 
-
 // Renk paletleri
 const programmingPalettes = [
-  ['#4F378B', '#7C3AED', '#38BDF8', '#FBBF24'],
-  ['#833AB4', '#C13584', '#E1306C', '#F56040'], // Instagram mor-pembe-turuncu
-  ['#405DE6', '#5851DB', '#FFDC80', '#FD1D1D'], // Instagram mavi-mor-sarı-kırmızı
-  ['#FBBF24', '#4F378B', '#34D399', '#38BDF8'],
+  ['#833AB4', '#C13584', '#E1306C', '#F56040']
 ];
 const civilPalettes = [
-  ['#B45309', '#F59E42', '#B91C1C', '#1E3A8A'], // koyu sarı, parlak sarı-turuncu, koyu kırmızı, koyu mavi
-  ['#F59E42', '#B91C1C', '#1E3A8A', '#D1FAE5'], // az açık yeşil
-  ['#B91C1C', '#1E3A8A', '#D1FAE5', '#B45309'],
-  ['#1E3A8A', '#D1FAE5', '#B45309', '#F59E42'],
+  ['#F59E42', '#B91C1C', '#1E3A8A', '#D1FAE5']
 ];
 
-function lerp(a: number, b: number, t: number) {
-  return a + (b - a) * t;
-}
-// function lerpColor(a: string, b: string, t: number) {
-//   const ah = a.startsWith('#') ? a.substring(1) : a;
-//   const bh = b.startsWith('#') ? b.substring(1) : b;
-//   const av = [parseInt(ah.substring(0,2),16), parseInt(ah.substring(2,4),16), parseInt(ah.substring(4,6),16)];
-//   const bv = [parseInt(bh.substring(0,2),16), parseInt(bh.substring(2,4),16), parseInt(bh.substring(4,6),16)];
-//   const rv = av.map((v, i) => {
-//     const val = Math.round(lerp(v, bv[i], t));
-//     return Math.max(0, Math.min(255, val)); // clamp
-//   });
-//   return `rgb(${rv[0]},${rv[1]},${rv[2]})`;
-// }
-
-
-function useAnimatedPalette(palettes: string[][], duration = 10_000, ease = 0.07) {
+function useAnimatedPalette(palettes: string[][], duration = 10_000) {
   const cyclicPalettes = React.useMemo(() => [...palettes, palettes[0]], [palettes]);
   const [colors, setColors] = useState(cyclicPalettes[0]);
   const idx = useRef(0);
@@ -68,26 +45,20 @@ function useAnimatedPalette(palettes: string[][], duration = 10_000, ease = 0.07
       if (progress.current >= 1) {
         progress.current = 0;
         idx.current = (idx.current + 1) % (cyclicPalettes.length - 1);
-        // Son frame'de renkler tam olarak hedef paletteye eşitlensin
-        setColors(to);
-      } else {
-        frame = requestAnimationFrame(animate);
+        setColors(to); // Ensure colors snap to target palette at the end
       }
+      frame = requestAnimationFrame(animate); // Keep animating
     }
 
     frame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frame);
-  }, [cyclicPalettes, duration, ease]);
+  }, [cyclicPalettes, duration]);
 
   return colors;
 }
 
-
- 
-
 // Organik şekil için border-radius stringi üret
 function organicRadius(t: number, phase = 0) {
-  // t: 0-1
   const a = 50 + 10 * Math.sin(2 * Math.PI * t + phase);
   const b = 50 + 10 * Math.sin(2 * Math.PI * t + 1 + phase);
   const c = 50 + 10 * Math.sin(2 * Math.PI * t + 2 + phase);
@@ -116,10 +87,12 @@ function useOrganicAnimation({
     scaleY: scaleBase,
     rotate: 0,
   });
-  const startTimeRef = React.useRef<number>(Date.now());
+  const startTimeRef = useRef<number>(Date.now());
+
   useEffect(() => {
-    startTimeRef.current = Date.now(); // animasyon parametreleri değişirse baştan başlat
+    startTimeRef.current = Date.now();
   }, [duration, blur, scaleBase, scaleVar, rotateVar, leftBase, leftVar, topBase, topVar, phase]);
+
   useEffect(() => {
     let frame: number;
     function animate() {
@@ -130,6 +103,7 @@ function useOrganicAnimation({
       const rotate = rotateVar * Math.sin(2 * Math.PI * t + phase);
       const left = leftBase + leftVar * Math.sin(2 * Math.PI * t + phase);
       const top = topBase + topVar * Math.cos(2 * Math.PI * t + phase);
+
       setState({
         filter: `blur(${blur}px)`,
         borderRadius: organicRadius(t, phase),
@@ -141,110 +115,93 @@ function useOrganicAnimation({
       });
       frame = requestAnimationFrame(animate);
     }
+
     frame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(frame);
   }, [duration, blur, scaleBase, scaleVar, rotateVar, leftBase, leftVar, topBase, topVar, phase]);
   return state;
 }
 
-// Fade-in + scale-in animasyonu hook'u (gelişmiş: dışarıdan tetiklenebilir)
-function useAppearControl(show: boolean, duration = 1200, delay = 0, onFadeOutEnd?: () => void, onFadeInEnd?: () => void) {
-  const [progress, setProgress] = useState(show ? 1 : 0);
-  const animating = useRef(false);
-  useEffect(() => {
-    let frame: number;
-    const start = Date.now() + delay;
-    animating.current = true;
-    function animate() {
-      const now = Date.now();
-      let t = (now - start) / duration;
-      t = Math.max(0, Math.min(1, t));
-      // ease-in-out eğrisi uygula
-      const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-      setProgress(show ? ease : 1 - ease);
-      if ((show && t < 1) || (!show && t > 0)) {
-        frame = requestAnimationFrame(animate);
-      } else {
-        animating.current = false;
-        if (!show && onFadeOutEnd) onFadeOutEnd();
-        if (show && onFadeInEnd) onFadeInEnd();
-      }
-    }
-    animate();
-    return () => cancelAnimationFrame(frame);
-  }, [show, duration, delay, onFadeOutEnd, onFadeInEnd]);
-  return progress;
-}
-
 export default function PlayStationBackground() {
   const { currentMode } = useModeStore();
-  // --- Animasyonlu geçiş için local state ---
-  const [displayedMode, setDisplayedMode] = useState(currentMode);
-  // İlk başta opacity 0, scale 1.5'ten başlasın
-  const [opacity, setOpacity] = useState(0);
-  const [isScaled, setIsScaled] = useState(true); // true: 1.5, false: 1
-  const [isFadingIn, setIsFadingIn] = useState(false);
-  const fadeOutDuration = 400; // ms - kaybolma daha hızlı
-  const fadeInDuration = 5000; // ms - doğma daha yavaş
-  const fadeTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const initialFadeInDone = useRef(false);
+  const [displayedMode, setDisplayedMode] = useState(currentMode); // İlk yüklemede mevcut modu ayarla
 
-  // İlk yüklemede fade-in animasyonu başlat
-  useEffect(() => {
-    if (!initialFadeInDone.current) {
-      setIsFadingIn(true);
-      setOpacity(0); // Başlangıçta görünmez
-      setIsScaled(true); // büyükten başla
-      requestAnimationFrame(() => setIsScaled(false)); // bir sonraki frame'de 1'e in
-      setTimeout(() => {
-        setOpacity(1); // scale animasyonu bittikten sonra görünür yap
-      }, 900); // transform transition süresiyle aynı olmalı
-      initialFadeInDone.current = true;
-    }
+  const mainShapeRef = useRef<HTMLDivElement>(null);
+  const innerShapeRef = useRef<HTMLDivElement>(null);
+  const coreShapeRef = useRef<HTMLDivElement>(null);
+
+  const getTransform = useCallback((anim: any, globalScale: number) => {
+    // Organik animasyondan gelen scale değerleri ile GSAP'ten gelen globalScale'ı çarpıyoruz.
+    const sx = anim.scaleX * globalScale;
+    const sy = anim.scaleY * globalScale;
+    return `translate(-50%, -50%) scale(${sx},${sy}) rotate(${anim.rotate}deg)`;
   }, []);
 
-  // Mode değişimini animasyonla yönet
-  useEffect(() => {
-    if (!initialFadeInDone.current) return; // İlk fade-in bitmeden mode değişimi olursa atla
-    if (currentMode !== displayedMode) {
-      // Önce fade out (sadece opacity ile kaybol)
-      setIsFadingIn(false);
-      setOpacity(0);
-      // Fade out bitince displayedMode'u güncelle, fade in başlat
-      if (fadeTimeout.current) clearTimeout(fadeTimeout.current);
-      fadeTimeout.current = setTimeout(() => {
-        setDisplayedMode(currentMode);
-        setIsFadingIn(true);
-        setOpacity(1);
-        setIsScaled(true); // tekrar büyük başla
-        requestAnimationFrame(() => setIsScaled(false)); // bir sonraki frame'de 1'e in
-      }, fadeOutDuration);
-    }
-    return () => {
-      if (fadeTimeout.current) clearTimeout(fadeTimeout.current);
-    };
-  }, [currentMode, displayedMode]);
-
-  // Aktif animasyon süresini belirle
-  const activeDuration = isFadingIn ? fadeInDuration : fadeOutDuration;
-
-  // Sadece mode'a göre palet ve animasyonlar
+  // Sayfa yüklendiğinde veya displayedMode güncellendiğinde renk paletini ve organik animasyonları yenile
   const palettes = displayedMode === 'programming' ? programmingPalettes : civilPalettes;
-  // Renk animasyonları
-  const mainColors = useAnimatedPalette(palettes, 12000, 0.07);
-  const innerColors = useAnimatedPalette([...palettes.slice(1), palettes[0]], 9000, 0.09);
-  const coreColors = useAnimatedPalette([...palettes.slice(2), palettes[0], palettes[1]], 7000, 0.12);
-  // Organik animasyonlar
+  const mainColors = useAnimatedPalette(palettes, 12000);
+  const innerColors = useAnimatedPalette([...palettes.slice(1), palettes[0]], 9000);
+  const coreColors = useAnimatedPalette([...palettes.slice(2), palettes[0], palettes[1]], 7000);
+
   const mainAnim = useOrganicAnimation({ duration: 16000, blur: 80, scaleBase: 1, scaleVar: 0.18, rotateVar: 18, leftBase: 38, leftVar: 5, topBase: 44, topVar: 4, phase: 0 });
   const innerAnim = useOrganicAnimation({ duration: 12000, blur: 60, scaleBase: 1, scaleVar: 0.22, rotateVar: 22, leftBase: 62, leftVar: 5, topBase: 56, topVar: 5, phase: 0.33 });
   const coreAnim = useOrganicAnimation({ duration: 9000, blur: 40, scaleBase: 1, scaleVar: 0.28, rotateVar: 28, leftBase: 54, leftVar: 6, topBase: 32, topVar: 6, phase: 0.66 });
 
-  // Global scale ile organik scale'ı çarp: scaleX, scaleY
-  function getTransform(anim: any) {
-    const sx = anim.scaleX * (isScaled ? 1.5 : 1);
-    const sy = anim.scaleY * (isScaled ? 1.5 : 1);
-    return `translate(-50%, -50%) scale(${sx},${sy}) rotate(${anim.rotate}deg)`;
-  }
+  // GSAP timeline for mode transitions (opacity and global scale)
+  useEffect(() => {
+    const shapes = [mainShapeRef.current, innerShapeRef.current, coreShapeRef.current];
+
+    // İlk yüklenme animasyonu
+    if (currentMode === displayedMode) {
+      gsap.fromTo(
+        shapes,
+        { opacity: 0, scale: 0.5 }, // Yoktan, sıfır scale ile başla
+        {
+          opacity: 1,
+          scale: 1, // Normal boyutuna büyüt
+          duration: 5, // Daha hızlı bir büyüme süresi
+          ease: 'back.out',
+          delay: 1,
+          onComplete: () => {
+            // İlk animasyon bittiğinde
+          }
+        }
+      );
+    }
+
+    // Mode değişim animasyonu
+    if (currentMode !== displayedMode) {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          setDisplayedMode(currentMode); // Fade-out bittikten sonra modu güncelle
+          // Yeni modun fade-in animasyonu
+          gsap.fromTo(
+            shapes,
+            { opacity: 0, scale: 0.4 }, // Yoktan, sıfır scale ile başla
+            {
+              opacity: 1,
+              scale: 1, // Normal boyutuna büyüt
+              duration: 1.5, // Daha hızlı bir büyüme süresi
+              ease: 'power4.out',
+            }
+          );
+        }
+      });
+
+      // Mevcut modun fade out ve küçülme animasyonu
+      tl.to(shapes, {
+        opacity: 0,
+        scale: 0.6, // Sıfır scale'e küçült
+        duration: 1, // Hızlı küçülme
+        ease: 'power3.out',
+      });
+    }
+
+    return () => {
+      // Bileşen unmount edildiğinde veya effect yeniden çalıştığında aktif GSAP animasyonlarını öldür
+      gsap.killTweensOf(shapes);
+    };
+  }, [currentMode, displayedMode]); // currentMode veya displayedMode değiştiğinde bu effect çalışır
 
   // Gradyanlar
   const mainGradient = `
@@ -268,6 +225,7 @@ export default function PlayStationBackground() {
     <div className="fixed inset-0 -z-10">
       <div className="absolute inset-0 bg-black" style={{ backgroundColor: '#0A0A0A' }}></div>
       <div
+        ref={mainShapeRef}
         className="absolute"
         style={{
           filter: mainAnim.filter,
@@ -279,12 +237,12 @@ export default function PlayStationBackground() {
           pointerEvents: 'none',
           zIndex: 1,
           backgroundImage: mainGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform 900ms cubic-bezier(.4,0,.2,1)`,
-          opacity,
-          transform: getTransform(mainAnim),
+          transition: `background-image 4s cubic-bezier(.4,0,.2,1)`,
+          transform: getTransform(mainAnim, 1), // GSAP scale will be applied here
         }}
       />
       <div
+        ref={innerShapeRef}
         className="absolute"
         style={{
           filter: innerAnim.filter,
@@ -296,12 +254,12 @@ export default function PlayStationBackground() {
           pointerEvents: 'none',
           zIndex: 2,
           backgroundImage: innerGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform 900ms cubic-bezier(.4,0,.2,1)`,
-          opacity,
-          transform: getTransform(innerAnim),
+          transition: `background-image 4s cubic-bezier(.4,0,.2,1)`,
+          transform: getTransform(innerAnim, 1),
         }}
       />
       <div
+        ref={coreShapeRef}
         className="absolute"
         style={{
           filter: coreAnim.filter,
@@ -313,9 +271,8 @@ export default function PlayStationBackground() {
           pointerEvents: 'none',
           zIndex: 3,
           backgroundImage: coreGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1), opacity ${activeDuration}ms cubic-bezier(.4,0,.2,1), transform 900ms cubic-bezier(.4,0,.2,1)`,
-          opacity,
-          transform: getTransform(coreAnim),
+          transition: `background-image 4s cubic-bezier(.4,0,.2,1)`,
+          transform: getTransform(coreAnim, 1),
         }}
       />
     </div>
