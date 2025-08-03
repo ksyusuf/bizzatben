@@ -11,10 +11,12 @@ interface Project {
   id: string
   title: string
   description: string
-  image: string
+  image?: string // Image alanı artık opsiyonel
   technologies: string[]
   link?: string
   github?: string
+  pdfUrl?: string,
+  date: string // Yeni alan: proje tarihi
 }
 
 const programmingProjects: Project[] = [
@@ -25,7 +27,9 @@ const programmingProjects: Project[] = [
     image: '/api/placeholder/400/300',
     technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
     link: 'https://example.com',
-    github: 'https://github.com'
+    github: 'https://github.com',
+    pdfUrl: 'https://example.com/project1.pdf', // PDF URL eklendi
+    date: '2023-01-15' // Proje tarihi eklendi
   },
   {
     id: '2',
@@ -34,7 +38,9 @@ const programmingProjects: Project[] = [
     image: '/api/placeholder/400/300',
     technologies: ['TypeScript', 'Firebase', 'Tailwind CSS'],
     link: 'https://example.com',
-    github: 'https://github.com'
+    github: 'https://github.com',
+    pdfUrl: 'https://example.com/project2.pdf', // PDF URL eklendi
+    date: '2023-03-10' // Proje tarihi eklendi
   },
   {
     id: '3',
@@ -43,34 +49,43 @@ const programmingProjects: Project[] = [
     image: '/api/placeholder/400/300',
     technologies: ['Python', 'OpenAI', 'FastAPI', 'React'],
     link: 'https://example.com',
-    github: 'https://github.com'
+    github: 'https://github.com',
+    pdfUrl: 'https://example.com/project3.pdf', // PDF URL eklendi
+    date: '2023-05-20' // Proje tarihi eklendi
   }
 ]
 
 const civilProjects: Project[] = [
   {
     id: '1',
-    title: 'Çok Katlı Rezidans',
-    description: 'İstanbul\'da 25 katlı lüks rezidans projesi. Deprem dayanımı ve enerji verimliliği odaklı tasarım.',
-    image: '/api/placeholder/400/300',
-    technologies: ['SAP2000', 'ETABS', 'AutoCAD'],
-    link: 'https://example.com'
+    title: 'Centre Pompidou Araştırması',
+    description: 'Nisan 2019\'da İnşaat Mühendisliği lisansım sırasında Mühendisliğe Giriş dersi için hazırladığım kapsamlı bir araştırma projesidir. Bu çalışmada, ikonik Pompidou Merkezi binasının teknik yapısı derinlemesine incelenmiştir. Yapının mimari ve mühendislik özellikleri detaylandırılarak, merkezin teknik detaylarına dair merakları gidermeyi hedeflemektedir.',
+    image: '/src/components/civil/img/pompidou.jpg',
+    technologies: ['Mimari Analiz', 'Yapı Mühendisliği', 'Mühendisliğe Giriş'],
+    link: 'https://yusufakcakaya.blogspot.com/2019/04/centre-pompidou.html',
+    // pdfUrl: 'PDF_LINKI_BURAYA', // Eğer projenin bir PDF raporu varsa
+    date: '20.04.2019'
   },
   {
     id: '2',
-    title: 'Köprü Projesi',
-    description: 'Karadeniz bölgesinde 500m uzunluğunda çelik köprü tasarımı ve analizi.',
-    image: '/api/placeholder/400/300',
-    technologies: ['STAAD.Pro', 'Tekla', 'AutoCAD'],
-    link: 'https://example.com'
+    title: 'Betonarme Bitirme Projesi',
+    description: '2020-2021 Güz Döneminde tamamlanan betonarme bitirme projesi. Proje, betonarme tasarımı ve uygulama detaylarına odaklanmaktadır. Projenin kaynakları incelenerek fark edilen bazı hatalar ve düzeltme gereksinimleri de açıklanmıştır.',
+    image: '/src/components/civil/img/betonarme-projem.png',
+    technologies: ['Betonarme Tasarım İlkeleri', 'Yapı Statiği', 'TS 500'],
+    link: 'https://yusufakcakaya.blogspot.com/2021/02/betonarme-projem.html',
+    pdfUrl: 'https://yusufakcakaya.blogspot.com/2021/02/betonarme-projem.html',
+    date: '26.02.2021'
   },
   {
     id: '3',
-    title: 'Hastane Yapısı',
-    description: 'Ankara\'da 200 yataklı hastane kompleksi. Sismik izolasyon ve akıllı bina sistemleri.',
-    image: '/api/placeholder/400/300',
-    technologies: ['ETABS', 'SAP2000', 'Revit'],
-    link: 'https://example.com'
+    title: 'Veri Analizi Projem (Kıbrıs Rüzgar & Buharlaşma Analizi)',
+    description: '2020-2021 Bahar Döneminde Kıbrıs Ercan Havalimanı ve Orta Mesarya bölgesinden elde edilen rüzgâr hızları ve buharlaşma miktarları kullanılarak gerçekleştirilmiş bitirme projesi. Bu analizde, bölgenin rüzgâr hızları ve buharlaşma miktarlarının dağılımları ile birbirleriyle olan ilişkileri incelenerek, rüzgar türbini yapılması konusunda çıkarımlarda bulunulmuştur. Keşifsel veri analizi R programlama dili kullanılarak yaklaşık 14 haftada tamamlanmıştır. Proje, bilimsel makale formatı konusunda önemli deneyimler kazandırmıştır.',
+    // image: '/src/components/civil/img/veri-analizi-placeholder.png',
+    technologies: ['R Programlama Dili', 'Keşifsel Veri Analizi', 'İstatistiksel Analiz', 'Rüzgar Enerjisi'],
+    // link: 'PROJE_LINKI_BURAYA',
+    // github: 'GITHUB_LINKI_BURAYA',
+    // pdfUrl: 'PDF_LINKI_BURAYA',
+    date: '03.07.2021'
   }
 ]
 
@@ -84,7 +99,6 @@ export default function Projects() {
   const cardsRef = useRef<(HTMLDivElement | null)[]>([])
   const titleRef = useRef<HTMLHeadingElement>(null)
   const descRef = useRef<HTMLParagraphElement>(null)
-  const gridRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Başlık animasyonu (scrollTrigger ile)
@@ -171,7 +185,7 @@ export default function Projects() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((project, index) => (
+          {projects.slice().reverse().map((project, index) => (
             <div
               key={project.id}
               ref={el => { cardsRef.current[index] = el; }}
@@ -209,28 +223,41 @@ function ProjectCard({
   currentMode: string
   onViewDetails: () => void
 }) {
+
+  // Açıklamayı kesmek için yardımcı fonksiyon
+  const truncateDescription = (text: string, maxLength: number) => {
+    if (text.length <= maxLength) {
+      return { truncatedText: text, isTruncated: false };
+    }
+    // Son boşluğa kadar kesip üç nokta ekle
+    const truncated = text.substring(0, maxLength).trim();
+    return { truncatedText: truncated + '...', isTruncated: true };
+  };
+
+  const { truncatedText, isTruncated } = truncateDescription(project.description, 200);
+
   return (
     <div
-      className={`group relative overflow-hidden rounded-2xl backdrop-blur-xl border ${
-        currentMode === 'programming' 
-          ? 'bg-prog-dark/50 border-prog-neon/30' 
-          : 'bg-civil-dark/50 border-civil-gold/30'
-      } hover:scale-105 transition-all duration-300`}
+      className="group relative overflow-hidden rounded-2xl backdrop-blur-xl border hover:scale-105 transition-all duration-300"
     >
-      {/* Project Image */}
-      <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden">
+      {/* Project Image or Icon Placeholder */}
+      <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 relative overflow-hidden flex items-center justify-center">
+        {project.image ? (
+          <img 
+            src={project.image} 
+            alt={project.title} 
+            className="w-full h-full object-cover absolute inset-0" 
+          />
+        ) : (
+          <div className="text-6xl">
+            {currentMode === 'programming' ? '💻' : '🏗️'}
+          </div>
+        )}
         <div className={`absolute inset-0 bg-gradient-to-t ${
           currentMode === 'programming' 
             ? 'from-prog-darker/80 to-transparent' 
             : 'from-civil-darker/80 to-transparent'
         }`} />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className={`text-6xl ${
-            currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-          }`}>
-            {currentMode === 'programming' ? '💻' : '🏗️'}
-          </div>
-        </div>
       </div>
 
       {/* Project Content */}
@@ -240,10 +267,21 @@ function ProjectCard({
         }`}>
           {project.title}
         </h3>
+        {/* AÇIKLAMA ALANI GÜNCELLENDİ */}
         <p className={`text-sm mb-4 ${
           currentMode === 'programming' ? 'text-prog-light/80' : 'text-civil-light/80'
         }`}>
-          {project.description}
+          {truncatedText}
+          {isTruncated && (
+            <button 
+              onClick={onViewDetails} 
+              className={`ml-1 font-semibold underline decoration-dotted decoration-1 underline-offset-2 cursor-pointer ${
+                currentMode === 'programming' ? 'text-prog-accent hover:text-prog-neon' : 'text-civil-amber hover:text-civil-gold'
+              } focus:outline-none`}
+            >
+              Devamını Gör
+            </button>
+          )}
         </p>
 
         {/* Technologies */}
@@ -260,6 +298,14 @@ function ProjectCard({
               {tech}
             </span>
           ))}
+        </div>
+
+        <div className="absolute bottom-6 right-6">
+          <span className={`text-xs font-medium ${
+            currentMode === 'programming' ? 'text-prog-light-rgb-60' : 'text-civil-light-rgb-60'
+          }`}>
+            {project.date}
+          </span>
         </div>
 
         {/* Action Buttons */}
@@ -357,13 +403,21 @@ function ProjectModal({
                 </div>
                 
                 <div className="grid md:grid-cols-2 gap-6">
-                  {/* Project Image */}
+                  {/* Project Image or Icon Placeholder */}
                   <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg flex items-center justify-center">
-                    <div className={`text-8xl ${
-                      currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-                    }`}>
-                      {currentMode === 'programming' ? '💻' : '🏗️'}
-                    </div>
+                    {project.image ? (
+                      <img 
+                        src={project.image} 
+                        alt={project.title} 
+                        className="w-full h-full object-cover rounded-lg" // Added rounded-lg to image
+                      />
+                    ) : (
+                      <div className={`text-8xl ${
+                        currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
+                      }`}>
+                        {currentMode === 'programming' ? '💻' : '🏗️'}
+                      </div>
+                    )}
                   </div>
 
                   {/* Project Details */}
@@ -397,7 +451,7 @@ function ProjectModal({
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-3">
+                    <div className="flex gap-3 flex-wrap"> {/* flex-wrap added for responsiveness */}
                       {project.link && (
                         <a
                           href={project.link}
@@ -427,6 +481,22 @@ function ProjectModal({
                         >
                           <CodeBracketIcon className="w-5 h-5" />
                           GitHub
+                        </a>
+                      )}
+                      
+                      {project.pdfUrl && ( // Yeni eklenen PDF görüntüleme butonu
+                        <a
+                          href={project.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium border-2 transition-all duration-200 backdrop-blur-xl cursor-pointer ${
+                            currentMode === 'programming'
+                              ? 'border-prog-primary text-prog-primary hover:bg-prog-primary/20 bg-black/20' // Renkleri programlama moduna göre ayarlandı
+                              : 'border-civil-amber text-civil-amber hover:bg-civil-amber/20 bg-black/20' // Renkleri sivil moduna göre ayarlandı
+                          }`}
+                        >
+                          <EyeIcon className="w-5 h-5" /> {/* PDF için göz ikonu */}
+                          PDF Görüntüle
                         </a>
                       )}
                     </div>
