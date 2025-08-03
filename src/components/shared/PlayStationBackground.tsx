@@ -5,14 +5,19 @@ import { interpolateRgb } from 'd3-interpolate';
 
 // Renk paletleri
 const programmingPalettes = [
-  ['#833AB4', '#C13584', '#E1306C', '#F56040']
+    ['#7B1FA2', '#D81B60', '#C62828'],
+    ['#1565C0', '#00838F', '#2E7D32']
 ];
 const civilPalettes = [
-  ['#F59E42', '#B91C1C', '#1E3A8A', '#D1FAE5']
+    ['#FF8A00', '#FF5722', '#F4511E'],
+    ['#303F9F', '#26A69A', '#8BC34A']
 ];
 
 function useAnimatedPalette(palettes: string[][], duration = 10_000) {
+  // cyclicPalettes'i oluştururken son eleman olarak ilk paleti ekleyerek döngüsel hale getiriyoruz.
   const cyclicPalettes = React.useMemo(() => [...palettes, palettes[0]], [palettes]);
+  
+  // İlk renk setini state olarak ayarla.
   const [colors, setColors] = useState(cyclicPalettes[0]);
   const idx = useRef(0);
   const progress = useRef(0);
@@ -32,10 +37,12 @@ function useAnimatedPalette(palettes: string[][], duration = 10_000) {
       }
 
       const from = cyclicPalettes[idx.current];
-      const to = cyclicPalettes[idx.current + 1];
+      // to paletini her zaman geçerli bir değer olacak şekilde ayarla
+      const to = cyclicPalettes[(idx.current + 1) % cyclicPalettes.length];
 
       const newColors = from.map((color, i) => {
-        const targetColor = to[i % to.length]; // wrap around
+        // to[i] undefined olmaması için kontrol ekle
+        const targetColor = (to && to.length > i) ? to[i] : color; // Eğer to[i] yoksa mevcut rengi kullan
         const interp = interpolateRgb(color, targetColor);
         return interp(t);
       });
@@ -44,7 +51,10 @@ function useAnimatedPalette(palettes: string[][], duration = 10_000) {
 
       if (progress.current >= 1) {
         progress.current = 0;
-        idx.current = (idx.current + 1) % (cyclicPalettes.length - 1);
+        // Bir sonraki palete geç, cyclicPalettes'in uzunluğuna göre mod alarak döngüyü tamamla
+        // Eğer cyclicPalettes sadece tek bir palet içeriyorsa (safePalettes boş geldiğinde),
+        // idx.current = 0 olarak kalacaktır.
+        idx.current = (idx.current + 1) % (cyclicPalettes.length > 1 ? cyclicPalettes.length - 1 : 1); 
         setColors(to); // Ensure colors snap to target palette at the end
       }
       frame = requestAnimationFrame(animate); // Keep animating
@@ -139,9 +149,11 @@ export default function PlayStationBackground() {
 
   // Sayfa yüklendiğinde veya displayedMode güncellendiğinde renk paletini ve organik animasyonları yenile
   const palettes = displayedMode === 'programming' ? programmingPalettes : civilPalettes;
+
   const mainColors = useAnimatedPalette(palettes, 12000);
-  const innerColors = useAnimatedPalette([...palettes.slice(1), palettes[0]], 9000);
-  const coreColors = useAnimatedPalette([...palettes.slice(2), palettes[0], palettes[1]], 7000);
+  const innerColors = useAnimatedPalette(palettes, 9000);
+  const coreColors = useAnimatedPalette(palettes, 7000);
+
 
   const mainAnim = useOrganicAnimation({ duration: 16000, blur: 80, scaleBase: 1, scaleVar: 0.18, rotateVar: 18, leftBase: 38, leftVar: 5, topBase: 44, topVar: 4, phase: 0 });
   const innerAnim = useOrganicAnimation({ duration: 12000, blur: 60, scaleBase: 1, scaleVar: 0.22, rotateVar: 22, leftBase: 62, leftVar: 5, topBase: 56, topVar: 5, phase: 0.33 });
@@ -177,12 +189,12 @@ export default function PlayStationBackground() {
           // Yeni modun fade-in animasyonu
           gsap.fromTo(
             shapes,
-            { opacity: 0, scale: 0.4 }, // Yoktan, sıfır scale ile başla
+            { opacity: 0, scale: 0.7 }, // Yoktan, sıfır scale ile başla
             {
               opacity: 1,
               scale: 1, // Normal boyutuna büyüt
-              duration: 1.5, // Daha hızlı bir büyüme süresi
-              ease: 'power4.out',
+              duration: 2.4, // Daha hızlı bir büyüme süresi
+              ease: 'back.out',
             }
           );
         }
@@ -191,9 +203,9 @@ export default function PlayStationBackground() {
       // Mevcut modun fade out ve küçülme animasyonu
       tl.to(shapes, {
         opacity: 0,
-        scale: 0.6, // Sıfır scale'e küçült
+        scale: 2.5, // Sıfır scale'e büyüt
         duration: 1, // Hızlı küçülme
-        ease: 'power3.out',
+        ease: 'power4.out',
       });
     }
 
@@ -207,18 +219,17 @@ export default function PlayStationBackground() {
   const mainGradient = `
     radial-gradient(circle at 15% 15%, ${mainColors[0]} 0%, ${mainColors[0]} 30%, transparent 60%),
     radial-gradient(circle at 85% 85%, ${mainColors[1]} 0%, ${mainColors[1]} 30%, transparent 60%),
-    radial-gradient(circle at 50% 50%, ${mainColors[2]} 0%, ${mainColors[2]} 35%, transparent 70%),
-    radial-gradient(circle at 10% 90%, ${mainColors[3]} 0%, ${mainColors[3]} 25%, transparent 55%)
+    radial-gradient(circle at 50% 50%, ${mainColors[2]} 0%, ${mainColors[2]} 35%, transparent 70%)
   `;
   const innerGradient = `
     radial-gradient(circle at 25% 25%, ${innerColors[0]} 0%, ${innerColors[0]} 35%, transparent 70%),
     radial-gradient(circle at 75% 75%, ${innerColors[1]} 0%, ${innerColors[1]} 35%, transparent 70%),
-    radial-gradient(circle at 50% 50%, ${innerColors[2]} 0%, ${innerColors[2]} 40%, transparent 80%),
-    radial-gradient(circle at 15% 85%, ${innerColors[3]} 0%, ${innerColors[3]} 30%, transparent 65%)
+    radial-gradient(circle at 50% 50%, ${innerColors[2]} 0%, ${innerColors[2]} 40%, transparent 80%)
   `;
   const coreGradient = `
     radial-gradient(circle at 50% 50%, ${coreColors[0]} 0%, ${coreColors[0]} 50%, transparent 80%),
-    radial-gradient(circle at 50% 50%, ${coreColors[1]} 0%, ${coreColors[1]} 50%, transparent 80%)
+    radial-gradient(circle at 50% 50%, ${coreColors[1]} 0%, ${coreColors[1]} 50%, transparent 80%),
+    radial-gradient(circle at 50% 50%, ${coreColors[2]} 0%, ${coreColors[2]} 50%, transparent 80%)
   `;
 
   return (
@@ -238,7 +249,7 @@ export default function PlayStationBackground() {
           zIndex: 1,
           backgroundImage: mainGradient,
           transition: `background-image 4s cubic-bezier(.4,0,.2,1)`,
-          transform: getTransform(mainAnim, 1), // GSAP scale will be applied here
+          transform: getTransform(mainAnim, 1),
         }}
       />
       <div
