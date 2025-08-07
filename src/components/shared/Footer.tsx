@@ -22,15 +22,14 @@ export default function Footer() {
               currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
             }`}
           >
-            © 2024 BizzatBen. Tüm hakları saklıdır.
+            © 2039 BizzatBen. Tüm hakları saklıdır.
           </div>
 
           {/* Social Links */}
           <div className="flex items-center space-x-6 mt-4 md:mt-0">
-            <SocialLink href="https://github.com" icon="🐙" label="GitHub" />
-            <SocialLink href="https://linkedin.com" icon="💼" label="LinkedIn" />
-            <SocialLink href="https://twitter.com" icon="🐦" label="Twitter" />
-            <SocialLink href="mailto:contact@bizzatben.com" icon="📧" label="Email" />
+            <SocialLink href="https://github.com/ksyusuf" icon="🐙" label="GitHub" />
+            <SocialLink href="https://www.linkedin.com/in/yusuf-akcakaya/" icon="💼" label="LinkedIn" />
+            <SocialLink href="mailto:ksyusuf85@gmail.com" icon="📧" label="Email" />
           </div>
         </div>
       </div>

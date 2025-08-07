@@ -136,21 +136,6 @@ export default function About() {
               ))}
             </div>
           </div>
-          <div className="glass-darker rounded-xl border border-prog-accent/50 p-6 shadow-xl shadow-prog-accent/20">
-            <h3 className="text-2xl font-semibold text-prog-primary mb-6">
-              Deneyim
-            </h3>
-            <div className="space-y-4">
-              {[
-                { title: 'Senior Frontend Developer', company: 'TechCorp', period: '2022 - Günümüz', description: 'React ve TypeScript ile büyük ölçekli web uygulamaları geliştiriyorum.' },
-                { title: 'Full Stack Developer', company: 'StartupXYZ', period: '2020 - 2022', description: 'Node.js ve React ile end-to-end çözümler geliştirdim.' }
-              ].map((exp, i) => (
-                <div key={exp.title} ref={el => { expRefs.current[i] = el; }}>
-                  <ExperienceItem {...exp} />
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </section>
@@ -172,24 +157,3 @@ function SkillItem({ name, level }: { name: string; level: number }) {
     </div>
   )
 }
-
-function ExperienceItem({ 
-  title, 
-  company, 
-  period, 
-  description 
-}: { 
-  title: string; 
-  company: string; 
-  period: string; 
-  description: string 
-}) {
-  return (
-    <div className="border-l-4 border-prog-primary pl-4">
-      <h4 className="font-semibold text-prog-light">{title}</h4>
-      <p className="text-prog-accent font-medium">{company}</p>
-      <p className="text-sm text-prog-light/60 mb-2">{period}</p>
-      <p className="text-prog-light/80">{description}</p>
-    </div>
-  )
-} 

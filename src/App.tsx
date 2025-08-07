@@ -7,36 +7,50 @@ import Contact from './components/shared/Contact'
 import ProgrammingAbout from './components/programming/About'
 import CivilAbout from './components/civil/About'
 import PlayStationBackground from './components/shared/PlayStationBackground'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import TechProjects from './components/shared/TechProjects'
+import ScrollToTop from './components/shared/ScrollToTop'
 
 function App() {
   const { currentMode } = useModeStore()
 
   return (
-    <div className="min-h-screen transition-colors duration-500 relative overflow-hidden">
-      {/* PlayStation Arka Plan */}
-      <PlayStationBackground />
-      
-      <Navbar />
-      
-      <main className="pt-14 relative z-10">
-        {currentMode === 'programming' ? (
-          <div key="programming">
-            <Hero />
-            <ProgrammingAbout />
-            <Projects/>
-            <Contact />
-          </div>
-        ) : (
-          <div key="civil">
-            <Hero />
-            <CivilAbout />
-            <Projects/>
-            <Contact />
-          </div>
-        )}
-      </main>
-      <Footer />
-    </div>
+    <Router> {/* Uygulama Router ile sarmalandı */}
+    <ScrollToTop />
+      <div className="min-h-screen transition-colors duration-500 relative overflow-hidden">
+        {/* PlayStation Arka Plan */}
+        <PlayStationBackground />
+        
+        <Navbar />
+        
+        <main className="pt-14 relative z-10">
+          <Routes>
+          
+            <Route path="/" element={
+              // Ana sayfa içeriği
+              currentMode === 'programming' ? (
+                <div key="programming">
+                  <Hero />
+                  <ProgrammingAbout />
+                  <Projects/>
+                  <Contact />
+                </div>
+              ) : (
+                <div key="civil">
+                  <Hero />
+                  <CivilAbout />
+                  <Projects/>
+                  <Contact />
+                </div>
+              )
+            } />
+            {/* Teknolojiye göre filtrelenmiş projeler sayfası için yeni rota */}
+            <Route path="/projects/tech/:tech" element={<TechProjects />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   )
 }
 

@@ -1,18 +1,22 @@
-import { useRef } from 'react'
+// src/components/shared/Navbar.tsx
+import { useRef, useEffect } from 'react'
 import { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { Bars3Icon } from '@heroicons/react/24/outline'
 import { useModeStore } from '../../store/modeStore'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import ToggleButton from './ToggleButton'
+import { Link, useLocation } from 'react-router-dom'
+
+gsap.registerPlugin(useGSAP, ScrollToPlugin)
 
 export default function Navbar() {
   const { currentMode } = useModeStore()
-  
-  // GSAP refs
   const navRef = useRef<HTMLElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
+  const location = useLocation()
 
   useGSAP(() => {
     // Initial navbar animation
@@ -28,7 +32,24 @@ export default function Navbar() {
     )
   }, { scope: navRef })
 
-  // Toggle button is now handled by ToggleButton component
+  // Sayfa yüklendiğinde veya location.hash değiştiğinde kaydırma işlemini kontrol eden hook
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.querySelector(location.hash)
+      if (element) {
+        gsap.to(window, {
+          scrollTo: {
+            y: element,
+            offsetY: 100 // Navbar'ın yüksekliği kadar bir offset
+          },
+          duration: 1,
+          ease: "power2.inOut"
+        })
+      }
+    }
+  }, [location])
+
+  const isHomePage = location.pathname === '/';
 
   return (
     <nav
@@ -41,19 +62,25 @@ export default function Navbar() {
     >
       <div className="container-custom px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-
-          {/* Desktop Navigation */}
+          <div ref={logoRef} className="flex-shrink-0">
+            {/* Logo bileşeninizi buraya ekleyebilirsiniz, örneğin */}
+            <Link to="/" className={`text-2xl font-bold transition-all duration-200 ${
+              currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
+            }`}>
+              Yusuf
+            </Link>
+          </div>
+          
           <div className="hidden md:flex items-center space-x-8">
-            <NavLink href="#about">Hakkımda</NavLink>
-            <NavLink href="#projects">Projeler</NavLink>
-            <NavLink href="#experience">Deneyim</NavLink>
-            <NavLink href="#contact">İletişim</NavLink>
+            {/* isHomePage prop'u eklendi */}
+            <NavLink href="#about" isHomePage={isHomePage}>Hakkımda</NavLink>
+            <NavLink href="#projects" isHomePage={isHomePage}>Projeler</NavLink>
+            <NavLink href="#experience" isHomePage={isHomePage}>Deneyim</NavLink>
+            <NavLink href="#contact" isHomePage={isHomePage}>İletişim</NavLink>
           </div>
 
-          {/* Mode Toggle */}
           <ToggleButton />
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden">
             <Menu as="div" className="relative">
               <Menu.Button className={`p-2 rounded-lg cursor-pointer ${
@@ -79,10 +106,11 @@ export default function Navbar() {
                     : 'bg-black/80 border border-civil-primary/50 shadow-lg shadow-civil-primary/20'
                 }`}>
                   <div className="py-1">
-                    <MobileNavLink href="#about">Hakkımda</MobileNavLink>
-                    <MobileNavLink href="#projects">Projeler</MobileNavLink>
-                    <MobileNavLink href="#experience">Deneyim</MobileNavLink>
-                    <MobileNavLink href="#contact">İletişim</MobileNavLink>
+                    {/* isHomePage prop'u eklendi */}
+                    <MobileNavLink href="#about" isHomePage={isHomePage}>Hakkımda</MobileNavLink>
+                    <MobileNavLink href="#projects" isHomePage={isHomePage}>Projeler</MobileNavLink>
+                    <MobileNavLink href="#experience" isHomePage={isHomePage}>Deneyim</MobileNavLink>
+                    <MobileNavLink href="#contact" isHomePage={isHomePage}>İletişim</MobileNavLink>
                   </div>
                 </Menu.Items>
               </Transition>
@@ -94,12 +122,13 @@ export default function Navbar() {
   )
 }
 
-function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  const { currentMode } = useModeStore()
+function NavLink({ href, children, isHomePage }: { href: string; children: React.ReactNode; isHomePage: boolean; }) {
+  const { currentMode } = useModeStore();
+  const linkPath = isHomePage ? href : `/${href}`;
 
   return (
-    <a
-      href={href}
+    <Link
+      to={linkPath}
       className={`font-medium transition-colors duration-200 hover:opacity-80 hover:scale-105 ${
         currentMode === 'programming'
           ? 'text-prog-light hover:text-prog-primary'
@@ -107,18 +136,19 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
       }`}
     >
       {children}
-    </a>
-  )
+    </Link>
+  );
 }
 
-function MobileNavLink({ href, children }: { href: string; children: React.ReactNode }) {
-  const { currentMode } = useModeStore()
-
+function MobileNavLink({ href, children, isHomePage }: { href: string; children: React.ReactNode; isHomePage: boolean; }) {
+  const { currentMode } = useModeStore();
+  const linkPath = isHomePage ? href : `/${href}`;
+  
   return (
     <Menu.Item>
       {({ active }) => (
-        <a
-          href={href}
+        <Link
+          to={linkPath}
           className={`block px-4 py-2 text-sm transition-colors duration-200 ${
             active
               ? (currentMode === 'programming' ? 'bg-prog-primary/20 text-prog-primary' : 'bg-civil-primary/20 text-civil-primary')
@@ -132,8 +162,8 @@ function MobileNavLink({ href, children }: { href: string; children: React.React
           https://uiverse.io/andrew-demchenk0/light-dragonfly-53 
           */}
           {children}
-        </a>
+        </Link>
       )}
     </Menu.Item>
-  )
+  );
 }

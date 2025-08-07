@@ -2,7 +2,6 @@ import { Dialog, Transition, Listbox } from '@headlessui/react'
 import { Fragment, useState, useEffect, useRef } from 'react'
 import { 
   EnvelopeIcon, 
-  PhoneIcon, 
   MapPinIcon, 
   CheckIcon,
   ChevronUpDownIcon,
@@ -14,8 +13,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
 const contactMethods = [
-  { id: 'email', name: 'E-posta', icon: EnvelopeIcon, value: 'contact@bizzatben.com' },
-  { id: 'phone', name: 'Telefon', icon: PhoneIcon, value: '+90 555 123 4567' },
+  { id: 'email', name: 'E-posta', icon: EnvelopeIcon, value: 'ksyusuf85@gmail.com' },
   { id: 'location', name: 'Konum', icon: MapPinIcon, value: 'İstanbul, Türkiye' },
 ]
 
