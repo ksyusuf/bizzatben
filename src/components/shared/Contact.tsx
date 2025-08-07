@@ -4,6 +4,7 @@ import {
   EnvelopeIcon, 
   MapPinIcon, 
   CheckIcon,
+  BoltIcon,
   ChevronUpDownIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
@@ -12,10 +13,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
-const contactMethods = [
-  { id: 'email', name: 'E-posta', icon: EnvelopeIcon, value: 'ksyusuf85@gmail.com' },
-  { id: 'location', name: 'Konum', icon: MapPinIcon, value: 'İstanbul, Türkiye' },
-]
+
 
 const subjects = [
   { id: 'project', name: 'Proje Teklifi' },
@@ -162,13 +160,35 @@ export default function Contact() {
               İletişim Bilgileri
             </h3>
             <div className="space-y-6">
-              {contactMethods.map((method) => (
-                <ContactMethod 
-                  key={method.id}
-                  method={method}
-                  currentMode={currentMode}
-                />
-              ))}
+
+              <a href="mailto:ksyusuf85@gmail.com" className="flex items-center space-x-4">
+                <div className="p-3 rounded-lg">
+                  <EnvelopeIcon className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="font-semibold">
+                    E-posta
+                  </h4>
+                  <p>
+                    ksyusuf85@gmail.com
+                  </p>
+                </div>
+              </a>
+              
+              <div className="flex items-center space-x-4">
+                <div className="p-3 rounded-lg">
+                  <MapPinIcon className="w-6 h-6" />
+                </div>
+                <div>
+                  <h4 className="font-semibold">
+                    Konum
+                  </h4>
+                  <p>
+                    İstanbul, Türkiye
+                  </p>
+                </div>
+              </div>
+              
             </div>
             <button
               onClick={() => setIsFormOpen(true)}
@@ -295,39 +315,6 @@ export default function Contact() {
   )
 }
 
-function ContactMethod({ 
-  method, 
-  currentMode 
-}: { 
-  method: any
-  currentMode: string 
-}) {
-  const Icon = method.icon
-  
-  return (
-    <div className="flex items-center space-x-4">
-      <div className={`p-3 rounded-lg ${
-        currentMode === 'programming' 
-          ? 'bg-prog-primary/20 text-prog-accent' 
-          : 'bg-civil-primary/20 text-civil-amber'
-      }`}>
-        <Icon className="w-6 h-6" />
-      </div>
-      <div>
-        <h4 className={`font-semibold ${
-          currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-        }`}>
-          {method.name}
-        </h4>
-        <p className={`${
-          currentMode === 'programming' ? 'text-prog-light/80' : 'text-civil-light/80'
-        }`}>
-          {method.value}
-        </p>
-      </div>
-    </div>
-  )
-}
 
 function SubjectSelector({ 
   selected, 
@@ -452,20 +439,20 @@ function ContactSuccessModal({
                       ? 'bg-prog-accent/20 text-prog-accent' 
                       : 'bg-civil-amber/20 text-civil-amber'
                   }`}>
-                    <CheckIcon className="h-6 w-6" />
+                    <BoltIcon className="h-6 w-6" />
                   </div>
                 </div>
                 
                 <Dialog.Title className={`text-2xl font-bold mb-4 ${
                   currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
                 }`}>
-                  Mesaj Gönderildi!
+                  ️KACHOW
                 </Dialog.Title>
                 
                 <p className={`text-lg ${
                   currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
                 }`}>
-                  Mesajınız başarıyla gönderildi. En kısa sürede size geri dönüş yapacağım.
+                  Mesajlar yalnızca mail ile ✨
                 </p>
                 
                 <div className="mt-6">

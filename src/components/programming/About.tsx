@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useModeStore } from '../../store/modeStore'
 gsap.registerPlugin(ScrollTrigger)
 
-export default function About() {
+export default function DevAbout() {
   const { currentMode } = useModeStore()
   const sectionRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
@@ -123,15 +123,26 @@ export default function About() {
             Modern web teknolojileri ile kullanıcı dostu ve performanslı uygulamalar geliştiriyorum.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="glass-darker rounded-xl border border-prog-accent/50 p-6 shadow-xl shadow-prog-accent/20">
+        <div className="grid place-items-center">
+          <div className="glass-darker rounded-xl border border-prog-accent/50 p-6 shadow-xl shadow-prog-accent/20 w-full md:w-1/2">
             <h3 className="text-2xl font-semibold text-prog-primary mb-6">
-              Teknolojiler
+              Yetkinlikler
             </h3>
             <div className="space-y-4">
-              {['React', 'TypeScript', 'Node.js', 'Python', 'Docker'].map((name, i) => (
-                <div key={name} ref={el => { skillRefs.current[i] = el; }}>
-                  <SkillItem name={name} level={90 - i * 5} />
+              {[
+                { name: 'Python', level: 95 },
+                { name: 'Makine Öğrenmesi', level: 90 },
+                { name: 'React.js', level: 90 },
+                { name: 'Görüntü İşleme', level: 85 },
+                { name: 'DevOps & CI/CD', level: 85 },
+                { name: 'Veri Analizi', level: 85 },
+                { name: 'Node.js', level: 80 },
+                { name: 'TypeScript', level: 80 },
+                { name: 'Tailwind CSS', level: 75 },
+                { name: 'Matlab', level: 75 },
+              ].map((skill, i) => (
+                <div key={skill.name} ref={el => { skillRefs.current[i] = el; }}>
+                  <SkillItem name={skill.name} level={skill.level} />
                 </div>
               ))}
             </div>

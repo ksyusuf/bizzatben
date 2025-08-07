@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-gsap.registerPlugin(ScrollTrigger)
 import { useModeStore } from '../../store/modeStore'
+gsap.registerPlugin(ScrollTrigger)
 
-export default function About() {
+export default function CivilAbout() {
   const { currentMode } = useModeStore()
   const sectionRef = useRef<HTMLDivElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
@@ -126,15 +126,15 @@ export default function About() {
         <div className="grid md:grid-cols-2 gap-8">
           <div className="glass-darker rounded-xl border border-civil-primary/50 p-6 shadow-xl shadow-civil-primary/20">
             <h3 className="text-2xl font-semibold text-civil-primary mb-6">
-              Uzmanlık Alanları
+              Yetkinlikler
             </h3>
             <div className="space-y-4">
-              {['Yapı Analizi', 'Beton Teknolojisi', 'Çelik Yapılar', 'Deprem Mühendisliği', 'Proje Yönetimi'].map((name, i) => (
-                <div key={name} ref={el => { skillRefs.current[i] = el; }}>
-                  <SkillItem name={name} level={95 - i * 5} />
-                </div>
+              {['MS Excel (Uzman)', 'MS Word (Uzman)', 'Autocad (İleri)', 'MS Office (İleri)', 'İş Takibi', 'Raporlama', 'Organizasyon', 'İhale Hazırlığı'].map((name, i) => (
+                  <div key={name} ref={el => { skillRefs.current[i] = el; }}>
+                      <SkillItem name={name} level={name.includes('(Uzman)') ? 95 : name.includes('(İleri)') ? 85 : 75} />
+                  </div>
               ))}
-            </div>
+            </div>      
           </div>
           <div className="glass-darker rounded-xl border border-civil-primary/50 p-6 shadow-xl shadow-civil-primary/20">
             <h3 className="text-2xl font-semibold text-civil-primary mb-6">
@@ -142,8 +142,24 @@ export default function About() {
             </h3>
             <div className="space-y-4">
               {[
-                { title: 'Kıdemli İnşaat Mühendisi', company: 'MegaYapı Ltd.', period: '2021 - Günümüz', description: 'Büyük ölçekli konut ve ticari projelerde yapısal tasarım ve analiz yapıyorum.' },
-                { title: 'Proje Mühendisi', company: 'İnşaatPro', period: '2019 - 2021', description: 'Çok katlı binalar ve köprü projelerinde görev aldım.' }
+                {
+                  title: 'İnşaat Mühendisliği (Dönemlik)',
+                  company: 'Esedoğlu İnşaat',
+                  period: '07/24 – 01/25',
+                  description: 'Taşeron bünyesinde ataşmanlı hak ediş hazırlanıp üst firmaya sunulması. Ekip hak edişlerinin hazırlanması. Saha, ekip ve puantaj takibi. Birim fiyat teklif formu hazırlama işleri. Şap, duvar, sıva, seramik ve boya ağırlıklı iş yönetimi.'
+                },
+                {
+                  title: 'İhale Subaylığı (Askerlik Görevi)',
+                  company: 'TSK İhale Komisyon Başkanlığı',
+                  period: '04/23 – 04/24',
+                  description: 'Türk Silahlı Kuvvetleri 108. Topçu Alay Komutanlığı İhale Komisyon Başkanlığı biriminde alayın tüm ihalelerinin yapılması. Teklif formlarının alınması, yaklaşık maliyet kontrolü, ihale kazananı belirlenmesi, sözleşmelerin yapılması ve ihale dosyasının hazırlanması işlerinin yapılması.'
+                },
+                {
+                  title: 'Proje Mühendisliği (Tekirdağ)',
+                  company: 'Biberoğlu Mimarlık',
+                  period: '08/21 – 12/22',
+                  description: 'Yapım, yıkım ve isim değişikliği ruhsatı alma işlemlerinde baştan sona iş takibi. İmar durumu kontrolü, belediye başvuruları, harç kontrolü, yapı denetim, iş bitirme, iskân alınması. Mimari, inşaat, mekanik, elektrik, zemin etüdü projelerinin başvurulması ve organizasyonunun sağlanması. Gerektiği durumlarda şantiye proje uygunluk kontrolü.'
+                }
               ].map((exp, i) => (
                 <div key={exp.title} ref={el => { expRefs.current[i] = el; }}>
                   <ExperienceItem {...exp} />
@@ -185,11 +201,12 @@ function ExperienceItem({
   description: string 
 }) {
   return (
-    <div className="border-l-4 border-civil-primary pl-4">
-      <h4 className="font-semibold text-civil-light">{title}</h4>
-      <p className="text-civil-accent font-medium">{company}</p>
-      <p className="text-sm text-civil-light/60 mb-2">{period}</p>
-      <p className="text-civil-light/80">{description}</p>
+    <div className="relative border-l-4 border-civil-primary pl-6 pb-8 last:pb-0">
+      <div className="absolute -left-2 top-0 h-4 w-4 rounded-full bg-civil-primary"></div>
+      <h4 className="font-semibold text-xl text-civil-light dark:text-gray-100">{title}</h4>
+      <p className="font-medium text-civil-accent mt-1 dark:text-civil-accent-light">{company}</p>
+      <p className="text-sm text-civil-light/60 mb-3 mt-1">{period}</p>
+      <p className="text-civil-light/80 leading-relaxed dark:text-gray-300">{description}</p>
     </div>
-  )
-} 
+  );
+}
