@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useModeStore } from '../../store/modeStore';
 import { programmingProjects, type Project } from '../programming/DevProjects';
 import { civilProjects } from '../civil/CivilProjects';
-import { ProjectCard } from '../shared/ProjectCard';
+import { ProjectCard } from './ProjectCard';
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'

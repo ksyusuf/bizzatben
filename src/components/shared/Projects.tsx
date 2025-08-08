@@ -6,8 +6,8 @@ import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { programmingProjects } from '../programming/DevProjects'
 import { civilProjects } from '../civil/CivilProjects'
-import { ProjectCard, type Project } from './ProjectCard'
-import { ProjectDetailModal } from './ProjectDetailModal'
+import { ProjectCard, type Project } from '../project/ProjectCard'
+import { ProjectDetailModal } from '../project/ProjectDetailModal'
 
 gsap.registerPlugin(ScrollTrigger)
 

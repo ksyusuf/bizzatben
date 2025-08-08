@@ -8,7 +8,7 @@ import ProgrammingAbout from './components/programming/About'
 import CivilAbout from './components/civil/About'
 import PlayStationBackground from './components/shared/PlayStationBackground'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import TechProjects from './components/shared/TechProjects'
+import TechProjects from './components/project/TechProjects'
 import ScrollToTop from './components/shared/ScrollToTop'
 
 function App() {
