@@ -74,8 +74,10 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             {/* isHomePage prop'u eklendi */}
             <NavLink href="#about" isHomePage={isHomePage}>Hakkımda</NavLink>
+            {currentMode !== 'programming' && (
+              <NavLink href="#experience" isHomePage={isHomePage}>Deneyim</NavLink>
+            )}
             <NavLink href="#projects" isHomePage={isHomePage}>Projeler</NavLink>
-            <NavLink href="#experience" isHomePage={isHomePage}>Deneyim</NavLink>
             <NavLink href="#contact" isHomePage={isHomePage}>İletişim</NavLink>
           </div>
 
@@ -108,8 +110,10 @@ export default function Navbar() {
                   <div className="py-1">
                     {/* isHomePage prop'u eklendi */}
                     <MobileNavLink href="#about" isHomePage={isHomePage}>Hakkımda</MobileNavLink>
+                    {currentMode !== 'programming' && (
+                      <MobileNavLink href="#experience" isHomePage={isHomePage}>Deneyim</MobileNavLink>
+                    )}
                     <MobileNavLink href="#projects" isHomePage={isHomePage}>Projeler</MobileNavLink>
-                    <MobileNavLink href="#experience" isHomePage={isHomePage}>Deneyim</MobileNavLink>
                     <MobileNavLink href="#contact" isHomePage={isHomePage}>İletişim</MobileNavLink>
                   </div>
                 </Menu.Items>

@@ -298,19 +298,24 @@ export default function Hero() {
           {/* Description */}
           <p
             ref={descRef}
-            className={`text-lg md:text-xl mb-12 max-w-3xl mx-auto whitespace-pre-line ${
-              displayMode === 'programming' ? 'text-prog-light/80' : 'text-civil-light/80'
-            }`}
+            className="text-lg md:text-xl mb-12 max-w-3xl mx-auto"
           >
-            {(
-              displayMode === 'programming'
-                ? 'Modern web teknolojileri ile kullanıcı dostu ve performanslı uygulamalar geliştiriyorum. React, TypeScript ve Node.js uzmanıyım.'
-                : 'Sürdürülebilir ve güvenli yapılar tasarlayarak topluma değer katıyorum. Yapı analizi ve deprem mühendisliği konularında uzmanım.'
-            ).split('').map((char, i) =>
-              char === ' '
-                ? <span key={i}>&nbsp;</span>
-                : <span key={i} className="gsap-char inline-block">{char}</span>
-            )}
+          {(
+            displayMode === 'programming'
+              ? 'Modern web teknolojileri ile kullanıcı dostu ve performanslı uygulamalar geliştiriyorum. React, TypeScript ve Node.js uzmanıyım.'
+              : 'Sürdürülebilir ve güvenli yapılar tasarlayarak topluma değer katıyorum. Yapı analizi ve deprem mühendisliği konularında uzmanım.'
+            )
+            .split(' ')
+            .map((word, wi) => (
+              <span key={`${displayMode}-word-${wi}`} className="whitespace-nowrap">
+                {word.split('').map((char, ci) => (
+                  <span key={`${displayMode}-char-${wi}-${ci}`} className="inline-block gsap-char">{char}</span>
+                ))}
+              </span>
+            ))
+            .reduce<React.ReactNode[]>((acc, curr, i) =>
+              i === 0 ? [curr] : [...acc, ' ', curr], [])
+          }
           </p>
 
           {/* CTA Buttons */}

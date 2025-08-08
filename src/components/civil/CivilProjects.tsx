@@ -1,15 +1,17 @@
 // src/components/civil/CivilProjects.tsx
 export interface Project {
-    id: string
-    title: string
-    description: string
-    image?: string
-    technologies: string[]
-    link?: string
-    github?: string
-    pdfUrl?: string
-    date: string
-  }
+  id: string
+  title: string
+  description: string
+  image?: string
+  technologies: string[]
+  link?: string
+  github?: string
+  prod?: string
+  medium?: string
+  pdfUrl?: string
+  date: string
+}
   
   export const civilProjects: Project[] = [
     {
@@ -19,7 +21,11 @@ export interface Project {
       image: '/src/components/civil/img/pompidou.jpg',
       technologies: ['Mimari Analiz', 'Yapı Mühendisliği', 'Mühendisliğe Giriş'],
       link: 'https://yusufakcakaya.blogspot.com/2019/04/centre-pompidou.html',
-      date: '20.04.2019',
+      github: '',
+      prod: '',
+      medium: '',
+      pdfUrl: '',
+      date: '2019-04-20',
     },
     {
       id: '2',
@@ -28,8 +34,11 @@ export interface Project {
       image: '/src/components/civil/img/betonarme-projem.png',
       technologies: ['Betonarme Tasarım İlkeleri', 'Yapı Statiği', 'TS 500'],
       link: 'https://yusufakcakaya.blogspot.com/2021/02/betonarme-projem.html',
-      pdfUrl: 'https://yusufakcakaya.blogspot.com/2021/02/betonarme-projem.html',
-      date: '26.02.2021',
+      github: '',
+      prod: '',
+      medium: '',
+      pdfUrl: '',
+      date: '2021-02-26',
     },
     {
       id: '3',
@@ -37,7 +46,10 @@ export interface Project {
       description: '2020-2021 Bahar Döneminde Kıbrıs Ercan Havalimanı ve Orta Mesarya bölgesinden elde edilen rüzgâr hızları ve buharlaşma miktarları kullanılarak gerçekleştirilmiş bitirme projesi. Bu analizde, bölgenin rüzgâr hızları ve buharlaşma miktarlarının dağılımları ile birbirleriyle olan ilişkileri incelenerek, rüzgar türbini yapılması konusunda çıkarımlarda bulunulmuştur. Keşifsel veri analizi R programlama dili kullanılarak yaklaşık 14 haftada tamamlanmıştır. Proje, bilimsel makale formatı konusunda önemli deneyimler kazandırmıştır.',
       technologies: ['R Programlama Dili', 'Keşifsel Veri Analizi', 'İstatistiksel Analiz', 'Rüzgar Enerjisi'],
       github: 'https://github.com/ksyusuf/KVA-Projem',
-      date: '03.07.2021',
+      prod: '',
+      medium: '',
+      pdfUrl: '',
+      date: '2021-07-03',
     },
   ]
   

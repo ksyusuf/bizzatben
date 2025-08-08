@@ -136,7 +136,7 @@ export default function CivilAbout() {
               ))}
             </div>      
           </div>
-          <div className="glass-darker rounded-xl border border-civil-primary/50 p-6 shadow-xl shadow-civil-primary/20">
+          <div id="experience" className="glass-darker rounded-xl border border-civil-primary/50 p-6 shadow-xl shadow-civil-primary/20">
             <h3 className="text-2xl font-semibold text-civil-primary mb-6">
               Deneyim
             </h3>

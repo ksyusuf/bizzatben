@@ -1,19 +1,21 @@
 // src/components/shared/TechProjects.tsx
-import { useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useModeStore } from '../../store/modeStore';
-import { programmingProjects } from '../programming/DevProjects';
+import { programmingProjects, type Project } from '../programming/DevProjects';
 import { civilProjects } from '../civil/CivilProjects';
 import { ProjectCard } from '../shared/ProjectCard';
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ProjectDetailModal } from './ProjectDetailModal'
 
 gsap.registerPlugin(ScrollTrigger)
 
 export default function TechProjects() {
   const { tech } = useParams<{ tech: string }>();
   const { currentMode } = useModeStore();
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
   const allProjects = [...programmingProjects, ...civilProjects];
 
@@ -23,6 +25,11 @@ export default function TechProjects() {
 
   // 'containerRef' tipi 'HTMLDivElement' olarak düzeltildi.
   const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    // URL parametresi (tech) değiştiğinde modalı kapat
+    setSelectedProject(null);
+  }, [tech]);
   
   useGSAP(() => {
     // Proje kartları animasyonu
@@ -61,7 +68,9 @@ export default function TechProjects() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.slice().reverse().map((project, index) => (
+          {filteredProjects.slice()
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // yeni → eski
+          .map((project, index) => (
             <div
               key={project.id}
               className="project-card"
@@ -70,11 +79,19 @@ export default function TechProjects() {
                 project={project}
                 index={index}
                 currentMode={currentMode}
+                onViewDetails={() => setSelectedProject(project)}
               />
             </div>
           ))}
         </div>
       </div>
+
+      <ProjectDetailModal 
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
+        currentMode={currentMode}
+      />
     </div>
   );
 }
