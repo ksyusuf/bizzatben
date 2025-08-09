@@ -24,7 +24,7 @@ export const civilProjects: Project[] = [
     id: '1',
     title: 'Centre Pompidou Araştırması',
     description: 'Nisan 2019\'da İnşaat Mühendisliği lisansım sırasında Mühendisliğe Giriş dersi için hazırladığım kapsamlı bir araştırma projesidir. Bu çalışmada, ikonik Pompidou Merkezi binasının teknik yapısı derinlemesine incelenmiştir. Yapının mimari ve mühendislik özellikleri detaylandırılarak, merkezin teknik detaylarına dair merakları gidermeyi hedeflemektedir.',
-    image: './civil/img/pompidou.jpg',
+    image: civilImages['./img/pompidou.jpg'].default,
     technologies: ['Mimari Analiz', 'Yapı Mühendisliği', 'Mühendisliğe Giriş'],
     link: 'https://yusufakcakaya.blogspot.com/2019/04/centre-pompidou.html',
     github: '',
