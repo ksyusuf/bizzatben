@@ -1,9 +1,8 @@
 import { useModeStore } from '../../store/modeStore';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { interpolateRgb } from 'd3-interpolate';
 
-// Renk paletleri
 const programmingPalettes = [
     ['#7B1FA2', '#D81B60', '#C62828'],
     ['#1565C0', '#00838F', '#2E7D32']
@@ -13,279 +12,170 @@ const civilPalettes = [
     ['#303F9F', '#26A69A', '#8BC34A']
 ];
 
-function useAnimatedPalette(palettes: string[][], duration = 10_000) {
-  // cyclicPalettes'i oluştururken son eleman olarak ilk paleti ekleyerek döngüsel hale getiriyoruz.
-  const cyclicPalettes = React.useMemo(() => [...palettes, palettes[0]], [palettes]);
-  
-  // İlk renk setini state olarak ayarla.
-  const [colors, setColors] = useState(cyclicPalettes[0]);
-  const idx = useRef(0);
-  const progress = useRef(0);
-  const lastUpdate = useRef(Date.now());
-
-  useEffect(() => {
-    let frame: number;
-    function animate() {
-      const now = Date.now();
-      const delta = now - lastUpdate.current;
-      lastUpdate.current = now;
-
-      progress.current += delta / duration;
-      let t = progress.current;
-      if (t >= 1) {
-        t = 1;
-      }
-
-      const from = cyclicPalettes[idx.current];
-      // to paletini her zaman geçerli bir değer olacak şekilde ayarla
-      const to = cyclicPalettes[(idx.current + 1) % cyclicPalettes.length];
-
-      const newColors = from.map((color, i) => {
-        // to[i] undefined olmaması için kontrol ekle
-        const targetColor = (to && to.length > i) ? to[i] : color; // Eğer to[i] yoksa mevcut rengi kullan
-        const interp = interpolateRgb(color, targetColor);
-        return interp(t);
-      });
-
-      setColors(newColors);
-
-      if (progress.current >= 1) {
-        progress.current = 0;
-        // Bir sonraki palete geç, cyclicPalettes'in uzunluğuna göre mod alarak döngüyü tamamla
-        // Eğer cyclicPalettes sadece tek bir palet içeriyorsa (safePalettes boş geldiğinde),
-        // idx.current = 0 olarak kalacaktır.
-        idx.current = (idx.current + 1) % (cyclicPalettes.length > 1 ? cyclicPalettes.length - 1 : 1); 
-        setColors(to); // Ensure colors snap to target palette at the end
-      }
-      frame = requestAnimationFrame(animate); // Keep animating
-    }
-
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, [cyclicPalettes, duration]);
-
-  return colors;
-}
-
-// Organik şekil için border-radius stringi üret
 function organicRadius(t: number, phase = 0) {
-  const a = 50 + 10 * Math.sin(2 * Math.PI * t + phase);
-  const b = 50 + 10 * Math.sin(2 * Math.PI * t + 1 + phase);
-  const c = 50 + 10 * Math.sin(2 * Math.PI * t + 2 + phase);
-  const d = 50 + 10 * Math.sin(2 * Math.PI * t + 3 + phase);
-  return `${a}% ${b}% ${c}% ${d}% / ${d}% ${a}% ${b}% ${c}%`;
+    const a = 50 + 10 * Math.sin(2 * Math.PI * t + phase);
+    const b = 50 + 10 * Math.sin(2 * Math.PI * t + 1 + phase);
+    const c = 50 + 10 * Math.sin(2 * Math.PI * t + 2 + phase);
+    const d = 50 + 10 * Math.sin(2 * Math.PI * t + 3 + phase);
+    return `${a}% ${b}% ${c}% ${d}% / ${d}% ${a}% ${b}% ${c}%`;
 }
 
-function useOrganicAnimation({
-  duration = 12000,
-  blur = 80,
-  scaleBase = 1,
-  scaleVar = 0.15,
-  rotateVar = 20,
-  leftBase = 50,
-  leftVar = 12,
-  topBase = 50,
-  topVar = 12,
-  phase = 0,
-}) {
-  const [state, setState] = useState({
-    filter: `blur(${blur}px)`,
-    borderRadius: '50%',
-    left: `${leftBase}%`,
-    top: `${topBase}%`,
-    scaleX: scaleBase,
-    scaleY: scaleBase,
-    rotate: 0,
-  });
-  const startTimeRef = useRef<number>(Date.now());
+export default function PlayStationBackgroundOptimized() {
+    const { currentMode } = useModeStore();
+    const [displayedMode, setDisplayedMode] = useState(currentMode);
 
-  useEffect(() => {
-    startTimeRef.current = Date.now();
-  }, [duration, blur, scaleBase, scaleVar, rotateVar, leftBase, leftVar, topBase, topVar, phase]);
+    const mainRef = useRef<HTMLDivElement>(null);
+    const innerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    let frame: number;
-    function animate() {
-      const now = Date.now();
-      const t = (((now - startTimeRef.current) / duration) + phase) % 1;
-      const scaleX = scaleBase + scaleVar * Math.sin(2 * Math.PI * t);
-      const scaleY = scaleBase + scaleVar * Math.cos(2 * Math.PI * t);
-      const rotate = rotateVar * Math.sin(2 * Math.PI * t + phase);
-      const left = leftBase + leftVar * Math.sin(2 * Math.PI * t + phase);
-      const top = topBase + topVar * Math.cos(2 * Math.PI * t + phase);
-
-      setState({
-        filter: `blur(${blur}px)`,
-        borderRadius: organicRadius(t, phase),
-        left: `${left}%`,
-        top: `${top}%`,
-        scaleX,
-        scaleY,
-        rotate,
-      });
-      frame = requestAnimationFrame(animate);
-    }
-
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, [duration, blur, scaleBase, scaleVar, rotateVar, leftBase, leftVar, topBase, topVar, phase]);
-  return state;
-}
-
-export default function PlayStationBackground() {
-  const { currentMode } = useModeStore();
-  const [displayedMode, setDisplayedMode] = useState(currentMode); // İlk yüklemede mevcut modu ayarla
-
-  const mainShapeRef = useRef<HTMLDivElement>(null);
-  const innerShapeRef = useRef<HTMLDivElement>(null);
-  const coreShapeRef = useRef<HTMLDivElement>(null);
-
-  const getTransform = useCallback((anim: any, globalScale: number) => {
-    // Organik animasyondan gelen scale değerleri ile GSAP'ten gelen globalScale'ı çarpıyoruz.
-    const sx = anim.scaleX * globalScale;
-    const sy = anim.scaleY * globalScale;
-    return `translate(-50%, -50%) scale(${sx},${sy}) rotate(${anim.rotate}deg)`;
-  }, []);
-
-  // Sayfa yüklendiğinde veya displayedMode güncellendiğinde renk paletini ve organik animasyonları yenile
-  const palettes = displayedMode === 'programming' ? programmingPalettes : civilPalettes;
-
-  const mainColors = useAnimatedPalette(palettes, 12000);
-  const innerColors = useAnimatedPalette(palettes, 9000);
-  const coreColors = useAnimatedPalette(palettes, 7000);
-
-
-  const mainAnim = useOrganicAnimation({ duration: 16000, blur: 80, scaleBase: 1, scaleVar: 0.18, rotateVar: 18, leftBase: 38, leftVar: 5, topBase: 44, topVar: 4, phase: 0 });
-  const innerAnim = useOrganicAnimation({ duration: 12000, blur: 60, scaleBase: 1, scaleVar: 0.22, rotateVar: 22, leftBase: 62, leftVar: 5, topBase: 56, topVar: 5, phase: 0.33 });
-  const coreAnim = useOrganicAnimation({ duration: 9000, blur: 40, scaleBase: 1, scaleVar: 0.28, rotateVar: 28, leftBase: 54, leftVar: 6, topBase: 32, topVar: 6, phase: 0.66 });
-
-  // GSAP timeline for mode transitions (opacity and global scale)
-  useEffect(() => {
-    const shapes = [mainShapeRef.current, innerShapeRef.current, coreShapeRef.current];
-
-    // İlk yüklenme animasyonu
-    if (currentMode === displayedMode) {
-      gsap.fromTo(
-        shapes,
-        { opacity: 0, scale: 0.5 }, // Yoktan, sıfır scale ile başla
+    // Animasyon parametreleri
+    const createLayers = () => [
         {
-          opacity: 1,
-          scale: 1, // Normal boyutuna büyüt
-          duration: 5, // Daha hızlı bir büyüme süresi
-          ease: 'back.out',
-          delay: 1,
-          onComplete: () => {
-            // İlk animasyon bittiğinde
-          }
+            el: mainRef.current,
+            paletteDuration: 12000,
+            animDuration: 16000,
+            blur: 50,
+            size: '72vw',
+            scaleBase: 1,
+            scaleVar: 0.18,
+            rotateVar: 18,
+            leftBase: 38,
+            leftVar: 5,
+            topBase: 44,
+            topVar: 4,
+            phase: 0
+        },
+        {
+            el: innerRef.current,
+            paletteDuration: 9000,
+            animDuration: 12000,
+            blur: 35,
+            size: '54vw',
+            scaleBase: 1,
+            scaleVar: 0.22,
+            rotateVar: 22,
+            leftBase: 62,
+            leftVar: 5,
+            topBase: 56,
+            topVar: 5,
+            phase: 0.33
         }
-      );
-    }
+    ];
+
+    useEffect(() => {
+        let frameId: number;
+        const startTime = performance.now();
+
+        const palettes =
+            displayedMode === 'programming' ? programmingPalettes : civilPalettes;
+        const cyclicPalettes = [...palettes, palettes[0]];
+
+        const layers = createLayers();
+        const paletteIdx = Array(layers.length).fill(0);
+        const paletteProgress = Array(layers.length).fill(0);
+
+        function animate(now: number) {
+            const elapsed = now - startTime;
+
+            layers.forEach((layer, i) => {
+                if (!layer.el) return;
+
+                // Renk geçişi
+                paletteProgress[i] += (16.67 / layer.paletteDuration);
+                let t = paletteProgress[i];
+                if (t >= 1) {
+                    t = 0;
+                    paletteProgress[i] = 0;
+                    paletteIdx[i] =
+                        (paletteIdx[i] + 1) % (cyclicPalettes.length - 1);
+                }
+
+                const from = cyclicPalettes[paletteIdx[i]];
+                const to = cyclicPalettes[(paletteIdx[i] + 1) % cyclicPalettes.length];
+                const colors = from.map((c, j) =>
+                    interpolateRgb(c, to[j] || c)(t)
+                );
+
+                // Organik hareket
+                const tAnim =
+                    ((elapsed % layer.animDuration) / layer.animDuration + layer.phase) % 1;
+                const scaleX = layer.scaleBase + layer.scaleVar * Math.sin(2 * Math.PI * tAnim);
+                const scaleY = layer.scaleBase + layer.scaleVar * Math.cos(2 * Math.PI * tAnim);
+                const rotate = layer.rotateVar * Math.sin(2 * Math.PI * tAnim + layer.phase);
+                const left = layer.leftBase + layer.leftVar * Math.sin(2 * Math.PI * tAnim + layer.phase);
+                const top = layer.topBase + layer.topVar * Math.cos(2 * Math.PI * tAnim + layer.phase);
+
+                layer.el.style.left = `${left}%`;
+                layer.el.style.top = `${top}%`;
+                layer.el.style.borderRadius = organicRadius(tAnim, layer.phase);
+                layer.el.style.filter = `blur(${layer.blur}px)`;
+                layer.el.style.transform = `translate(-50%, -50%) scale(${scaleX},${scaleY}) rotate(${rotate}deg)`;
+                layer.el.style.backgroundImage = `
+                  radial-gradient(circle at 15% 15%, ${colors[0]} 0%, ${colors[0]} 30%, transparent 60%),
+                  radial-gradient(circle at 85% 85%, ${colors[1]} 0%, ${colors[1]} 30%, transparent 60%),
+                  radial-gradient(circle at 50% 50%, ${colors[2]} 0%, ${colors[2]} 35%, transparent 70%)
+                `;
+            });
+
+            frameId = requestAnimationFrame(animate);
+        }
+
+        frameId = requestAnimationFrame(animate);
+        return () => cancelAnimationFrame(frameId);
+    }, [displayedMode]);
 
     // Mode değişim animasyonu
-    if (currentMode !== displayedMode) {
-      const tl = gsap.timeline({
-        onComplete: () => {
-          setDisplayedMode(currentMode); // Fade-out bittikten sonra modu güncelle
-          // Yeni modun fade-in animasyonu
-          gsap.fromTo(
-            shapes,
-            { opacity: 0, scale: 0.7 }, // Yoktan, sıfır scale ile başla
-            {
-              opacity: 1,
-              scale: 1, // Normal boyutuna büyüt
-              duration: 2.4, // Daha hızlı bir büyüme süresi
-              ease: 'back.out',
-            }
-          );
+    useEffect(() => {
+        const shapes = [mainRef.current, innerRef.current];
+
+        if (currentMode !== displayedMode) {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                  // biten animasyon sonrası
+                    setDisplayedMode(currentMode);
+                    gsap.fromTo(
+                        shapes,
+                        { opacity: 0, scale: 0.7 },
+                        {
+                            opacity: 1,
+                            scale: 1,
+                            duration: 2.4,
+                            ease: 'back.out'
+                        }
+                    );
+                }
+            });
+            // ölüm
+            tl.to(shapes, {
+                opacity: 0,
+                scale: 2.5,
+                duration: 1,
+                ease: 'power4.out'
+            });
+        } else {
+          // doğum
+            gsap.fromTo(
+                shapes,
+                { opacity: 0, scale: 0.5 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    duration: 5,
+                    ease: 'none',
+                    delay: 0.8
+                }
+            );
         }
-      });
 
-      // Mevcut modun fade out ve küçülme animasyonu
-      tl.to(shapes, {
-        opacity: 0,
-        scale: 2.5, // Sıfır scale'e büyüt
-        duration: 1, // Hızlı küçülme
-        ease: 'power4.out',
-      });
-    }
+        return () => {
+            gsap.killTweensOf(shapes);
+        };
+    }, [currentMode, displayedMode]);
 
-    return () => {
-      // Bileşen unmount edildiğinde veya effect yeniden çalıştığında aktif GSAP animasyonlarını öldür
-      gsap.killTweensOf(shapes);
-    };
-  }, [currentMode, displayedMode]); // currentMode veya displayedMode değiştiğinde bu effect çalışır
-
-  // Gradyanlar
-  const mainGradient = `
-    radial-gradient(circle at 15% 15%, ${mainColors[0]} 0%, ${mainColors[0]} 30%, transparent 60%),
-    radial-gradient(circle at 85% 85%, ${mainColors[1]} 0%, ${mainColors[1]} 30%, transparent 60%),
-    radial-gradient(circle at 50% 50%, ${mainColors[2]} 0%, ${mainColors[2]} 35%, transparent 70%)
-  `;
-  const innerGradient = `
-    radial-gradient(circle at 25% 25%, ${innerColors[0]} 0%, ${innerColors[0]} 35%, transparent 70%),
-    radial-gradient(circle at 75% 75%, ${innerColors[1]} 0%, ${innerColors[1]} 35%, transparent 70%),
-    radial-gradient(circle at 50% 50%, ${innerColors[2]} 0%, ${innerColors[2]} 40%, transparent 80%)
-  `;
-  const coreGradient = `
-    radial-gradient(circle at 50% 50%, ${coreColors[0]} 0%, ${coreColors[0]} 50%, transparent 80%),
-    radial-gradient(circle at 50% 50%, ${coreColors[1]} 0%, ${coreColors[1]} 50%, transparent 80%),
-    radial-gradient(circle at 50% 50%, ${coreColors[2]} 0%, ${coreColors[2]} 50%, transparent 80%)
-  `;
-
-  return (
-    <div className="fixed inset-0 -z-10">
-      <div className="absolute inset-0 bg-black" style={{ backgroundColor: '#0A0A0A' }}></div>
-      <div
-        ref={mainShapeRef}
-        className="absolute"
-        style={{
-          filter: mainAnim.filter,
-          borderRadius: mainAnim.borderRadius,
-          left: mainAnim.left,
-          top: mainAnim.top,
-          width: '72vw',
-          height: '72vw',
-          pointerEvents: 'none',
-          zIndex: 1,
-          backgroundImage: mainGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1)`,
-          transform: getTransform(mainAnim, 1),
-        }}
-      />
-      <div
-        ref={innerShapeRef}
-        className="absolute"
-        style={{
-          filter: innerAnim.filter,
-          borderRadius: innerAnim.borderRadius,
-          left: innerAnim.left,
-          top: innerAnim.top,
-          width: '54vw',
-          height: '54vw',
-          pointerEvents: 'none',
-          zIndex: 2,
-          backgroundImage: innerGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1)`,
-          transform: getTransform(innerAnim, 1),
-        }}
-      />
-      <div
-        ref={coreShapeRef}
-        className="absolute"
-        style={{
-          filter: coreAnim.filter,
-          borderRadius: coreAnim.borderRadius,
-          left: coreAnim.left,
-          top: coreAnim.top,
-          width: '34vw',
-          height: '34vw',
-          pointerEvents: 'none',
-          zIndex: 3,
-          backgroundImage: coreGradient,
-          transition: `background-image 4s cubic-bezier(.4,0,.2,1)`,
-          transform: getTransform(coreAnim, 1),
-        }}
-      />
-    </div>
-  );
+    return (
+        <div className="fixed inset-0 -z-10">
+            <div className="absolute inset-0 bg-black" style={{ backgroundColor: '#0A0A0A' }}></div>
+            <div ref={mainRef} className="absolute" style={{ width: '72vw', height: '72vw', pointerEvents: 'none', zIndex: 1 }} />
+            <div ref={innerRef} className="absolute" style={{ width: '54vw', height: '54vw', pointerEvents: 'none', zIndex: 2 }} />
+        </div>
+    );
 }
