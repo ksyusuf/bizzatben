@@ -1,16 +1,16 @@
 // src/components/programming/DevProjects.tsx
 export interface Project {
-    id: string
-    title: string
-    description: string
-    image?: string
-    technologies: string[]
-    link?: string
-    github?: string
-    prod?: string
-    medium?: string
-    pdfUrl?: string
-    date: string
+  id: string
+  title: string
+  description: string
+  image?: string
+  technologies: string[]
+  link?: string
+  github?: string
+  prod?: string
+  medium?: string
+  pdfUrl?: string
+  date: string
   }
 
 export const programmingImages = import.meta.glob<{ default: string }>(

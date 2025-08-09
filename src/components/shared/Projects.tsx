@@ -36,24 +36,22 @@ export default function Projects() {
       }
     });
 
-    // Proje kartları animasyonu
+    // Bu kancayı, 'projects' dizisi değiştiğinde yeniden çalışacak şekilde düzenliyoruz.
     const projectCards = gsap.utils.toArray('.project-card');
-    projectCards.forEach((card) => {
-      gsap.from(card as HTMLElement, {
-        opacity: 0,
-        y: 50,
-        scale: 0.9,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card as HTMLElement,
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
+    gsap.from(projectCards, {
+      opacity: 0,
+      y: 50,
+      scale: 0.9,
+      stagger: 0.2,
+      duration: 0.6,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
     });
-
-  }, { scope: containerRef, dependencies: [currentMode] });
+  }, { scope: containerRef, dependencies: [projects] });
 
   return (
     <section id="projects" ref={containerRef} className="section-padding">

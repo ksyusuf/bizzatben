@@ -13,7 +13,6 @@ export interface Project {
   date: string
 }
 
-// assetsLoader.js
 export const civilImages = import.meta.glob<{ default: string }>(
   './img/*.{png,jpg,jpeg,svg,gif}',
   { eager: true }
