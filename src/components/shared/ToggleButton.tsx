@@ -2,13 +2,7 @@ import styled from 'styled-components';
 import { useModeStore } from '../../store/modeStore';
 
 const Switch = () => {
-  const { currentMode, toggleMode, isTransitioning } = useModeStore();
-
-  const handleToggle = () => {
-    if (!isTransitioning) {
-      toggleMode();
-    }
-  };
+  const { currentMode, toggleMode } = useModeStore();
 
   return (
     <StyledWrapper>
@@ -19,7 +13,7 @@ const Switch = () => {
             id="holo-toggle" 
             type="checkbox" 
             checked={currentMode === 'civil'}
-            onChange={handleToggle}
+            onChange={toggleMode}
           />
           <label className="toggle-track" htmlFor="holo-toggle">
             <div className="track-lines">
