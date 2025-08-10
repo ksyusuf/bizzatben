@@ -29,11 +29,13 @@ export default function Projects() {
   }, [currentMode])
 
   useGSAP(() => {
-    // Önceki animasyonları temizle
-    gsap.killTweensOf([titleRef.current, descRef.current])
-    gsap.killTweensOf('.project-card')
-
-    // Proje başlığı ve açıklama animasyonu
+    // 1 Eski inline stilleri temizle
+    gsap.set([titleRef.current, descRef.current, '.project-card'], { clearProps: 'all' });
+  
+    // 2 Önceki animasyonları öldür
+    gsap.killTweensOf([titleRef.current, descRef.current, '.project-card']);
+  
+    // 3 Başlık ve açıklama animasyonu
     if (titleRef.current && descRef.current) {
       gsap.from([titleRef.current, descRef.current], {
         opacity: 0,
@@ -48,8 +50,8 @@ export default function Projects() {
         }
       });
     }
-
-    // Proje kartları animasyonu
+  
+    // 4 Proje kartları animasyonu
     const projectCards = gsap.utils.toArray('.project-card');
     if (projectCards.length > 0) {
       gsap.from(projectCards, {
@@ -66,12 +68,12 @@ export default function Projects() {
         }
       });
     }
-
-    // Production ortamında ScrollTrigger'ı yenile
-    if (typeof window !== 'undefined') {
-      ScrollTrigger.refresh()
-    }
+  
+    // 5 DOM tamamen hazır olunca ScrollTrigger hesapla
+    requestAnimationFrame(() => ScrollTrigger.refresh());
+  
   }, { scope: containerRef, dependencies: [currentMode] });
+  
 
   return (
     <section id="projects" ref={containerRef} className="section-padding">
