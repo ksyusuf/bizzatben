@@ -36,7 +36,7 @@ export default function Projects() {
       }
     });
 
-    // Bu kancayı, 'projects' dizisi değiştiğinde yeniden çalışacak şekilde düzenliyoruz.
+    // Proje kartları animasyonu
     const projectCards = gsap.utils.toArray('.project-card');
     gsap.from(projectCards, {
       opacity: 0,

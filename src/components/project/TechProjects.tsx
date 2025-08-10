@@ -32,25 +32,30 @@ export default function TechProjects() {
   }, [tech]);
   
   useGSAP(() => {
-    // Proje kartları animasyonu
-    const projectCards = gsap.utils.toArray('.project-card');
+    if (!containerRef.current) return;
+  
+    // Yalnızca containerRef altında ara
+    const projectCards = Array.from(
+      containerRef.current.querySelectorAll('.project-card')
+    );
+  
     projectCards.forEach((card) => {
-      gsap.from(card as HTMLElement, {
+      gsap.from(card, {
         opacity: 0,
         y: 50,
         scale: 0.9,
         duration: 0.6,
         ease: "power2.out",
         scrollTrigger: {
-          trigger: card as HTMLElement,
+          trigger: card,
           start: "top 85%",
           toggleActions: "play none none none"
         }
       });
     });
-
   }, { scope: containerRef, dependencies: [tech] });
 
+  
   return (
     <div ref={containerRef} className="section-padding">
       <div className="container-custom">
