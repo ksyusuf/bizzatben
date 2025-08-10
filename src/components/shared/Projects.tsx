@@ -1,122 +1,75 @@
 // src/components/shared/Projects.tsx
 import { useState, useRef, useEffect } from 'react'
 import { useModeStore } from '../../store/modeStore'
-import { gsap } from 'gsap'
-import { useGSAP } from '@gsap/react'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { programmingProjects } from '../programming/DevProjects'
 import { civilProjects } from '../civil/CivilProjects'
 import { ProjectCard, type Project } from '../project/ProjectCard'
 import { ProjectDetailModal } from '../project/ProjectDetailModal'
 
-gsap.registerPlugin(ScrollTrigger)
-
 export default function Projects() {
   const { currentMode } = useModeStore()
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-
   const projects = currentMode === 'programming' ? programmingProjects : civilProjects
 
   const containerRef = useRef<HTMLElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
-  const descRef = useRef<HTMLParagraphElement>(null)
 
-  // State değiştiğinde ScrollTrigger'ları temizle
   useEffect(() => {
-    // Mevcut trigger'ları sil
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    const elements = containerRef.current?.querySelectorAll('.animate-on-scroll') || []
 
-    // Inline stilleri temizle
-    gsap.set([titleRef.current, descRef.current, '.project-card'], { clearProps: 'all' });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+
+    elements.forEach(el => observer.observe(el))
+    return () => observer.disconnect()
   }, [currentMode])
-
-  useGSAP(() => {
-    // 1 Eski inline stilleri temizle
-    gsap.set([titleRef.current, descRef.current, '.project-card'], { clearProps: 'all' });
-  
-    // 2 Önceki animasyonları öldür
-    gsap.killTweensOf([titleRef.current, descRef.current, '.project-card']);
-  
-    // 3 Başlık ve açıklama animasyonu
-    if (titleRef.current && descRef.current) {
-      gsap.from([titleRef.current, descRef.current], {
-        opacity: 0,
-        y: 50,
-        stagger: 0.2,
-        duration: 1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none"
-        }
-      });
-    }
-  
-    // 4 Proje kartları animasyonu
-    const projectCards = gsap.utils.toArray('.project-card');
-    if (projectCards.length > 0) {
-      gsap.from(projectCards, {
-        opacity: 0,
-        y: 50,
-        scale: 0.9,
-        stagger: 0.2,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
-    }
-  
-    // 5 DOM tamamen hazır olunca ScrollTrigger hesapla
-    requestAnimationFrame(() => ScrollTrigger.refresh());
-  
-  }, { scope: containerRef, dependencies: [currentMode] });
-  
 
   return (
     <section id="projects" ref={containerRef} className="section-padding">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 ref={titleRef} className={`text-4xl font-bold mb-4 ${
+          <h2 className={`animate-on-scroll fade-up text-4xl font-bold mb-4 ${
             currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
           }`}>
             Projeler
           </h2>
-          <p ref={descRef} className={`text-xl max-w-3xl mx-auto ${
+          <p className={`animate-on-scroll fade-up text-xl max-w-3xl mx-auto ${
             currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
           }`}>
-            {currentMode === 'programming' 
+            {currentMode === 'programming'
               ? 'Geliştirdiğim yazılım projeleri ve teknoloji çözümleri'
-              : 'Tasarladığım yapı projeleri ve mühendislik çözümleri'
-            }
+              : 'Tasarladığım yapı projeleri ve mühendislik çözümleri'}
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {projects
-          .slice()
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // yeni → eski
-          .map((project, index) => (
-            <div
-              key={project.id}
-              className="project-card"
-            >
-              <ProjectCard 
-                project={project}
-                index={index}
-                currentMode={currentMode}
-                onViewDetails={() => setSelectedProject(project)}
-              />
-            </div>
-        ))}
+          {projects
+            .slice()
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            .map((project, index) => (
+              <div  key={project.id}
+                    className="project-card animate-on-scroll"
+                    style={{ transitionDelay: `${index * 0.1}s` }}>
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  currentMode={currentMode}
+                  onViewDetails={() => setSelectedProject(project)}
+                />
+              </div>
+          ))}
         </div>
       </div>
 
-      <ProjectDetailModal 
+      <ProjectDetailModal
         project={selectedProject}
         isOpen={!!selectedProject}
         onClose={() => setSelectedProject(null)}

@@ -5,13 +5,8 @@ import { useModeStore } from '../../store/modeStore';
 import { programmingProjects } from '../programming/DevProjects';
 import { civilProjects } from '../civil/CivilProjects';
 import { ProjectCard } from './ProjectCard';
-import { gsap } from 'gsap';
-import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ProjectDetailModal } from './ProjectDetailModal';
-import { type Project } from '../project/ProjectCard'
-
-gsap.registerPlugin(ScrollTrigger);
+import { type Project } from '../project/ProjectCard';
 
 export default function TechProjects() {
   const { tech } = useParams<{ tech: string }>();
@@ -23,83 +18,48 @@ export default function TechProjects() {
     project.technologies.some(techObj => techObj.slug === tech)
   );
 
-  const techByfirstProject = filteredProjects.length > 0
-  ? filteredProjects[0].technologies.find(t => t.slug === tech)!.name
-  : undefined;
-  // biraz ilkel oldu
+  const techByfirstProject =
+    filteredProjects.length > 0
+      ? filteredProjects[0].technologies.find(t => t.slug === tech)!.name
+      : undefined;
 
   const containerRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
 
+  // Tech değişince modal kapansın
   useEffect(() => {
-    // URL parametresi (techName) değiştiğinde modalı kapat
     setSelectedProject(null);
   }, [tech]);
 
-  // State değiştiğinde ScrollTrigger'ları temizle
+  // Intersection Observer animasyon
   useEffect(() => {
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-    }
-  }, [tech, currentMode])
+    const elements = containerRef.current?.querySelectorAll('.animate-on-scroll') || [];
 
-  useGSAP(() => {
-    // Önceki animasyonları temizle
-    gsap.killTweensOf(titleRef.current)
-    gsap.killTweensOf('.project-card')
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
 
-    // Başlık animasyonu
-    if (titleRef.current) {
-      gsap.from(titleRef.current, {
-        opacity: 0,
-        y: 50,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: titleRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none'
-        }
-      });
-    }
-
-    // Proje kartları animasyonu
-    const projectCards = gsap.utils.toArray('.project-card');
-    if (projectCards.length > 0) {
-      gsap.from(projectCards, {
-        opacity: 0,
-        y: 50,
-        scale: 0.9,
-        stagger: 0.2,
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none'
-        }
-      });
-    }
-
-    // Production ortamında ScrollTrigger'ı yenile
-    if (typeof window !== 'undefined') {
-      ScrollTrigger.refresh();
-    }
-  }, { scope: containerRef, dependencies: [tech, currentMode] });
+    elements.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, [tech, currentMode]);
 
   return (
     <section ref={containerRef} className="section-padding">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2
-            ref={titleRef}
-            className="text-4xl font-bold mb-4"
-          >
+          <h2 className="animate-on-scroll fade-up text-4xl font-bold mb-4">
             {techByfirstProject} Projeleri
           </h2>
           <Link
             to="/#projects"
-            className={`text-xl underline ${
+            className={`animate-on-scroll fade-up text-xl underline ${
               currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
             }`}
           >
@@ -110,11 +70,11 @@ export default function TechProjects() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects
             .slice()
-            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // yeni → eski
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
             .map((project, index) => (
               <div
                 key={project.id}
-                className="project-card"
+                className="project-card animate-on-scroll fade-up"
               >
                 <ProjectCard
                   project={project}
