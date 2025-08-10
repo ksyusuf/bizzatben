@@ -31,6 +31,8 @@ export default function Contact() {
     email: '',
     message: ''
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
   // GSAP refs
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -120,12 +122,39 @@ export default function Contact() {
     }
   }, [currentMode])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Form gönderme işlemi burada yapılacak
-    console.log('Form data:', { ...formData, subject: selectedSubject.name })
-    setIsFormOpen(false)
-    setFormData({ name: '', email: '', message: '' })
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+
+    try {
+      const formDataToSend = new FormData()
+      formDataToSend.append('name', formData.name)
+      formDataToSend.append('email', formData.email)
+      formDataToSend.append('subject', selectedSubject.name)
+      formDataToSend.append('message', formData.message)
+
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formDataToSend as any).toString()
+      })
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        setFormData({ name: '', email: '', message: '' })
+        setSelectedSubject(subjects[0])
+        setIsFormOpen(true)
+      } else {
+        setSubmitStatus('error')
+        console.error('Form submission failed')
+      }
+    } catch (error) {
+      setSubmitStatus('error')
+      console.error('Form submission error:', error)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -216,7 +245,20 @@ export default function Contact() {
             }`}>
               Hızlı İletişim
             </h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form 
+              name="contact" 
+              method="POST" 
+              data-netlify="true" 
+              data-netlify-honeypot="bot-field"
+              onSubmit={handleSubmit} 
+              className="space-y-6"
+            >
+              {/* Netlify hidden inputs */}
+              <input type="hidden" name="form-name" value="contact" />
+              <div className="hidden">
+                <input name="bot-field" />
+              </div>
+
               <div>
                 <label className={`block text-sm font-medium mb-2 ${
                   currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
@@ -225,6 +267,7 @@ export default function Contact() {
                 </label>
                 <input
                   type="text"
+                  name="name"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -245,6 +288,7 @@ export default function Contact() {
                 </label>
                 <input
                   type="email"
+                  name="email"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -263,6 +307,11 @@ export default function Contact() {
                 }`}>
                   Konu
                 </label>
+                <input
+                  type="hidden"
+                  name="subject"
+                  value={selectedSubject.name}
+                />
                 <SubjectSelector 
                   selected={selectedSubject}
                   onChange={setSelectedSubject}
@@ -277,6 +326,7 @@ export default function Contact() {
                   Mesaj
                 </label>
                 <textarea
+                  name="message"
                   required
                   rows={4}
                   value={formData.message}
@@ -292,14 +342,21 @@ export default function Contact() {
 
               <button
                 type="submit"
-                className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer ${
+                disabled={isSubmitting}
+                className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                   currentMode === 'programming'
                     ? 'bg-prog-primary/90 text-white hover:bg-prog-secondary/90 shadow-lg shadow-prog-primary/50'
                     : 'bg-civil-primary/90 text-white hover:bg-civil-secondary/90 shadow-lg shadow-civil-primary/50'
                 }`}
               >
-                Gönder
+                {isSubmitting ? 'Gönderiliyor...' : 'Gönder'}
               </button>
+
+              {submitStatus === 'error' && (
+                <p className={`text-sm text-red-400 text-center`}>
+                  Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.
+                </p>
+              )}
             </form>
           </div>
         </div>
@@ -310,6 +367,7 @@ export default function Contact() {
         isOpen={isFormOpen}
         onClose={() => setIsFormOpen(false)}
         currentMode={currentMode}
+        submitStatus={submitStatus}
       />
     </section>
   )
@@ -385,11 +443,13 @@ function SubjectSelector({
 function ContactSuccessModal({ 
   isOpen, 
   onClose, 
-  currentMode 
+  currentMode,
+  submitStatus
 }: { 
   isOpen: boolean
   onClose: () => void
   currentMode: string 
+  submitStatus: 'idle' | 'success' | 'error'
 }) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -446,13 +506,16 @@ function ContactSuccessModal({
                 <Dialog.Title className={`text-2xl font-bold mb-4 ${
                   currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
                 }`}>
-                  ️KACHOW
+                  {submitStatus === 'success' ? 'Mesaj Gönderildi!' : '️KACHOW'}
                 </Dialog.Title>
                 
                 <p className={`text-lg ${
                   currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
                 }`}>
-                  Mesajlar yalnızca mail ile ✨
+                  {submitStatus === 'success' 
+                    ? 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağım.' 
+                    : 'Mesajlar yalnızca mail ile ✨'
+                  }
                 </p>
                 
                 <div className="mt-6">
