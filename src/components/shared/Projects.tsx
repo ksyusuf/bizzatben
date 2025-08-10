@@ -1,5 +1,5 @@
 // src/components/shared/Projects.tsx
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useModeStore } from '../../store/modeStore'
 import { gsap } from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -21,37 +21,57 @@ export default function Projects() {
   const titleRef = useRef<HTMLHeadingElement>(null)
   const descRef = useRef<HTMLParagraphElement>(null)
 
+  // State değiştiğinde ScrollTrigger'ları temizle
+  useEffect(() => {
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
+  }, [currentMode])
+
   useGSAP(() => {
+    // Önceki animasyonları temizle
+    gsap.killTweensOf([titleRef.current, descRef.current])
+    gsap.killTweensOf('.project-card')
+
     // Proje başlığı ve açıklama animasyonu
-    gsap.from([titleRef.current, descRef.current], {
-      opacity: 0,
-      y: 50,
-      stagger: 0.2,
-      duration: 1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: titleRef.current,
-        start: "top 80%",
-        toggleActions: "play none none none"
-      }
-    });
+    if (titleRef.current && descRef.current) {
+      gsap.from([titleRef.current, descRef.current], {
+        opacity: 0,
+        y: 50,
+        stagger: 0.2,
+        duration: 1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none"
+        }
+      });
+    }
 
     // Proje kartları animasyonu
     const projectCards = gsap.utils.toArray('.project-card');
-    gsap.from(projectCards, {
-      opacity: 0,
-      y: 50,
-      scale: 0.9,
-      stagger: 0.2,
-      duration: 0.6,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top 85%",
-        toggleActions: "play none none none"
-      }
-    });
-  }, { scope: containerRef, dependencies: [projects] });
+    if (projectCards.length > 0) {
+      gsap.from(projectCards, {
+        opacity: 0,
+        y: 50,
+        scale: 0.9,
+        stagger: 0.2,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          toggleActions: "play none none none"
+        }
+      });
+    }
+
+    // Production ortamında ScrollTrigger'ı yenile
+    if (typeof window !== 'undefined') {
+      ScrollTrigger.refresh()
+    }
+  }, { scope: containerRef, dependencies: [currentMode] });
 
   return (
     <section id="projects" ref={containerRef} className="section-padding">

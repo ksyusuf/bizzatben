@@ -36,38 +36,56 @@ export default function TechProjects() {
     setSelectedProject(null);
   }, [tech]);
 
+  // State değiştiğinde ScrollTrigger'ları temizle
+  useEffect(() => {
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+    }
+  }, [tech, currentMode])
+
   useGSAP(() => {
+    // Önceki animasyonları temizle
+    gsap.killTweensOf(titleRef.current)
+    gsap.killTweensOf('.project-card')
+
     // Başlık animasyonu
-    gsap.from(titleRef.current, {
-      opacity: 0,
-      y: 50,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: titleRef.current,
-        start: 'top 85%',
-        toggleActions: 'play none none none'
-      }
-    });
+    if (titleRef.current) {
+      gsap.from(titleRef.current, {
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: titleRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
 
     // Proje kartları animasyonu
     const projectCards = gsap.utils.toArray('.project-card');
-    gsap.from(projectCards, {
-      opacity: 0,
-      y: 50,
-      scale: 0.9,
-      stagger: 0.2,
-      duration: 0.6,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 85%',
-        toggleActions: 'play none none none'
-      }
-    });
+    if (projectCards.length > 0) {
+      gsap.from(projectCards, {
+        opacity: 0,
+        y: 50,
+        scale: 0.9,
+        stagger: 0.2,
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+    }
 
-    ScrollTrigger.refresh(); // Yayında pozisyonları yeniden ölç
-  }, { scope: containerRef, dependencies: [filteredProjects] });
+    // Production ortamında ScrollTrigger'ı yenile
+    if (typeof window !== 'undefined') {
+      ScrollTrigger.refresh();
+    }
+  }, { scope: containerRef, dependencies: [tech, currentMode] });
 
   return (
     <section ref={containerRef} className="section-padding">
@@ -75,9 +93,7 @@ export default function TechProjects() {
         <div className="text-center mb-12">
           <h2
             ref={titleRef}
-            className={`text-4xl font-bold mb-4 ${
-              currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-            }`}
+            className="text-4xl font-bold mb-4"
           >
             {techByfirstProject} Projeleri
           </h2>
