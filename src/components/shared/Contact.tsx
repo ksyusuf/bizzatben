@@ -374,7 +374,6 @@ export default function Contact() {
           setSubmitStatus('idle')
         }}
         currentMode={currentMode}
-        submitStatus={submitStatus}
       />
     </section>
   )
@@ -450,13 +449,11 @@ function SubjectSelector({
 function ContactSuccessModal({ 
   isOpen, 
   onClose, 
-  currentMode,
-  submitStatus
+  currentMode
 }: { 
   isOpen: boolean
   onClose: () => void
   currentMode: string 
-  submitStatus: 'idle' | 'success' | 'error'
 }) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -513,16 +510,13 @@ function ContactSuccessModal({
                 <Dialog.Title className={`text-2xl font-bold mb-4 ${
                   currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
                 }`}>
-                  {submitStatus === 'success' ? 'Mesaj Gönderildi!' : '️KACHOW'}
+                  Mesaj Gönderildi!
                 </Dialog.Title>
                 
                 <p className={`text-lg ${
                   currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
                 }`}>
-                  {submitStatus === 'success' 
-                    ? 'Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağım.' 
-                    : 'Mesajlar yalnızca mail ile ✨'
-                  }
+                  Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağım.
                 </p>
                 
                 <div className="mt-6">
