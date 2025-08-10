@@ -23,9 +23,11 @@ export default function Projects() {
 
   // State değiştiğinde ScrollTrigger'ları temizle
   useEffect(() => {
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
-    }
+    // Mevcut trigger'ları sil
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+    // Inline stilleri temizle
+    gsap.set([titleRef.current, descRef.current, '.project-card'], { clearProps: 'all' });
   }, [currentMode])
 
   useGSAP(() => {
