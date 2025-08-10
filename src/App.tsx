@@ -17,13 +17,13 @@ function App() {
   return (
     <Router> {/* Uygulama Router ile sarmalandı */}
     <ScrollToTop />
-      <div className="min-h-screen transition-colors duration-500 relative overflow-hidden">
+      <div className="min-h-screen transition-colors duration-500 relative overflow-hidden flex flex-col">
         {/* PlayStation Arka Plan */}
         <PlayStationBackground />
         
         <Navbar />
         
-        <main className="pt-14 relative z-10">
+        <main className="pt-14 relative z-10 flex-1">
           <Routes>
           
             <Route path="/" element={

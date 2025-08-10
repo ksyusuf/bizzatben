@@ -64,21 +64,50 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div ref={logoRef} className="flex-shrink-0">
             {/* Logo bileşeninizi buraya ekleyebilirsiniz, örneğin */}
-            <Link to="/" className={`text-2xl font-bold transition-all duration-200 ${
-              currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-            }`}>
+            <Link 
+              to="/" 
+              onClick={() => {
+                // Ana sayfaya gidip en üste scroll yap
+                window.scrollTo(0, 0);
+              }}
+              className={`text-2xl font-bold transition-all duration-200 ${
+                currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
+              }`}
+            >
               Yusuf
             </Link>
           </div>
           
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 relative">
             {/* isHomePage prop'u eklendi */}
-            <NavLink href="#about" isHomePage={isHomePage}>Hakkımda</NavLink>
-            {currentMode !== 'programming' && (
+            <div className={`transition-all duration-300 ease-out ${
+              currentMode !== 'programming' 
+                ? 'transform translate-x-0' 
+                : 'transform -translate-x-4'
+            }`}>
+              <NavLink href="#about" isHomePage={isHomePage}>Hakkımda</NavLink>
+            </div>
+            <div className={`transition-all duration-300 ease-out ${
+              currentMode !== 'programming' 
+                ? 'opacity-100 transform translate-x-0 relative' 
+                : 'opacity-0 transform -translate-x-4 absolute pointer-events-none'
+            }`}>
               <NavLink href="#experience" isHomePage={isHomePage}>Deneyim</NavLink>
-            )}
-            <NavLink href="#projects" isHomePage={isHomePage}>Projeler</NavLink>
-            <NavLink href="#contact" isHomePage={isHomePage}>İletişim</NavLink>
+            </div>
+            <div className={`transition-all duration-300 ease-out ${
+              currentMode !== 'programming' 
+                ? 'transform translate-x-0' 
+                : 'transform -translate-x-4'
+            }`}>
+              <NavLink href="#projects" isHomePage={isHomePage}>Projeler</NavLink>
+            </div>
+            <div className={`transition-all duration-300 ease-out ${
+              currentMode !== 'programming' 
+                ? 'transform translate-x-0' 
+                : 'transform -translate-x-4'
+            }`}>
+              <NavLink href="#contact" isHomePage={isHomePage}>İletişim</NavLink>
+            </div>
           </div>
 
           <ToggleButton />
@@ -107,14 +136,36 @@ export default function Navbar() {
                     ? 'bg-black/80 border border-prog-accent/50 shadow-lg shadow-prog-accent/20'
                     : 'bg-black/80 border border-civil-primary/50 shadow-lg shadow-civil-primary/20'
                 }`}>
-                  <div className="py-1">
+                  <div className="py-1 relative">
                     {/* isHomePage prop'u eklendi */}
-                    <MobileNavLink href="#about" isHomePage={isHomePage}>Hakkımda</MobileNavLink>
-                    {currentMode !== 'programming' && (
+                    <div className={`transition-all duration-300 ease-out ${
+                      currentMode !== 'programming' 
+                        ? 'transform translate-x-0' 
+                        : 'transform -translate-x-4'
+                    }`}>
+                      <MobileNavLink href="#about" isHomePage={isHomePage}>Hakkımda</MobileNavLink>
+                    </div>
+                    <div className={`transition-all duration-300 ease-out ${
+                      currentMode !== 'programming' 
+                        ? 'opacity-100 transform translate-x-0 relative' 
+                        : 'opacity-0 transform -translate-x-4 absolute pointer-events-none'
+                    }`}>
                       <MobileNavLink href="#experience" isHomePage={isHomePage}>Deneyim</MobileNavLink>
-                    )}
-                    <MobileNavLink href="#projects" isHomePage={isHomePage}>Projeler</MobileNavLink>
-                    <MobileNavLink href="#contact" isHomePage={isHomePage}>İletişim</MobileNavLink>
+                    </div>
+                    <div className={`transition-all duration-300 ease-out ${
+                      currentMode !== 'programming' 
+                        ? 'transform translate-x-0' 
+                        : 'transform -translate-x-4'
+                    }`}>
+                      <MobileNavLink href="#projects" isHomePage={isHomePage}>Projeler</MobileNavLink>
+                    </div>
+                    <div className={`transition-all duration-300 ease-out ${
+                      currentMode !== 'programming' 
+                        ? 'transform translate-x-0' 
+                        : 'transform -translate-x-4'
+                    }`}>
+                      <MobileNavLink href="#contact" isHomePage={isHomePage}>İletişim</MobileNavLink>
+                    </div>
                   </div>
                 </Menu.Items>
               </Transition>
