@@ -129,7 +129,7 @@ export default function Contact() {
 
     try {
       const formDataToSend = {
-        'form-name': 'contact',  // form-name mutlaka olmalı
+        'form-name': 'contact',
         name: formData.name,
         email: formData.email,
         subject: selectedSubject.name,
@@ -138,6 +138,9 @@ export default function Contact() {
 
       const response = await fetch('/', {
         method: 'POST',
+        headers: { 
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
         body: new URLSearchParams(formDataToSend).toString()
       })
 
@@ -365,8 +368,11 @@ export default function Contact() {
 
       {/* Success Modal */}
       <ContactSuccessModal 
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
+        isOpen={isFormOpen && submitStatus === 'success'}
+        onClose={() => {
+          setIsFormOpen(false)
+          setSubmitStatus('idle')
+        }}
         currentMode={currentMode}
         submitStatus={submitStatus}
       />

@@ -1,89 +1,79 @@
-# Netlify Form Kurulum Rehberi
+# Netlify Forms Kurulumu
 
-## Form Yapılandırması
+Bu proje Netlify Forms kullanarak iletişim formunu yönetmektedir. Form gönderimlerini alabilmek için aşağıdaki adımları takip edin:
 
-Bu proje Netlify Forms kullanarak iletişim formu işlemlerini gerçekleştirir. Form gönderimleri otomatik olarak Netlify tarafından işlenir.
+## 1. Netlify Dashboard'da Form Detection'ı Etkinleştirin
 
-### Form Özellikleri
+1. Netlify Dashboard'a gidin
+2. Projenizi seçin
+3. **Forms** sekmesine gidin
+4. **Enable form detection** butonuna tıklayın
 
-- **Form Adı**: `contact`
-- **Bot Koruması**: Honeypot (`bot-field`) aktif
-- **Gerekli Alanlar**: Ad Soyad, E-posta, Mesaj
-- **Opsiyonel Alan**: Konu seçimi
+## 2. Form Yapısı
 
-### Netlify Dashboard Ayarları
+Projede iki form yapısı bulunmaktadır:
 
-1. **Netlify Dashboard'a Giriş**
-   - Netlify hesabınıza giriş yapın
-   - Projenizi seçin
+### Hidden HTML Form (index.html)
+```html
+<form name="contact" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name" />
+  <input type="email" name="email" />
+  <input type="text" name="subject" />
+  <textarea name="message"></textarea>
+</form>
+```
 
-2. **Form Ayarları**
-   - Sol menüden "Forms" sekmesine tıklayın
-   - `contact` formunu bulun
+### JavaScript Form (Contact.tsx)
+- React component içinde render edilen form
+- AJAX ile gönderim yapar
+- `data-netlify="true"` attribute'u ile işaretlenmiş
 
-3. **E-posta Bildirimleri**
-   - Form ayarlarına tıklayın
-   - "Notifications" sekmesine gidin
-   - "Email notifications" seçeneğini aktif edin
-   - Bildirim almak istediğiniz e-posta adresini girin
+## 3. Form Alanları
 
-4. **Form İşleme**
-   - "Settings" sekmesinde form işleme seçeneklerini ayarlayın
-   - Spam koruması otomatik olarak aktif
+Form aşağıdaki alanları içerir:
+- **name**: Ad soyad
+- **email**: E-posta adresi
+- **subject**: Konu (dropdown)
+- **message**: Mesaj
 
-### E-posta Bildirimleri
+## 4. Spam Koruması
 
-Form gönderildiğinde şu bilgiler e-posta ile gönderilir:
-- **Gönderen**: Formu dolduran kişinin adı
-- **E-posta**: Formu dolduran kişinin e-posta adresi
-- **Konu**: Seçilen konu (Proje Teklifi, İş Birliği, vb.)
-- **Mesaj**: Gönderilen mesaj içeriği
+- `data-netlify-honeypot="bot-field"` ile spam koruması aktif
+- Hidden input field ile bot tespiti
 
-### Hata Yönetimi
+## 5. Başarı Mesajı
 
-**Form Gönderim Hataları:**
-- Ağ bağlantı sorunları
-- Netlify servis kesintileri
-- Form validasyon hataları
+Form başarıyla gönderildiğinde modal açılır ve kullanıcıya bilgi verilir.
 
-**Çözüm Sorumluları:**
-- **Teknik Hatalar**: Geliştirici (Yusuf Akçakaya)
-- **Netlify Servis Sorunları**: Netlify Support
-- **E-posta Bildirim Sorunları**: Netlify Dashboard ayarları
+## 6. Hata Yönetimi
 
-### Test Etme
+Form gönderiminde hata olursa kullanıcıya hata mesajı gösterilir.
 
-1. **Geliştirme Ortamında:**
-   ```bash
-   npm run dev
-   ```
-   - Formu doldurun ve gönderin
-   - Console'da hata mesajlarını kontrol edin
+## 7. Deployment Sonrası
 
-2. **Canlı Ortamda:**
-   - Netlify'da deploy edin
-   - Formu test edin
-   - Netlify Dashboard'da form gönderimlerini kontrol edin
+Site deploy edildikten sonra:
+1. Netlify Dashboard > Forms sekmesinde form görünecek
+2. Form gönderimlerini buradan takip edebilirsiniz
+3. E-posta bildirimleri ayarlayabilirsiniz
 
-### Güvenlik
+## 8. Test Etme
 
-- **Honeypot Koruması**: Bot saldırılarına karşı koruma
-- **Spam Filtreleme**: Netlify otomatik spam koruması
-- **Rate Limiting**: Netlify tarafından otomatik sınırlama
+Formu test etmek için:
+1. Siteyi deploy edin
+2. İletişim formunu doldurun ve gönderin
+3. Netlify Dashboard > Forms > Submissions'da gönderimi kontrol edin
 
-### Sorun Giderme
+## 9. E-posta Bildirimleri
 
-**Form Gönderilmiyor:**
-1. Console'da hata mesajlarını kontrol edin
-2. Netlify Dashboard'da form durumunu kontrol edin
-3. Ağ bağlantısını kontrol edin
+Form gönderimlerini e-posta ile almak için:
+1. Netlify Dashboard > Forms > Notifications
+2. "Add notification" butonuna tıklayın
+3. E-posta adresinizi ekleyin
 
-**E-posta Bildirimi Gelmiyor:**
-1. Netlify Dashboard'da e-posta ayarlarını kontrol edin
-2. Spam klasörünü kontrol edin
-3. E-posta adresinin doğru olduğundan emin olun
+## 10. Sorun Giderme
 
-**Form Validasyon Hataları:**
-1. Tüm gerekli alanların doldurulduğundan emin olun
-2. E-posta formatının doğru olduğunu kontrol edin
-3. Mesaj alanının boş olmadığını kontrol edin
+Form çalışmıyorsa:
+1. Form detection'ın etkin olduğundan emin olun
+2. Hidden HTML form'un index.html'de olduğunu kontrol edin
+3. `_redirects` dosyasının mevcut olduğunu kontrol edin
+4. Console'da hata mesajlarını kontrol edin
