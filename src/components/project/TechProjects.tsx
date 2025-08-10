@@ -1,28 +1,29 @@
 // src/components/shared/TechProjects.tsx
-import{ useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useModeStore } from '../../store/modeStore';
 import { programmingProjects, type Project } from '../programming/DevProjects';
 import { civilProjects } from '../civil/CivilProjects';
 import { ProjectCard } from './ProjectCard';
-import { gsap } from 'gsap'
-import { useGSAP } from '@gsap/react'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { ProjectDetailModal } from './ProjectDetailModal'
+import { gsap } from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ProjectDetailModal } from './ProjectDetailModal';
 
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
 
 export default function TechProjects() {
   const { tech } = useParams<{ tech: string }>();
   const { currentMode } = useModeStore();
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   const allProjects = [...programmingProjects, ...civilProjects];
   const filteredProjects = allProjects.filter(project =>
     project.technologies.includes(tech as string)
   );
 
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
     // URL parametresi (tech) değiştiğinde modalı kapat
@@ -30,36 +31,56 @@ export default function TechProjects() {
   }, [tech]);
 
   useGSAP(() => {
+    // Başlık animasyonu
+    gsap.from(titleRef.current, {
+      opacity: 0,
+      y: 50,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: titleRef.current,
+        start: 'top 85%',
+        toggleActions: 'play none none none'
+      }
+    });
+
     // Proje kartları animasyonu
     const projectCards = gsap.utils.toArray('.project-card');
-
     gsap.from(projectCards, {
       opacity: 0,
       y: 50,
       scale: 0.9,
       stagger: 0.2,
       duration: 0.6,
-      ease: "power2.out",
+      ease: 'power2.out',
       scrollTrigger: {
         trigger: containerRef.current,
-        start: "top 85%",
-        toggleActions: "play none none none"
+        start: 'top 85%',
+        toggleActions: 'play none none none'
       }
     });
+
+    ScrollTrigger.refresh(); // Yayında pozisyonları yeniden ölç
   }, { scope: containerRef, dependencies: [filteredProjects] });
 
   return (
-    <div ref={containerRef} className="section-padding">
+    <section ref={containerRef} className="section-padding">
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 className={`text-4xl font-bold mb-4 ${
-            currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-          }`}>
+          <h2
+            ref={titleRef}
+            className={`text-4xl font-bold mb-4 ${
+              currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
+            }`}
+          >
             {tech} Projeleri
           </h2>
-          <Link to="/#projects" className={`text-xl underline ${
-            currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-          }`}>
+          <Link
+            to="/#projects"
+            className={`text-xl underline ${
+              currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
+            }`}
+          >
             Tüm Projelere Geri Dön
           </Link>
         </div>
@@ -84,12 +105,12 @@ export default function TechProjects() {
         </div>
       </div>
 
-      <ProjectDetailModal 
+      <ProjectDetailModal
         project={selectedProject}
         isOpen={!!selectedProject}
         onClose={() => setSelectedProject(null)}
         currentMode={currentMode}
       />
-    </div>
+    </section>
   );
 }
