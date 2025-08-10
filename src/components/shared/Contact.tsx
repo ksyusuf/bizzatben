@@ -128,16 +128,17 @@ export default function Contact() {
     setSubmitStatus('idle')
 
     try {
-      const formDataToSend = new FormData()
-      formDataToSend.append('name', formData.name)
-      formDataToSend.append('email', formData.email)
-      formDataToSend.append('subject', selectedSubject.name)
-      formDataToSend.append('message', formData.message)
+      const formDataToSend = {
+        'form-name': 'contact',  // form-name mutlaka olmalı
+        name: formData.name,
+        email: formData.email,
+        subject: selectedSubject.name,
+        message: formData.message,
+      }
 
       const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams(formDataToSend as any).toString()
+        body: new URLSearchParams(formDataToSend).toString()
       })
 
       if (response.ok) {
