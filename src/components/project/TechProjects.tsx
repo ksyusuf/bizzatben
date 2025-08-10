@@ -1,5 +1,5 @@
 // src/components/shared/TechProjects.tsx
-import { useState, useRef, useEffect } from 'react';
+import{ useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useModeStore } from '../../store/modeStore';
 import { programmingProjects, type Project } from '../programming/DevProjects';
@@ -18,44 +18,36 @@ export default function TechProjects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
   const allProjects = [...programmingProjects, ...civilProjects];
-
   const filteredProjects = allProjects.filter(project =>
     project.technologies.includes(tech as string)
   );
 
-  // 'containerRef' tipi 'HTMLDivElement' olarak düzeltildi.
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // URL parametresi (tech) değiştiğinde modalı kapat
     setSelectedProject(null);
   }, [tech]);
-  
-  useGSAP(() => {
-    if (!containerRef.current) return;
-  
-    // Yalnızca containerRef altında ara
-    const projectCards = Array.from(
-      containerRef.current.querySelectorAll('.project-card')
-    );
-  
-    projectCards.forEach((card) => {
-      gsap.from(card, {
-        opacity: 0,
-        y: 50,
-        scale: 0.9,
-        duration: 0.6,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 85%",
-          toggleActions: "play none none none"
-        }
-      });
-    });
-  }, { scope: containerRef, dependencies: [tech] });
 
-  
+  useGSAP(() => {
+    // Proje kartları animasyonu
+    const projectCards = gsap.utils.toArray('.project-card');
+
+    gsap.from(projectCards, {
+      opacity: 0,
+      y: 50,
+      scale: 0.9,
+      stagger: 0.2,
+      duration: 0.6,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top 85%",
+        toggleActions: "play none none none"
+      }
+    });
+  }, { scope: containerRef, dependencies: [filteredProjects] });
+
   return (
     <div ref={containerRef} className="section-padding">
       <div className="container-custom">
@@ -73,21 +65,22 @@ export default function TechProjects() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.slice()
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // yeni → eski
-          .map((project, index) => (
-            <div
-              key={project.id}
-              className="project-card"
-            >
-              <ProjectCard
-                project={project}
-                index={index}
-                currentMode={currentMode}
-                onViewDetails={() => setSelectedProject(project)}
-              />
-            </div>
-          ))}
+          {filteredProjects
+            .slice()
+            .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) // yeni → eski
+            .map((project, index) => (
+              <div
+                key={project.id}
+                className="project-card"
+              >
+                <ProjectCard
+                  project={project}
+                  index={index}
+                  currentMode={currentMode}
+                  onViewDetails={() => setSelectedProject(project)}
+                />
+              </div>
+            ))}
         </div>
       </div>
 
