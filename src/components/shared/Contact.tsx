@@ -127,15 +127,19 @@ export default function Contact() {
     setIsSubmitting(true)
     setSubmitStatus('idle')
 
-    try {
-      const formDataToSend = {
-        'form-name': 'contact',
-        name: formData.name,
-        email: formData.email,
-        subject: selectedSubject.name,
-        message: formData.message,
-      }
+    // Form verilerini hazırla
+    const formDataToSend = {
+      'form-name': 'contact',
+      name: formData.name,
+      email: formData.email,
+      subject: selectedSubject.name,
+      message: formData.message,
+    }
 
+    console.log('Submitting form with data:', formDataToSend)
+
+    try {
+      // Netlify Forms için form gönderimi
       const response = await fetch('/', {
         method: 'POST',
         headers: { 
@@ -144,14 +148,18 @@ export default function Contact() {
         body: new URLSearchParams(formDataToSend).toString()
       })
 
+      console.log('Response status:', response.status)
+      console.log('Response ok:', response.ok)
+
       if (response.ok) {
+        console.log('Form submitted successfully')
         setSubmitStatus('success')
         setFormData({ name: '', email: '', message: '' })
         setSelectedSubject(subjects[0])
         setIsFormOpen(true)
       } else {
         setSubmitStatus('error')
-        console.error('Form submission failed')
+        console.error('Form submission failed:', response.status, response.statusText)
       }
     } catch (error) {
       setSubmitStatus('error')
