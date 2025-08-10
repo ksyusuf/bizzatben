@@ -1,17 +1,5 @@
 // src/components/programming/DevProjects.tsx
-export interface Project {
-  id: string
-  title: string
-  description: string
-  image?: string
-  technologies: string[]
-  link?: string
-  github?: string
-  prod?: string
-  medium?: string
-  pdfUrl?: string
-  date: string
-  }
+import { type Project } from '../project/ProjectCard'
 
 export const programmingImages = import.meta.glob<{ default: string }>(
   './img/*.{png,jpg,jpeg,svg,gif}',
@@ -24,7 +12,11 @@ export const programmingProjects: Project[] = [
     title: 'Matlab Görüntü İşleme Metodu İle Bamyanın Algılanması',
     description: 'Mayıs 2022\'de 4 kişilik bir ekiple başlayan bu proje, Matlab görüntü işleme metodunu kullanarak tarladaki bamyaları algılamak üzerine odaklanmıştır. Yeşil rengi ayıklama prensibine dayanan program, resimlerin kare kare işlenmesiyle bamyayı yeşil yapraklar ve dallar arasından ayırmaktadır. Testler sonucunda %27 başarı oranı elde edilmiş, hataların (yeşil yaprak, çiçek, fide dalı, yüksek/düşük parlaklık) kaynakları detaylıca analiz edilmiştir. Çalışma 8 hafta sürmüş ve "II. INTERNATIONAL CONFERENCE ON GLOBAL PRACTICE OF MULTIDISCIPLINARY SCIENTIFIC STUDIES" konferansında sunulmuştur.',
     image: programmingImages['./img/bamya.jpg'].default,
-    technologies: ['Matlab', 'Görüntü İşleme', 'Bilgisayar Görüsü', 'Veri Analizi'],
+    technologies: [ 
+      { name: 'Matlab', slug: 'Matlab' },
+      { name: 'Görüntü İşleme', slug: 'Goruntu_Isleme' },
+      { name: 'Bilgisayar Görüsü', slug: 'Bilgisayar_Gorusu' },
+      { name: 'Veri Analizi', slug: 'Veri_Analizi' }],
     link: 'https://www.linkedin.com/posts/yusuf-akcakaya_pdf-separation-of-okraabelmochus-esculentus-activity-6962679205675347968-6XJS?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADDxmIQB1pIq0Ba_HeCNOJTQ1lcLapQfFko',
     github: '',
     prod: '',
@@ -37,7 +29,12 @@ export const programmingProjects: Project[] = [
     title: 'Matlab İle Gerçek Zamanlı Çilek Algılayıcı',
     description: 'Matlab görüntü işleme metodu kullanılarak geliştirilen bu gerçek zamanlı çilek algılayıcı programı, tarlada test ve geliştirme aşamalarından geçmiştir. Yeşil yapraklar ve kahverengi toprak arasından kırmızı çilekleri ayırt etmeyi hedefleyen proje, aynı zamanda güçlü işlem gücü ihtiyacını optimize etmiştir. "Mavi kapak" tekniği entegre edilerek belirli kalibredeki çileklerin algılanması amaçlanmıştır. Program, çürük/çiğ çilekleri algılamayarak tutarlılığını artırmıştır. Bu çalışma, Ekim 2022\'de Şanlıurfa\'da düzenlenen "4. INTERNATIONAL GOBEKLITEPE SCIENTIFIC RESEARCH CONGRESS" konferansına yetiştirilerek başarıyla sunulmuştur.',
     image: programmingImages['./img/cilek-final.jpg'].default,
-    technologies: ['Matlab', 'Görüntü İşleme', 'Gerçek Zamanlı Sistemler', 'Sensör Entegrasyonu', 'Makine Görüşü'],
+    technologies: [
+      { name: 'Matlab', slug: 'Matlab' },
+      { name: 'Görüntü İşleme', slug: 'Goruntu_Isleme' },
+      { name: 'Gerçek Zamanlı Sistemler', slug: 'Gercek_Zamanli_Sistemler' },
+      { name: 'Sensör Entegrasyonu', slug: 'Sensor_Entegrasyonu' },
+      { name: 'Makine Görüşü', slug: 'Makine_Gorusu' }],
     link: 'https://yusufakcakaya.blogspot.com/2024/01/matlab-ile-gercek-zamanl-cilek-alglayc.html',
     github: '',
     prod: '',
@@ -49,7 +46,15 @@ export const programmingProjects: Project[] = [
     id: '3',
     title: 'Makine Öğrenmesi İle Melbourne Ev Fiyatlarını Tahmin Etme',
     description: 'Global AI Hub ve Akbank işbirliğiyle düzenlenen Akbank Makine Öğrenmesi Bootcamp kapsamında, Muhammet Coşkun ile birlikte gerçekleştirilen bir projedir. Kaggle\'dan alınan Melbourne Housing Market veri seti kullanılarak, en yüksek doğrulukla ev fiyatlarını tahmin eden bir model geliştirilmesi amaçlanmıştır. Geliştirilen 8 model arasında en yüksek R2-Score (0.8301) Random Forest modeli ile elde edilmiştir. Bu proje, keşifsel veri analizi yeteneklerini geliştirmenin yanı sıra, makine öğrenimi modeli geliştirme süreçlerindeki önemli hususları öğrenme fırsatı sunmuştur.',
-    technologies: ['Python', 'Makine Öğrenmesi', 'Pandas', 'NumPy', 'Scikit-learn', 'Jupyter Notebook', 'Veri Analizi', 'Regresyon'],
+    technologies: [
+      { name: 'Python', slug: 'Python' },
+      { name: 'Makine Öğrenmesi', slug: 'Makine_Ogrenmesi' },
+      { name: 'Pandas', slug: 'Pandas' },
+      { name: 'NumPy', slug: 'NumPy' },
+      { name: 'Scikit-learn', slug: 'Scikit_learn' },
+      { name: 'Jupyter Notebook', slug: 'Jupyter_Notebook' },
+      { name: 'Veri Analizi', slug: 'Veri_Analizi' },
+      { name: 'Regresyon', slug: 'Regresyon' }],
     link: 'https://www.linkedin.com/posts/yusuf-akcakaya_github-ksyusufmelbourne-housing-market-ml-activity-7122291392164298753-3nO_?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADDxmIQB1pIq0Ba_HeCNOJTQ1lcLapQfFko',
     github: 'https://github.com/ksyusuf/Melbourne-Housing-Market-ML',
     prod: '',
@@ -61,7 +66,14 @@ export const programmingProjects: Project[] = [
     title: 'CIFAR100 Resim Sınıflandırma Modeli',
     description: 'Yapay Zeka, Makine Öğrenmesi ve Veri Bilimi kursu kapsamında geliştirilen bu projede, 100 farklı kategoriye ait 60 bin adet 32x32 RGB resim içeren CIFAR100 veri seti kullanılmıştır. Model, Dense katmanlarından önce 3 adet Convolution ve MaxPooling katmanı kullanılarak oluşturulmuştur. Özellikle MaxPooling katmanlarının kullanımı sayesinde, eğitilebilir parametre sayısı 44.7 Milyon’dan (170MB) yaklaşık 670 Bin’e (2.56MB) düşürülerek, işlem maliyetinden yaklaşık 68 kat kazanç sağlanmıştır. Bu proje, derin öğrenme modellerinde optimizasyonun önemini göstermektedir.',
     image: programmingImages['./img/CIFAR100-convolution-by-visualkeras.png'].default,
-    technologies: ['Derin Öğrenme', 'Konvolüsyonel Sinir Ağları (CNN)', 'Makine Öğrenmesi', 'Python', 'Keras', 'TensorFlow', 'Görüntü İşleme'],
+    technologies: [
+      { name: 'Derin Öğrenme', slug: 'Derin_Ogrenme' },
+      { name: 'Konvolüsyonel Sinir Ağları (CNN)', slug: 'Konvolusyonel_Sinir_Aglari_CNN' },
+      { name: 'Makine Öğrenmesi', slug: 'Makine_Ogrenmesi' },
+      { name: 'Python', slug: 'Python' },
+      { name: 'Keras', slug: 'Keras' },
+      { name: 'TensorFlow', slug: 'TensorFlow' },
+      { name: 'Görüntü İşleme', slug: 'Goruntu_Isleme' }],
     link: 'https://www.linkedin.com/posts/yusuf-akcakaya_yapay-zeka-makine-%C3%B6%C4%9Frenmesi-ve-veri-bilimi-activity-7239267095203483649-68fR?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADDxmIQB1pIq0Ba_HeCNOJTQ1lcLapQfFko',
     github: '',
     prod: '',
@@ -73,7 +85,15 @@ export const programmingProjects: Project[] = [
     title: 'ÇŞİDB - Yapı Denetim Sistemi - YİBF Listesi Prototipi',
     description: 'Çevre, Şehircilik ve İklim Değişikliği Bakanlığı Yapı İşleri Genel Müdürlüğü\'nün mevcut Yapı Denetim Sistemi (YDS) içerisinde yer alan "YİBF Listesi" sekmesi için daha gelişmiş bir prototip versiyonudur. Proje, gerçekçi veri simülasyonu için ChatGPT ile yapay veriler oluşturmuş ve bu verileri NoSQL veritabanı simülasyonu yapan fonksiyonlarla derlemiştir. Sistem, YİBF (Yapıya İlişkin Bilgi Formu) numaralarını referans alarak işlem geçmişini takip eder, filtrelenmiş, sıralanmış ve sayfalanmış listeler sunar. Bu çalışma, sektördeki ruhsatlandırma ve yasal takip süreçlerinin dijitalleştirilmesine odaklanmaktadır.',
     image: programmingImages['./img/csb-yds.jpeg'].default,
-    technologies: ['React', 'Redux', 'TailwindCSS', 'Node.js', 'Express', 'CORS', 'NoSQL Simülasyonu', 'Full Stack Geliştirme'],
+    technologies: [
+      { name: 'React', slug: 'React' },
+      { name: 'Redux', slug: 'Redux' },
+      { name: 'TailwindCSS', slug: 'TailwindCSS' },
+      { name: 'Node.js', slug: 'Node_js' },
+      { name: 'Express', slug: 'Express' },
+      { name: 'CORS', slug: 'CORS' },
+      { name: 'NoSQL Simülasyonu', slug: 'NoSQL_Simulasyonu' },
+      { name: 'Full Stack Geliştirme', slug: 'Full_Stack_Gelistirme' }],
     link: 'https://www.linkedin.com/posts/yusuf-akcakaya_%C3%A7evre-%C5%9Fehircilik-ve-i%CC%87klim-de%C4%9Fi%C5%9Fikli%C4%9Fi-bakanl%C4%B1%C4%9F%C4%B1-activity-7251864453560864768-BcOm?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADDxmIQB1pIq0Ba_HeCNOJTQ1lcLapQfFko',
     github: 'https://github.com/ksyusuf/csb-yds-yibf-listesi',
     prod: '',
@@ -85,7 +105,13 @@ export const programmingProjects: Project[] = [
     title: 'Word Embedding Görselleştirme (2D)',
     description: 'Yapay Zeka kursunun 65. dersinde Word Embedding ve görselleştirmesi üzerine yapılan bu çalışma, kelimelerin çok boyutlu vektörler ile nasıl ifade edildiğini ve bu kavramın insan algısına uygun 2 boyutlu uzayda nasıl görselleştirildiğini inceler. Model, Amerika merkezli havayolu işletmelerine yapılan yorumlardan oluşan bir veri seti üzerinde eğitilmiş ve her epoch sonunda ortaya çıkan 2 boyutlu kelime vektör uzayının grafikleri birleştirilerek, modelin kelime vektörlerini aşamalı olarak nasıl ayrıştırdığı gösterilmiştir. Bu proje, Word Embedding kavramının karmaşıklığını ve görselleştirmenin önemini vurgulamaktadır.',
     image: programmingImages['./img/Word-Embedding-Gif-With-Twitter-US-Airline-Sentiment.gif'].default,
-    technologies: ['Doğal Dil İşleme (NLP)', 'Word Embedding', 'Boyut Azaltma', 'Makine Öğrenmesi', 'Python', 'Veri Görselleştirme'],
+    technologies: [
+      { name: 'Doğal Dil İşleme (NLP)', slug: 'Dogal_Dil_Isleme_NLP' },
+      { name: 'Word Embedding', slug: 'Word_Embedding' },
+      { name: 'Boyut Azaltma', slug: 'Boyut_Azaltma' },
+      { name: 'Makine Öğrenmesi', slug: 'Makine_Ogrenmesi' },
+      { name: 'Python', slug: 'Python' },
+      { name: 'Veri Görselleştirme', slug: 'Veri_Gorsellestirme' }],
     link: 'https://www.linkedin.com/posts/yusuf-akcakaya_wordembedding-makineaemafbrenmesi-veribilimi-activity-7293363129080537095-zrvV?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADDxmIQB1pIq0Ba_HeCNOJTQ1lcLapQfFko',
     github: 'https://github.com/ksyusuf/65.Ders-Word-Embedding-Visualization',
     prod: '',
@@ -97,7 +123,22 @@ export const programmingProjects: Project[] = [
     title: 'NoteTut - DevOps Odaklı Açık Kaynak Not Uygulaması',
     description: 'Gerçek bir DevOps deneyimi sunmak amacıyla başlatılan açık kaynaklı not uygulaması projesidir. Temel amacı, CI/CD süreçlerini, Docker ve deployment pratiklerini uygulamalı olarak öğrenmek ve açık kaynak projelere katkıda bulunma deneyimi kazanmaktır. Proje, React.js (Frontend), Node.js/Express (Backend) ve MongoDB (Veritabanı) teknolojilerini kullanırken, DevOps süreçleri GitHub Actions ve Vercel ile yönetilmektedir. Katılımcılar, kod review, takım içi iş birliği ve endüstri standardında geliştirme pratiklerini deneyimleyebilirler. Basit bir not uygulaması üzerinden DevOps ekosisteminin tüm bileşenleri pratik olarak öğrenilmektedir.',
     image: programmingImages['./img/notetut-main-page.png'].default,
-    technologies: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Docker', 'GitHub Actions', 'Vercel', 'CI/CD', 'DevOps', 'Açık Kaynak', 'Tailwind CSS', 'TypeScript', 'Jest', 'Redux', 'JWT'],
+    technologies: [
+      { name: 'React.js', slug: 'React_js' },
+      { name: 'Node.js', slug: 'Node_js' },
+      { name: 'Express.js', slug: 'Express_js' },
+      { name: 'MongoDB', slug: 'MongoDB' },
+      { name: 'Docker', slug: 'Docker' },
+      { name: 'GitHub Actions', slug: 'GitHub_Actions' },
+      { name: 'Vercel', slug: 'Vercel' },
+      { name: 'CI/CD', slug: 'CI_CD' },
+      { name: 'DevOps', slug: 'DevOps' },
+      { name: 'Açık Kaynak', slug: 'Acik_Kaynak' },
+      { name: 'Tailwind CSS', slug: 'Tailwind_CSS' },
+      { name: 'TypeScript', slug: 'TypeScript' },
+      { name: 'Jest', slug: 'Jest' },
+      { name: 'Redux', slug: 'Redux' },
+      { name: 'JWT', slug: 'JWT' }],
     link: 'https://www.linkedin.com/feed/update/urn:li:activity:7318570175715328000/',
     github: 'https://github.com/ksyusuf/NoteTut',
     prod: 'https://notetut.vercel.app/',
@@ -109,7 +150,19 @@ export const programmingProjects: Project[] = [
     title: 'Graficast API - Yorum Görselleştirme ve Yönetim Servisi',
     description: 'PIL ve FastAPI (Python) altyapısı kullanılarak geliştirilen bu ilk API servisi, bir web sitesi üzerindeki yorumları otomatik olarak görselleştirip Google Fotoğraflar\'a kaydetme ve yönetim sürecini otomatikleştirmeyi amaçlar. Servis, ana veritabanından gelen yorum ID\'lerini alır, kendi MongoDB Atlas veritabanında (paylaşım bilgileri, farklı template\'ler için kontroller) tutar. Verilen ID ve içerik parametreleriyle yorumun resmini üretir, açıklamasıyla birlikte Google Photos API aracılığıyla Google Fotoğraflar\'a kaydeder. Ardından, ilgili yorumun "is_shared" durumunu güncelleyerek tekrarlayan paylaşımları önler. API Key ve OAuth2 (Google Photos API için) olmak üzere iki tür yetkilendirme mekanizması içerir. Dağıtımı Render.com üzerinden otomatikleştirilmiş CI/CD süreçleriyle (GitHub Actions, SemVer tabanlı versiyonlama) gerçekleştirilmiştir.',
     image: programmingImages['./img/graficast.png'].default,
-    technologies: ['Python', 'FastAPI', 'PIL (Pillow)', 'MongoDB Atlas', 'Google Photos API', 'OAuth2', 'Render.com', 'GitHub Actions', 'CI/CD', 'Semantic Versioning (SemVer)', 'Docker', 'API Geliştirme'],
+    technologies: [
+      { name: 'Python', slug: 'Python' },
+      { name: 'FastAPI', slug: 'FastAPI' },
+      { name: 'PIL (Pillow)', slug: 'PIL_Pillow' },
+      { name: 'MongoDB Atlas', slug: 'MongoDB_Atlas' },
+      { name: 'Google Photos API', slug: 'Google_Photos_API' },
+      { name: 'OAuth2', slug: 'OAuth2' },
+      { name: 'Render.com', slug: 'Render_com' },
+      { name: 'GitHub Actions', slug: 'GitHub_Actions' },
+      { name: 'CI/CD', slug: 'CI_CD' },
+      { name: 'Semantic Versioning (SemVer)', slug: 'Semantic_Versioning_SemVer' },
+      { name: 'Docker', slug: 'Docker' },
+      { name: 'API Geliştirme', slug: 'API_Gelistirme' }],
     link: 'https://www.linkedin.com/posts/yusuf-akcakaya_pillow-fastapi-python-activity-7328759144008585216-AMUv?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADDxmIQB1pIq0Ba_HeCNOJTQ1lcLapQfFko',
     github: 'https://github.com/ksyusuf/Graficast',
     prod: 'https://graficast-staging.onrender.com/docs',
@@ -121,7 +174,16 @@ export const programmingProjects: Project[] = [
     title: 'MotoAnaliz - RKS R250 Yıllık Yakıt Tüketimi ve Bakım Analizi',
     description: 'RKS marka R250 motosikletin son bir yıllık yakıt tüketimi, bakım verimliliği ve maliyetlerini detaylı bir şekilde analiz eden kişisel bir veri analizi projesidir. Fuelio uygulamasından ve özel notlardan alınan veriler Python ile işlenerek kapsamlı görselleştirmeler ve raporlar hazırlanmıştır. Proje, yakıt ve kilometre başına maliyet trendlerini, yakıt tüketimi dağılımını (mesafe, ortalama/medyan, dolum tipi), mevsimsel etkileri ve bakım takibini içerir. 28 farklı grafik, detaylı Excel raporu ve kaynak kodları GitHub üzerinde mevcuttur. Bu analizler, sürüş dinamikleri hakkında kişisel çıkarımlar yapmayı sağlamıştır.',
     image: programmingImages['./img/Motosiklet.jpg'].default,
-    technologies: ['Python', 'Pandas', 'Matplotlib', 'NumPy', 'Veri Analizi', 'Veri Görselleştirme', 'Zaman Serisi Analizi', 'Maliyet Analizi', 'Fuelio'],
+    technologies: [
+      { name: 'Python', slug: 'Python' },
+      { name: 'Pandas', slug: 'Pandas' },
+      { name: 'Matplotlib', slug: 'Matplotlib' },
+      { name: 'NumPy', slug: 'NumPy' },
+      { name: 'Veri Analizi', slug: 'Veri_Analizi' },
+      { name: 'Veri Görselleştirme', slug: 'Veri_Gorsellestirme' },
+      { name: 'Zaman Serisi Analizi', slug: 'Zaman_Serisi_Analizi' },
+      { name: 'Maliyet Analizi', slug: 'Maliyet_Analizi' },
+      { name: 'Fuelio', slug: 'Fuelio' }],
     link: 'https://www.linkedin.com/posts/yusuf-akcakaya_pandas-numpy-python-activity-7350855656133787648-B-qe?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADDxmIQB1pIq0Ba_HeCNOJTQ1lcLapQfFko',
     github: 'https://github.com/ksyusuf/MotoAnaliz',
     prod: '',
@@ -133,7 +195,12 @@ export const programmingProjects: Project[] = [
     title: 'İHA Kiralama Projesi',
     description: 'BaykarTech Akıllı Web Sistemleri Arka Uç Yazılım Uzmanı...',
     image: programmingImages['./img/IHA-AnaSayfa(ziyaretci).png'].default,
-    technologies: ['Python', 'Django', 'PostgreSQL', 'Bootstrap', 'jQuery'],
+    technologies: [
+      { name: 'Python', slug: 'Python' },
+      { name: 'Django', slug: 'Django' },
+      { name: 'PostgreSQL', slug: 'PostgreSQL' },
+      { name: 'Bootstrap', slug: 'Bootstrap' },
+      { name: 'jQuery', slug: 'jQuery' }],
     link: '',
     github: 'https://github.com/ksyusuf/Django-IHA-Kiralama-Projesi',
     prod: '',
@@ -144,10 +211,10 @@ export const programmingProjects: Project[] = [
 
 export const devTechMap = programmingProjects.reduce((acc, project) => {
   project.technologies.forEach(tech => {
-    if (!acc[tech]) {
-      acc[tech] = []
+    if (!acc[tech.slug]) {
+      acc[tech.slug] = [];
     }
-    acc[tech].push(project.id)
-  })
-  return acc
-}, {} as Record<string, string[]>)
+    acc[tech.slug].push(project.id);
+  });
+  return acc;
+}, {} as Record<string, string[]>);

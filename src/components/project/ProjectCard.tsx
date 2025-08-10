@@ -2,19 +2,23 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PencilIcon, EyeIcon, CodeBracketIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 
-// Project arayüzünü burada tanımlıyoruz, diğer dosyalar da buradan import edecek.
+interface Technology {
+  name: string; // Orijinal teknoloji adı (Türkçe karakterler dahil)
+  slug: string; // URL dostu hali
+}
+
 export interface Project {
-  id: string
-  title: string
-  description: string
-  image?: string
-  technologies: string[]
-  link?: string
-  github?: string
-  prod?: string
-  medium?: string
-  pdfUrl?: string
-  date: string
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  technologies: Technology[];
+  link?: string;
+  github?: string;
+  prod?: string;
+  medium?: string;
+  pdfUrl?: string;
+  date: string;
 }
 
 interface ProjectCardProps {
@@ -75,15 +79,13 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
         <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech) => (
             <Link
-              key={tech}
-              to={`/projects/tech/${encodeURIComponent(tech)}`}
+              key={tech.slug}
+              to={`/projects/tech/${tech.slug}`}
               className="px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors duration-200">
-              {tech}
+              {tech.name}
             </Link>
           ))}
         </div>
-
-        {/* ci/cd teknolojisine tıklayınca boş sayfaya atıyor? */}
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2">

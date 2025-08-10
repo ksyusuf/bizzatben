@@ -2,13 +2,14 @@
 import { useState, useRef, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useModeStore } from '../../store/modeStore';
-import { programmingProjects, type Project } from '../programming/DevProjects';
+import { programmingProjects } from '../programming/DevProjects';
 import { civilProjects } from '../civil/CivilProjects';
 import { ProjectCard } from './ProjectCard';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ProjectDetailModal } from './ProjectDetailModal';
+import { type Project } from '../project/ProjectCard'
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,14 +20,19 @@ export default function TechProjects() {
 
   const allProjects = [...programmingProjects, ...civilProjects];
   const filteredProjects = allProjects.filter(project =>
-    project.technologies.includes(tech as string)
+    project.technologies.some(techObj => techObj.slug === tech)
   );
+
+  const techByfirstProject = filteredProjects.length > 0
+  ? filteredProjects[0].technologies.find(t => t.slug === tech)!.name
+  : undefined;
+  // biraz ilkel oldu
 
   const containerRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
-    // URL parametresi (tech) değiştiğinde modalı kapat
+    // URL parametresi (techName) değiştiğinde modalı kapat
     setSelectedProject(null);
   }, [tech]);
 
@@ -73,7 +79,7 @@ export default function TechProjects() {
               currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
             }`}
           >
-            {tech} Projeleri
+            {techByfirstProject} Projeleri
           </h2>
           <Link
             to="/#projects"

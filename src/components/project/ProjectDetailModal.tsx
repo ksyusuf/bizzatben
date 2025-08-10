@@ -3,21 +3,7 @@ import { PencilIcon, EyeIcon, CodeBracketIcon, ArrowTopRightOnSquareIcon, XMarkI
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom';
-
-// Project arayüzünü burada tanımlıyoruz, diğer dosyalar da buradan import edecek.
-export interface Project {
-  id: string
-  title: string
-  description: string
-  image?: string
-  technologies: string[]
-  link?: string
-  github?: string
-  prod?: string
-  medium?: string
-  pdfUrl?: string
-  date: string
-}
+import { type Project } from '../project/ProjectCard'
 
 interface ProjectDetailModalProps {
     project: Project | null
@@ -102,10 +88,10 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                                 <div className="flex flex-wrap gap-2">
                                 {project.technologies.map((tech) => (
                                     <Link
-                                        key={tech}
-                                        to={`/projects/tech/${encodeURIComponent(tech)}`}
+                                        key={tech.slug}
+                                        to={`/projects/tech/${tech.slug}`}
                                         className="px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors duration-200">
-                                        {tech}
+                                        {tech.name}
                                     </Link>
                                 ))}
                                 </div>
