@@ -66,8 +66,4 @@ export default tseslint.config([
     },
   },
 ])
-<<<<<<< HEAD
 ```
-=======
-```
->>>>>>> 5f13c7e (commit2)

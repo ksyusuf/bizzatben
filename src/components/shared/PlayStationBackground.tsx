@@ -57,6 +57,7 @@ export default function PlayStationBackgroundOptimized() {
     {
       paletteDuration: 24000,
       animDuration: 32000,
+      blur: 50,
       scaleBase: 1,
       scaleVar: 0.12,
       rotateVar: 12,
@@ -69,6 +70,7 @@ export default function PlayStationBackgroundOptimized() {
     {
       paletteDuration: 18000,
       animDuration: 24000,
+      blur: 35,
       scaleBase: 1,
       scaleVar: 0.15,
       rotateVar: 15,
@@ -90,31 +92,6 @@ export default function PlayStationBackgroundOptimized() {
 
     let frameId: number;
     const startTime = performance.now();
-    
-    // Mobil cihazlar için animasyonu zorla başlat
-    const forceStartAnimation = () => {
-      if (layers.every(layer => layer.el)) {
-        layers.forEach((layer) => {
-          if (layer.el) {
-            layer.el.style.opacity = '1';
-            layer.el.style.transform = 'translate(-50%, -50%) scale(1,1) rotate(0deg)';
-          }
-        });
-      }
-    };
-    
-    // Sayfa yüklendiğinde ve görünür olduğunda animasyonu başlat
-    if (document.visibilityState === 'visible') {
-      forceStartAnimation();
-    }
-    
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
-        forceStartAnimation();
-      }
-    };
-    
-    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const palettes = displayedMode === 'programming' ? programmingPalettes : civilPalettes;
     const cyclicPalettes = [...palettes, palettes[0]];
@@ -128,10 +105,9 @@ export default function PlayStationBackgroundOptimized() {
     const paletteIdx = Array(layers.length).fill(0);
     const paletteProgress = Array(layers.length).fill(0);
     
-         // Cache for expensive calculations
-     let lastUpdateTime = 0;
-     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-     const UPDATE_INTERVAL = isMobile ? 16.67 : 33.33; // Mobilde 60fps, desktop'ta 30fps
+    // Cache for expensive calculations
+    let lastUpdateTime = 0;
+    const UPDATE_INTERVAL = 33.33; // ~30fps for smoother, slower animation
 
     // Pre-calculate some constants
     const TWO_PI = Math.PI * 2;
@@ -181,6 +157,7 @@ export default function PlayStationBackgroundOptimized() {
         elStyle.left = `${left.toFixed(1)}%`;
         elStyle.top = `${top.toFixed(1)}%`;
         elStyle.borderRadius = organicRadius(tAnim, config.phase);
+        elStyle.filter = `blur(${config.blur}px)`;
         elStyle.transform = transforms;
         elStyle.backgroundImage = `
           radial-gradient(circle at 15% 15%, ${colors[0]} 0%, ${colors[0]} 30%, transparent 60%),
@@ -196,7 +173,6 @@ export default function PlayStationBackgroundOptimized() {
 
     return () => {
       cancelAnimationFrame(frameId);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [displayedMode, layerConfig]);
 
@@ -218,7 +194,8 @@ export default function PlayStationBackgroundOptimized() {
           gsap.set(shapes, { 
             opacity: 0,
             scale: 1,
-            clearProps: 'transform'
+            filter: 'blur(0px)',
+            clearProps: 'transform,filter'
           });
         }
       });
@@ -230,25 +207,24 @@ export default function PlayStationBackgroundOptimized() {
         ease: 'power1.out'
       });
       
-         } else {
-       // Initial load - set initial state first
-       setIsAnimating(true);
-       gsap.set(shapes, { 
-         opacity: 0,
-         scale: 0.4
-       });
-       
-       // Mobil cihazlar için daha hızlı ve agresif animasyon
-       const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-       
-       gsap.to(shapes, {
-         opacity: 1,
-         duration: isMobile ? 2 : 5,
-         ease: 'none',
-         delay: isMobile ? 0.1 : 1,
-         onComplete: () => setIsAnimating(false)
-       });
-     }
+    } else {
+      // Initial load - set initial state first
+      setIsAnimating(true);
+      gsap.set(shapes, { 
+        opacity: 0,
+        scale: 0.4,
+        filter: 'blur(0px)'
+      });
+      
+      // Simple fade in only
+      gsap.to(shapes, {
+        opacity: 1,
+        duration: 5,
+        ease: 'none',
+        delay: 1,
+        onComplete: () => setIsAnimating(false)
+      });
+    }
 
     return () => {
       gsap.killTweensOf(shapes);
@@ -270,15 +246,6 @@ export default function PlayStationBackgroundOptimized() {
         ref={innerRef}
         className="absolute"
         style={{ width: '54vw', height: '54vw', pointerEvents: 'none', zIndex: 2 }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{ 
-          backdropFilter: 'blur(50px)',
-          WebkitBackdropFilter: 'blur(50px)',
-          pointerEvents: 'none',
-          zIndex: 3
-        }}
       />
     </div>
   );
