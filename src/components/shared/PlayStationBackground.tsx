@@ -94,7 +94,7 @@ export default function PlayStationBackgroundOptimized() {
     // Mobil cihazlar için animasyonu zorla başlat
     const forceStartAnimation = () => {
       if (layers.every(layer => layer.el)) {
-        layers.forEach((layer, i) => {
+        layers.forEach((layer) => {
           if (layer.el) {
             layer.el.style.opacity = '1';
             layer.el.style.transform = 'translate(-50%, -50%) scale(1,1) rotate(0deg)';
