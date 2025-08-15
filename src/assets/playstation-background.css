@@ -1,0 +1,389 @@
+/* Renk paleti değişkenleri */
+:root {
+  /* Programming mode colors */
+  --prog-primary: #10B981;
+  --prog-secondary: #059669;
+  --prog-accent: #8B5CF6;
+  --prog-dark: #1F2937;
+  --prog-darker: #0F0F0F;
+  --prog-light: #6B7280;
+  --prog-blue: #6b90cc;
+  --prog-pink: #EC4899;
+  --prog-purple: #8B5CF6;
+
+  /* Civil mode colors */
+  --civil-primary: #D97706;
+  --civil-secondary: #F59E0B;
+  --civil-accent: #FEF3C7;
+  --civil-dark: #4B5563;
+  --civil-darker: #0F0F0F;
+  --civil-light: #9CA3AF;
+  --civil-gold: #F59E0B;
+  --civil-amber: #F59E0B;
+  --civil-yellow: #FEF3C7;
+
+  /* Işık hüzmesi boyut değişkenleri */
+  --ps-bg-main-size: 50vw;
+  --ps-bg-inner-size: 35vw;
+  --ps-bg-core-size: 20vw;
+}
+
+/* Işık hüzmesi dalgası animasyonu - Daha toplu ve sınırlı */
+@keyframes light-wave-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.7) rotate(0deg);
+    opacity: 0.6;
+  }
+  16.66% {
+    transform: translate(-51%, -49%) scale(0.9) rotate(60deg);
+    opacity: 0.8;
+  }
+  33.33% {
+    transform: translate(-50%, -50%) scale(0.8) rotate(120deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-49%, -51%) scale(1.0) rotate(180deg);
+    opacity: 0.9;
+  }
+  66.66% {
+    transform: translate(-50%, -50%) scale(0.75) rotate(240deg);
+    opacity: 0.6;
+  }
+  83.33% {
+    transform: translate(-51%, -49%) scale(0.85) rotate(300deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.7) rotate(360deg);
+    opacity: 0.6;
+  }
+}
+
+/* İç dalga animasyonu - Daha toplu */
+@keyframes inner-wave-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5) rotate(180deg);
+    opacity: 0.4;
+  }
+  25% {
+    transform: translate(-49%, -51%) scale(0.7) rotate(270deg);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(0.6) rotate(360deg);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translate(-51%, -49%) scale(0.65) rotate(90deg);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.5) rotate(180deg);
+    opacity: 0.4;
+  }
+}
+
+/* Çekirdek dalga animasyonu - En toplu */
+@keyframes core-wave-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+    opacity: 0.3;
+  }
+  33.33% {
+    transform: translate(-50.5%, -49.5%) scale(0.5) rotate(120deg);
+    opacity: 0.6;
+  }
+  66.66% {
+    transform: translate(-49.5%, -50.5%) scale(0.4) rotate(240deg);
+    opacity: 0.4;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.3) rotate(360deg);
+    opacity: 0.3;
+  }
+}
+
+@keyframes ps-bg-boil-main {
+  0%   { transform: scale(1,1) rotate(0deg) translate(-50%, -50%); border-radius: 50% 50% 50% 50%/50% 50% 50% 50%; }
+  15%  { transform: scale(1.12,0.95) rotate(7deg) translate(-50%, -50%); border-radius: 60% 40% 55% 45%/45% 55% 60% 40%; }
+  30%  { transform: scale(0.93,1.08) rotate(-5deg) translate(-50%, -50%); border-radius: 50% 60% 40% 50%/60% 50% 40% 50%; }
+  45%  { transform: scale(1.10,0.92) rotate(12deg) translate(-50%, -50%); border-radius: 55% 45% 60% 40%/50% 60% 40% 50%; }
+  60%  { transform: scale(0.97,1.13) rotate(-8deg) translate(-50%, -50%); border-radius: 50% 50% 60% 40%/60% 40% 50% 50%; }
+  75%  { transform: scale(1.08,0.98) rotate(5deg) translate(-50%, -50%); border-radius: 60% 50% 50% 40%/50% 60% 40% 50%; }
+  100% { transform: scale(1,1) rotate(0deg) translate(-50%, -50%); border-radius: 50% 50% 50% 50%/50% 50% 50% 50%; }
+}
+@keyframes ps-bg-boil-inner {
+  0%   { transform: scale(1,1) rotate(0deg) translate(-50%, -50%); border-radius: 50% 50% 50% 50%/50% 50% 50% 50%; }
+  20%  { transform: scale(0.92,1.13) rotate(-10deg) translate(-50%, -50%); border-radius: 60% 40% 50% 60%/50% 60% 40% 50%; }
+  40%  { transform: scale(1.14,0.91) rotate(8deg) translate(-50%, -50%); border-radius: 50% 60% 40% 50%/60% 50% 40% 50%; }
+  60%  { transform: scale(0.95,1.10) rotate(-6deg) translate(-50%, -50%); border-radius: 55% 45% 60% 40%/50% 60% 40% 50%; }
+  80%  { transform: scale(1.09,0.97) rotate(11deg) translate(-50%, -50%); border-radius: 50% 50% 60% 40%/60% 40% 50% 50%; }
+  100% { transform: scale(1,1) rotate(0deg) translate(-50%, -50%); border-radius: 50% 50% 50% 50%/50% 50% 50% 50%; }
+}
+@keyframes ps-bg-boil-core {
+  0%   { transform: scale(1,1) rotate(0deg) translate(-50%, -50%); border-radius: 50% 50% 50% 50%/50% 50% 50% 50%; }
+  25%  { transform: scale(1.15,0.90) rotate(13deg) translate(-50%, -50%); border-radius: 60% 40% 55% 45%/45% 55% 60% 40%; }
+  50%  { transform: scale(0.91,1.14) rotate(-9deg) translate(-50%, -50%); border-radius: 50% 60% 40% 50%/60% 50% 40% 50%; }
+  75%  { transform: scale(1.12,0.93) rotate(7deg) translate(-50%, -50%); border-radius: 55% 45% 60% 40%/50% 60% 40% 50%; }
+  100% { transform: scale(1,1) rotate(0deg) translate(-50%, -50%); border-radius: 50% 50% 50% 50%/50% 50% 50% 50%; }
+}
+
+@keyframes ps-bg-colors-main {
+  0%, 100% {
+    background-image:
+      radial-gradient(circle at 15% 15%, var(--prog-primary) 0%, var(--prog-primary) 45%, transparent 75%),
+      radial-gradient(circle at 85% 85%, var(--prog-accent) 0%, var(--prog-accent) 45%, transparent 75%),
+      radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 55%, transparent 85%),
+      radial-gradient(circle at 10% 90%, var(--prog-pink) 0%, var(--prog-pink) 40%, transparent 70%),
+      radial-gradient(circle at 90% 10%, var(--prog-primary) 0%, var(--prog-primary) 45%, transparent 75%),
+      radial-gradient(circle at 25% 75%, var(--prog-accent) 0%, var(--prog-accent) 35%, transparent 65%),
+      radial-gradient(circle at 75% 25%, var(--prog-secondary) 0%, var(--prog-secondary) 40%, transparent 70%),
+      radial-gradient(circle at 40% 60%, var(--prog-dark) 0%, var(--prog-dark) 30%, transparent 60%),
+      radial-gradient(circle at 60% 40%, var(--prog-darker) 0%, var(--prog-darker) 35%, transparent 65%),
+      radial-gradient(circle at 30% 70%, var(--prog-light) 0%, var(--prog-light) 25%, transparent 55%);
+  }
+  20% {
+    background-image:
+      radial-gradient(circle at 15% 15%, var(--prog-primary) 0%, var(--prog-primary) 45%, transparent 75%),
+      radial-gradient(circle at 85% 85%, var(--prog-accent) 0%, var(--prog-accent) 45%, transparent 75%),
+      radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 55%, transparent 85%),
+      radial-gradient(circle at 10% 90%, var(--prog-pink) 0%, var(--prog-pink) 40%, transparent 70%),
+      radial-gradient(circle at 90% 10%, var(--prog-accent) 0%, var(--prog-accent) 45%, transparent 75%),
+      radial-gradient(circle at 25% 75%, var(--prog-blue) 0%, var(--prog-blue) 35%, transparent 65%),
+      radial-gradient(circle at 75% 25%, var(--prog-pink) 0%, var(--prog-pink) 40%, transparent 70%),
+      radial-gradient(circle at 40% 60%, var(--prog-primary) 0%, var(--prog-primary) 30%, transparent 60%),
+      radial-gradient(circle at 60% 40%, var(--prog-dark) 0%, var(--prog-dark) 35%, transparent 65%),
+      radial-gradient(circle at 30% 70%, var(--prog-darker) 0%, var(--prog-darker) 25%, transparent 55%);
+  }
+  40% {
+    background-image:
+      radial-gradient(circle at 15% 15%, var(--prog-accent) 0%, var(--prog-accent) 45%, transparent 75%),
+      radial-gradient(circle at 85% 85%, var(--prog-blue) 0%, var(--prog-blue) 45%, transparent 75%),
+      radial-gradient(circle at 50% 50%, var(--prog-pink) 0%, var(--prog-pink) 55%, transparent 85%),
+      radial-gradient(circle at 10% 90%, var(--prog-primary) 0%, var(--prog-primary) 40%, transparent 70%),
+      radial-gradient(circle at 90% 10%, var(--prog-blue) 0%, var(--prog-blue) 45%, transparent 75%),
+      radial-gradient(circle at 25% 75%, var(--prog-pink) 0%, var(--prog-pink) 35%, transparent 65%),
+      radial-gradient(circle at 75% 25%, var(--prog-primary) 0%, var(--prog-primary) 40%, transparent 70%),
+      radial-gradient(circle at 40% 60%, var(--prog-accent) 0%, var(--prog-accent) 30%, transparent 60%),
+      radial-gradient(circle at 60% 40%, var(--prog-primary) 0%, var(--prog-primary) 35%, transparent 65%),
+      radial-gradient(circle at 30% 70%, var(--prog-dark) 0%, var(--prog-dark) 25%, transparent 55%);
+  }
+  60% {
+    background-image:
+      radial-gradient(circle at 15% 15%, var(--prog-blue) 0%, var(--prog-blue) 45%, transparent 75%),
+      radial-gradient(circle at 85% 85%, var(--prog-pink) 0%, var(--prog-pink) 45%, transparent 75%),
+      radial-gradient(circle at 50% 50%, var(--prog-primary) 0%, var(--prog-primary) 55%, transparent 85%),
+      radial-gradient(circle at 10% 90%, var(--prog-accent) 0%, var(--prog-accent) 40%, transparent 70%),
+      radial-gradient(circle at 90% 10%, var(--prog-primary) 0%, var(--prog-primary) 45%, transparent 75%),
+      radial-gradient(circle at 25% 75%, var(--prog-accent) 0%, var(--prog-accent) 35%, transparent 65%),
+      radial-gradient(circle at 75% 25%, var(--prog-secondary) 0%, var(--prog-secondary) 40%, transparent 70%),
+      radial-gradient(circle at 40% 60%, var(--prog-dark) 0%, var(--prog-dark) 30%, transparent 60%),
+      radial-gradient(circle at 60% 40%, var(--prog-darker) 0%, var(--prog-darker) 35%, transparent 65%),
+      radial-gradient(circle at 30% 70%, var(--prog-light) 0%, var(--prog-light) 25%, transparent 55%);
+  }
+  80% {
+    background-image:
+      radial-gradient(circle at 15% 15%, var(--prog-blue) 0%, var(--prog-blue) 45%, transparent 75%),
+      radial-gradient(circle at 85% 85%, var(--prog-pink) 0%, var(--prog-pink) 45%, transparent 75%),
+      radial-gradient(circle at 50% 50%, var(--prog-primary) 0%, var(--prog-primary) 55%, transparent 85%),
+      radial-gradient(circle at 10% 90%, var(--prog-accent) 0%, var(--prog-accent) 40%, transparent 70%),
+      radial-gradient(circle at 90% 10%, var(--prog-blue) 0%, var(--prog-blue) 45%, transparent 75%),
+      radial-gradient(circle at 25% 75%, var(--prog-pink) 0%, var(--prog-pink) 35%, transparent 65%),
+      radial-gradient(circle at 75% 25%, var(--prog-primary) 0%, var(--prog-primary) 40%, transparent 70%),
+      radial-gradient(circle at 40% 60%, var(--prog-accent) 0%, var(--prog-accent) 30%, transparent 60%),
+      radial-gradient(circle at 60% 40%, var(--prog-primary) 0%, var(--prog-primary) 35%, transparent 65%),
+      radial-gradient(circle at 30% 70%, var(--prog-dark) 0%, var(--prog-dark) 25%, transparent 55%);
+  }
+}
+
+/* Benzer şekilde inner ve core için de renk animasyonları ekle (daha kısa ve farklı sıralamalarla) */
+@keyframes ps-bg-colors-inner {
+  0%, 100% {
+    background-image:
+      radial-gradient(circle at 25% 25%, var(--prog-primary) 0%, var(--prog-primary) 55%, transparent 85%),
+      radial-gradient(circle at 75% 75%, var(--prog-accent) 0%, var(--prog-accent) 55%, transparent 85%),
+      radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 65%, transparent 95%),
+      radial-gradient(circle at 15% 85%, var(--prog-pink) 0%, var(--prog-pink) 50%, transparent 80%);
+  }
+  25% {
+    background-image:
+      radial-gradient(circle at 25% 25%, var(--prog-primary) 0%, var(--prog-primary) 55%, transparent 85%),
+      radial-gradient(circle at 75% 75%, var(--prog-accent) 0%, var(--prog-accent) 55%, transparent 85%),
+      radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 65%, transparent 95%),
+      radial-gradient(circle at 15% 85%, var(--prog-accent) 0%, var(--prog-accent) 50%, transparent 80%);
+  }
+  50% {
+    background-image:
+      radial-gradient(circle at 25% 25%, var(--prog-accent) 0%, var(--prog-accent) 55%, transparent 85%),
+      radial-gradient(circle at 75% 75%, var(--prog-blue) 0%, var(--prog-blue) 55%, transparent 85%),
+      radial-gradient(circle at 50% 50%, var(--prog-pink) 0%, var(--prog-pink) 65%, transparent 95%),
+      radial-gradient(circle at 15% 85%, var(--prog-primary) 0%, var(--prog-primary) 50%, transparent 80%);
+  }
+  75% {
+    background-image:
+      radial-gradient(circle at 25% 25%, var(--prog-accent) 0%, var(--prog-accent) 55%, transparent 85%),
+      radial-gradient(circle at 75% 75%, var(--prog-blue) 0%, var(--prog-blue) 55%, transparent 85%),
+      radial-gradient(circle at 50% 50%, var(--prog-primary) 0%, var(--prog-primary) 65%, transparent 95%),
+      radial-gradient(circle at 15% 85%, var(--prog-pink) 0%, var(--prog-pink) 50%, transparent 80%);
+  }
+}
+@keyframes ps-bg-colors-core {
+  0%, 100% {
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--prog-primary) 0%, var(--prog-primary) 75%, transparent 95%),
+      radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 75%, transparent 95%);
+  }
+  50% {
+    background-image:
+      radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 75%, transparent 95%),
+      radial-gradient(circle at 50% 50%, var(--prog-primary) 0%, var(--prog-primary) 75%, transparent 95%);
+  }
+}
+
+/* Programlama ve İnşaat modları için ışık hüzmesi dalgasının temel stilleri - Dairesel ve değişken boyutlu */
+.programming-light-wave,
+.civil-light-wave {
+  position: absolute;
+  width: var(--ps-bg-main-size);
+  height: var(--ps-bg-main-size);
+  left: 38%;
+  top: 44%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(80px);
+  animation: light-wave-animation 30s infinite ease-in-out, ps-bg-boil-main 13s infinite cubic-bezier(.4,0,.2,1), ps-bg-colors-main 24s infinite linear;
+  pointer-events: none;
+}
+
+/* İç dalga katmanı - Daha büyük */
+.programming-light-wave-inner,
+.civil-light-wave-inner {
+  position: absolute;
+  width: var(--ps-bg-inner-size);
+  height: var(--ps-bg-inner-size);
+  left: 62%;
+  top: 56%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(60px); /* Daha fazla bulanıklık */
+  animation: inner-wave-animation 20s infinite ease-in-out, ps-bg-boil-inner 11s infinite cubic-bezier(.4,0,.2,1), ps-bg-colors-inner 18s infinite linear;
+  pointer-events: none;
+}
+
+/* Çekirdek dalga katmanı - Daha büyük */
+.programming-light-wave-core,
+.civil-light-wave-core {
+  position: absolute;
+  width: var(--ps-bg-core-size);
+  height: var(--ps-bg-core-size);
+  left: 54%;
+  top: 32%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  filter: blur(40px); /* Daha fazla bulanıklık */
+  animation: core-wave-animation 15s infinite ease-in-out, ps-bg-boil-core 9s infinite cubic-bezier(.4,0,.2,1), ps-bg-colors-core 14s infinite linear;
+  pointer-events: none;
+}
+
+.programming-light-wave,
+.civil-light-wave,
+.programming-light-wave-inner,
+.civil-light-wave-inner,
+.programming-light-wave-core,
+.civil-light-wave-core {
+  /* Renk geçişleri yumuşak olsun */
+  transition: background-image 4s cubic-bezier(.4,0,.2,1), opacity 2.5s, width 0.5s, height 0.5s, border-radius 2.5s, transform 2.5s;
+  background-blend-mode: lighten, screen, lighten, screen, lighten, screen, lighten, screen, lighten, screen;
+}
+
+.programming-light-wave,
+.civil-light-wave {
+  animation: light-wave-animation 30s infinite ease-in-out, ps-bg-boil-main 13s infinite cubic-bezier(.4,0,.2,1), ps-bg-colors-main 24s infinite linear;
+}
+
+.programming-light-wave-inner,
+.civil-light-wave-inner {
+  animation: inner-wave-animation 20s infinite ease-in-out, ps-bg-boil-inner 11s infinite cubic-bezier(.4,0,.2,1), ps-bg-colors-inner 18s infinite linear;
+}
+
+.programming-light-wave-core,
+.civil-light-wave-core {
+  animation: core-wave-animation 15s infinite ease-in-out, ps-bg-boil-core 9s infinite cubic-bezier(.4,0,.2,1), ps-bg-colors-core 14s infinite linear;
+}
+
+/* Programlama modu için renk değişkenleriyle background-image */
+.programming-light-wave {
+  background-image: 
+    radial-gradient(circle at 15% 15%, var(--prog-primary) 0%, var(--prog-primary) 45%, transparent 75%),
+    radial-gradient(circle at 85% 85%, var(--prog-accent) 0%, var(--prog-accent) 45%, transparent 75%),
+    radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 55%, transparent 85%),
+    radial-gradient(circle at 10% 90%, var(--prog-pink) 0%, var(--prog-pink) 40%, transparent 70%),
+    radial-gradient(circle at 90% 10%, var(--prog-primary) 0%, var(--prog-primary) 45%, transparent 75%),
+    radial-gradient(circle at 25% 75%, var(--prog-accent) 0%, var(--prog-accent) 35%, transparent 65%),
+    radial-gradient(circle at 75% 25%, var(--prog-secondary) 0%, var(--prog-secondary) 40%, transparent 70%),
+    radial-gradient(circle at 40% 60%, var(--prog-dark) 0%, var(--prog-dark) 30%, transparent 60%),
+    radial-gradient(circle at 60% 40%, var(--prog-darker) 0%, var(--prog-darker) 35%, transparent 65%),
+    radial-gradient(circle at 30% 70%, var(--prog-light) 0%, var(--prog-light) 25%, transparent 55%);
+}
+
+.programming-light-wave-inner {
+  background-image: 
+    radial-gradient(circle at 25% 25%, var(--prog-primary) 0%, var(--prog-primary) 55%, transparent 85%),
+    radial-gradient(circle at 75% 75%, var(--prog-accent) 0%, var(--prog-accent) 55%, transparent 85%),
+    radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 65%, transparent 95%),
+    radial-gradient(circle at 15% 85%, var(--prog-pink) 0%, var(--prog-pink) 50%, transparent 80%),
+    radial-gradient(circle at 85% 15%, var(--prog-secondary) 0%, var(--prog-secondary) 50%, transparent 80%),
+    radial-gradient(circle at 35% 65%, var(--prog-dark) 0%, var(--prog-dark) 35%, transparent 65%),
+    radial-gradient(circle at 65% 35%, var(--prog-darker) 0%, var(--prog-darker) 40%, transparent 70%),
+    radial-gradient(circle at 45% 55%, var(--prog-light) 0%, var(--prog-light) 25%, transparent 55%);
+}
+
+.programming-light-wave-core {
+  background-image: 
+    radial-gradient(circle at 50% 50%, var(--prog-primary) 0%, var(--prog-primary) 75%, transparent 95%),
+    radial-gradient(circle at 50% 50%, var(--prog-blue) 0%, var(--prog-blue) 75%, transparent 95%),
+    radial-gradient(circle at 50% 50%, var(--prog-accent) 0%, var(--prog-accent) 65%, transparent 85%),
+    radial-gradient(circle at 50% 50%, var(--prog-secondary) 0%, var(--prog-secondary) 65%, transparent 85%),
+    radial-gradient(circle at 50% 50%, var(--prog-dark) 0%, var(--prog-dark) 60%, transparent 80%),
+    radial-gradient(circle at 50% 50%, var(--prog-darker) 0%, var(--prog-darker) 60%, transparent 80%),
+    radial-gradient(circle at 50% 50%, var(--prog-light) 0%, var(--prog-light) 55%, transparent 75%);
+}
+
+/* İnşaat modu için renk değişkenleriyle background-image */
+.civil-light-wave {
+  background-image: 
+    radial-gradient(circle at 15% 15%, var(--civil-primary) 0%, var(--civil-primary) 45%, transparent 75%),
+    radial-gradient(circle at 85% 85%, var(--civil-secondary) 0%, var(--civil-secondary) 45%, transparent 75%),
+    radial-gradient(circle at 50% 50%, var(--civil-secondary) 0%, var(--civil-secondary) 55%, transparent 85%),
+    radial-gradient(circle at 10% 90%, var(--civil-accent) 0%, var(--civil-accent) 40%, transparent 70%),
+    radial-gradient(circle at 90% 10%, var(--civil-secondary) 0%, var(--civil-secondary) 45%, transparent 75%),
+    radial-gradient(circle at 25% 75%, var(--civil-primary) 0%, var(--civil-primary) 35%, transparent 65%),
+    radial-gradient(circle at 75% 25%, var(--civil-dark) 0%, var(--civil-dark) 30%, transparent 60%),
+    radial-gradient(circle at 40% 60%, var(--civil-darker) 0%, var(--civil-darker) 35%, transparent 65%),
+    radial-gradient(circle at 60% 40%, var(--civil-light) 0%, var(--civil-light) 25%, transparent 55%),
+    radial-gradient(circle at 30% 70%, var(--civil-secondary) 0%, var(--civil-secondary) 35%, transparent 65%);
+}
+
+.civil-light-wave-inner {
+  background-image: 
+    radial-gradient(circle at 25% 25%, var(--civil-primary) 0%, var(--civil-primary) 55%, transparent 85%),
+    radial-gradient(circle at 75% 75%, var(--civil-secondary) 0%, var(--civil-secondary) 55%, transparent 85%),
+    radial-gradient(circle at 50% 50%, var(--civil-secondary) 0%, var(--civil-secondary) 65%, transparent 95%),
+    radial-gradient(circle at 15% 85%, var(--civil-accent) 0%, var(--civil-accent) 50%, transparent 80%),
+    radial-gradient(circle at 85% 15%, var(--civil-dark) 0%, var(--civil-dark) 35%, transparent 65%),
+    radial-gradient(circle at 35% 65%, var(--civil-darker) 0%, var(--civil-darker) 40%, transparent 70%),
+    radial-gradient(circle at 65% 35%, var(--civil-light) 0%, var(--civil-light) 25%, transparent 55%),
+    radial-gradient(circle at 45% 55%, var(--civil-secondary) 0%, var(--civil-secondary) 40%, transparent 70%);
+}
+
+.civil-light-wave-core {
+  background-image: 
+    radial-gradient(circle at 50% 50%, var(--civil-primary) 0%, var(--civil-primary) 75%, transparent 95%),
+    radial-gradient(circle at 50% 50%, var(--civil-secondary) 0%, var(--civil-secondary) 75%, transparent 95%),
+    radial-gradient(circle at 50% 50%, var(--civil-secondary) 0%, var(--civil-secondary) 65%, transparent 85%),
+    radial-gradient(circle at 50% 50%, var(--civil-dark) 0%, var(--civil-dark) 60%, transparent 80%),
+    radial-gradient(circle at 50% 50%, var(--civil-darker) 0%, var(--civil-darker) 60%, transparent 80%),
+    radial-gradient(circle at 50% 50%, var(--civil-light) 0%, var(--civil-light) 55%, transparent 75%),
+    radial-gradient(circle at 50% 50%, var(--civil-accent) 0%, var(--civil-accent) 60%, transparent 80%);
+} 
