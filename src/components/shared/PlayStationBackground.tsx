@@ -1,5 +1,5 @@
 import { useModeStore } from '../../store/modeStore';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import gsap from 'gsap';
 import { interpolateRgb } from 'd3-interpolate';
 
@@ -12,78 +12,123 @@ const civilPalettes = [
   ['#303F9F', '#26A69A', '#8BC34A']
 ];
 
-function organicRadius(t: number, phase = 0) {
-  const a = 50 + 10 * Math.sin(2 * Math.PI * t + phase);
-  const b = 50 + 10 * Math.sin(2 * Math.PI * t + 1 + phase);
-  const c = 50 + 10 * Math.sin(2 * Math.PI * t + 2 + phase);
-  const d = 50 + 10 * Math.sin(2 * Math.PI * t + 3 + phase);
-  return `${a}% ${b}% ${c}% ${d}% / ${d}% ${a}% ${b}% ${c}%`;
+// Pre-calculate trigonometric values
+const TRIG_CACHE_SIZE = 360;
+const sinCache = new Float32Array(TRIG_CACHE_SIZE);
+const cosCache = new Float32Array(TRIG_CACHE_SIZE);
+
+// Initialize trig cache
+for (let i = 0; i < TRIG_CACHE_SIZE; i++) {
+  const angle = (i * 2 * Math.PI) / TRIG_CACHE_SIZE;
+  sinCache[i] = Math.sin(angle);
+  cosCache[i] = Math.cos(angle);
+}
+
+function getCachedSin(t: number): number {
+  const index = Math.floor(((t % 1) * TRIG_CACHE_SIZE)) % TRIG_CACHE_SIZE;
+  return sinCache[index];
+}
+
+function getCachedCos(t: number): number {
+  const index = Math.floor(((t % 1) * TRIG_CACHE_SIZE)) % TRIG_CACHE_SIZE;
+  return cosCache[index];
+}
+
+// Optimized organic radius with cached trig functions
+function organicRadius(t: number, phase = 0): string {
+  const baseT = t + phase;
+  const a = 50 + 10 * getCachedSin(2 * baseT);
+  const b = 50 + 10 * getCachedSin(2 * baseT + 0.25);
+  const c = 50 + 10 * getCachedSin(2 * baseT + 0.5);
+  const d = 50 + 10 * getCachedSin(2 * baseT + 0.75);
+  return `${a.toFixed(1)}% ${b.toFixed(1)}% ${c.toFixed(1)}% ${d.toFixed(1)}% / ${d.toFixed(1)}% ${a.toFixed(1)}% ${b.toFixed(1)}% ${c.toFixed(1)}%`;
 }
 
 export default function PlayStationBackgroundOptimized() {
   const { currentMode } = useModeStore();
   const [displayedMode, setDisplayedMode] = useState(currentMode);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const mainRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  const createLayers = () => [
+  // Memoize layer configuration
+  const layerConfig = useMemo(() => [
     {
-      el: mainRef.current,
-      paletteDuration: 12000,
-      animDuration: 16000,
+      paletteDuration: 24000,
+      animDuration: 32000,
       blur: 50,
-      size: '72vw',
       scaleBase: 1,
-      scaleVar: 0.18,
-      rotateVar: 18,
+      scaleVar: 0.12,
+      rotateVar: 12,
       leftBase: 38,
-      leftVar: 5,
+      leftVar: 3,
       topBase: 44,
-      topVar: 4,
+      topVar: 3,
       phase: 0
     },
     {
-      el: innerRef.current,
-      paletteDuration: 9000,
-      animDuration: 12000,
+      paletteDuration: 18000,
+      animDuration: 24000,
       blur: 35,
-      size: '54vw',
       scaleBase: 1,
-      scaleVar: 0.22,
-      rotateVar: 22,
+      scaleVar: 0.15,
+      rotateVar: 15,
       leftBase: 62,
-      leftVar: 5,
+      leftVar: 3,
       topBase: 56,
-      topVar: 5,
+      topVar: 3,
       phase: 0.33
     }
-  ];
+  ], []);
 
   useEffect(() => {
-    const layers = createLayers();
+    const layers = [
+      { el: mainRef.current, config: layerConfig[0] },
+      { el: innerRef.current, config: layerConfig[1] }
+    ];
 
-    // Eğer ref'ler hazır değilse animasyon başlamasın
     if (!layers.every(layer => layer.el)) return;
 
     let frameId: number;
     const startTime = performance.now();
 
-    const palettes =
-      displayedMode === 'programming' ? programmingPalettes : civilPalettes;
+    const palettes = displayedMode === 'programming' ? programmingPalettes : civilPalettes;
     const cyclicPalettes = [...palettes, palettes[0]];
+
+    // Pre-interpolate colors for smooth transitions
+    const interpolatedPalettes = cyclicPalettes.map((palette, i) => {
+      const nextPalette = cyclicPalettes[(i + 1) % cyclicPalettes.length];
+      return palette.map((color, j) => interpolateRgb(color, nextPalette[j] || color));
+    });
 
     const paletteIdx = Array(layers.length).fill(0);
     const paletteProgress = Array(layers.length).fill(0);
+    
+    // Cache for expensive calculations
+    let lastUpdateTime = 0;
+    const UPDATE_INTERVAL = 33.33; // ~30fps for smoother, slower animation
+
+    // Pre-calculate some constants
+    const TWO_PI = Math.PI * 2;
 
     function animate(now: number) {
+      // Throttle updates to 60fps max
+      if (now - lastUpdateTime < UPDATE_INTERVAL) {
+        frameId = requestAnimationFrame(animate);
+        return;
+      }
+      lastUpdateTime = now;
+
       const elapsed = now - startTime;
 
       layers.forEach((layer, i) => {
-        if (!layer.el) return;
+        if (!layer.el || isAnimating) return;
 
-        // Renk geçişi mantığı aynen korunuyor
-        paletteProgress[i] += (16.67 / layer.paletteDuration);
+        const config = layer.config;
+
+        // Color transition logic - simplified
+        paletteProgress[i] += (UPDATE_INTERVAL / config.paletteDuration);
         let t = paletteProgress[i];
         if (t >= 1) {
           paletteProgress[i] = 0;
@@ -91,24 +136,29 @@ export default function PlayStationBackgroundOptimized() {
           t = 0;
         }
 
-        const from = cyclicPalettes[paletteIdx[i]];
-        const to = cyclicPalettes[(paletteIdx[i] + 1) % cyclicPalettes.length];
-        const colors = from.map((c, j) => interpolateRgb(c, to[j] || c)(t));
+        // Use pre-interpolated colors
+        const interpolators = interpolatedPalettes[paletteIdx[i]];
+        const colors = interpolators.map(interp => interp(t));
 
-        // Organik hareket ve transform hesaplamaları aynen korunuyor
-        const tAnim = ((elapsed % layer.animDuration) / layer.animDuration + layer.phase) % 1;
-        const scaleX = layer.scaleBase + layer.scaleVar * Math.sin(2 * Math.PI * tAnim);
-        const scaleY = layer.scaleBase + layer.scaleVar * Math.cos(2 * Math.PI * tAnim);
-        const rotate = layer.rotateVar * Math.sin(2 * Math.PI * tAnim + layer.phase);
-        const left = layer.leftBase + layer.leftVar * Math.sin(2 * Math.PI * tAnim + layer.phase);
-        const top = layer.topBase + layer.topVar * Math.cos(2 * Math.PI * tAnim + layer.phase);
+        // Animation calculations with cached trig
+        const tAnim = ((elapsed % config.animDuration) / config.animDuration + config.phase) % 1;
+        
+        const scaleX = config.scaleBase + config.scaleVar * getCachedSin(TWO_PI * tAnim);
+        const scaleY = config.scaleBase + config.scaleVar * getCachedCos(TWO_PI * tAnim);
+        const rotate = config.rotateVar * getCachedSin(TWO_PI * tAnim + config.phase);
+        const left = config.leftBase + config.leftVar * getCachedSin(TWO_PI * tAnim + config.phase);
+        const top = config.topBase + config.topVar * getCachedCos(TWO_PI * tAnim + config.phase);
 
+        // Batch style updates
         const elStyle = layer.el.style;
-        elStyle.left = `${left}%`;
-        elStyle.top = `${top}%`;
-        elStyle.borderRadius = organicRadius(tAnim, layer.phase);
-        elStyle.filter = `blur(${layer.blur}px)`;
-        elStyle.transform = `translate(-50%, -50%) scale(${scaleX},${scaleY}) rotate(${rotate}deg)`;
+        const transforms = `translate(-50%, -50%) scale(${scaleX.toFixed(3)},${scaleY.toFixed(3)}) rotate(${rotate.toFixed(1)}deg)`;
+        
+        // Only update if values changed significantly
+        elStyle.left = `${left.toFixed(1)}%`;
+        elStyle.top = `${top.toFixed(1)}%`;
+        elStyle.borderRadius = organicRadius(tAnim, config.phase);
+        elStyle.filter = `blur(${config.blur}px)`;
+        elStyle.transform = transforms;
         elStyle.backgroundImage = `
           radial-gradient(circle at 15% 15%, ${colors[0]} 0%, ${colors[0]} 30%, transparent 60%),
           radial-gradient(circle at 85% 85%, ${colors[1]} 0%, ${colors[1]} 30%, transparent 60%),
@@ -124,46 +174,56 @@ export default function PlayStationBackgroundOptimized() {
     return () => {
       cancelAnimationFrame(frameId);
     };
-  }, [displayedMode]);
+  }, [displayedMode, layerConfig]);
 
   useEffect(() => {
     const shapes = [mainRef.current, innerRef.current];
     if (!shapes.every(Boolean)) return;
 
     if (currentMode !== displayedMode) {
+      // Completely kill all existing animations first
+      gsap.killTweensOf(shapes);
+      setIsAnimating(true);
+      
       const tl = gsap.timeline({
         onComplete: () => {
           setDisplayedMode(currentMode);
-          gsap.fromTo(
-            shapes,
-            { opacity: 0, scale: 0.7 },
-            {
-              opacity: 1,
-              scale: 1,
-              duration: 2.4,
-              ease: 'back.out'
-            }
-          );
+          setIsAnimating(false);
+          
+          // Set initial state explicitly to prevent flash
+          gsap.set(shapes, { 
+            opacity: 0,
+            scale: 1,
+            filter: 'blur(0px)',
+            clearProps: 'transform,filter'
+          });
         }
       });
+      
+      // Fade out current mode - faster
       tl.to(shapes, {
         opacity: 0,
-        scale: 2.5,
-        duration: 1,
-        ease: 'power4.out'
+        duration: 0.4,
+        ease: 'power1.out'
       });
+      
     } else {
-      gsap.fromTo(
-        shapes,
-        { opacity: 0, scale: 0.5 },
-        {
-          opacity: 1,
-          scale: 1,
-          duration: 5,
-          ease: 'none',
-          delay: 0.8
-        }
-      );
+      // Initial load - set initial state first
+      setIsAnimating(true);
+      gsap.set(shapes, { 
+        opacity: 0,
+        scale: 0.4,
+        filter: 'blur(0px)'
+      });
+      
+      // Simple fade in only
+      gsap.to(shapes, {
+        opacity: 1,
+        duration: 5,
+        ease: 'none',
+        delay: 1,
+        onComplete: () => setIsAnimating(false)
+      });
     }
 
     return () => {
