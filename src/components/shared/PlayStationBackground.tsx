@@ -136,7 +136,6 @@ export default function PlayStationBackgroundOptimized() {
     // Pre-calculate some constants
     const TWO_PI = Math.PI * 2;
 
-    
     function animate(now: number) {
       // Throttle updates to 60fps max
       if (now - lastUpdateTime < UPDATE_INTERVAL) {
