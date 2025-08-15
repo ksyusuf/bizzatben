@@ -57,7 +57,6 @@ export default function PlayStationBackgroundOptimized() {
     {
       paletteDuration: 24000,
       animDuration: 32000,
-      blur: 50,
       scaleBase: 1,
       scaleVar: 0.12,
       rotateVar: 12,
@@ -70,7 +69,6 @@ export default function PlayStationBackgroundOptimized() {
     {
       paletteDuration: 18000,
       animDuration: 24000,
-      blur: 35,
       scaleBase: 1,
       scaleVar: 0.15,
       rotateVar: 15,
@@ -157,7 +155,6 @@ export default function PlayStationBackgroundOptimized() {
         elStyle.left = `${left.toFixed(1)}%`;
         elStyle.top = `${top.toFixed(1)}%`;
         elStyle.borderRadius = organicRadius(tAnim, config.phase);
-        elStyle.filter = `blur(${config.blur}px)`;
         elStyle.transform = transforms;
         elStyle.backgroundImage = `
           radial-gradient(circle at 15% 15%, ${colors[0]} 0%, ${colors[0]} 30%, transparent 60%),
@@ -194,8 +191,7 @@ export default function PlayStationBackgroundOptimized() {
           gsap.set(shapes, { 
             opacity: 0,
             scale: 1,
-            filter: 'blur(0px)',
-            clearProps: 'transform,filter'
+            clearProps: 'transform'
           });
         }
       });
@@ -212,8 +208,7 @@ export default function PlayStationBackgroundOptimized() {
       setIsAnimating(true);
       gsap.set(shapes, { 
         opacity: 0,
-        scale: 0.4,
-        filter: 'blur(0px)'
+        scale: 0.4
       });
       
       // Simple fade in only
@@ -246,6 +241,15 @@ export default function PlayStationBackgroundOptimized() {
         ref={innerRef}
         className="absolute"
         style={{ width: '54vw', height: '54vw', pointerEvents: 'none', zIndex: 2 }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ 
+          backdropFilter: 'blur(50px)',
+          WebkitBackdropFilter: 'blur(50px)',
+          pointerEvents: 'none',
+          zIndex: 3
+        }}
       />
     </div>
   );
