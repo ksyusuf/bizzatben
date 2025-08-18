@@ -81,7 +81,7 @@ useEffect(() => {
           });
         });
       setTimeout(() => setIsAnimating(false), 5000);
-      }, 1300); // belirme öncesi delay
+      }, 900); // belirme öncesi delay
     }, 400); // kaybolma animasyonu süresi
   }
 }, [currentMode, displayedMode]);
