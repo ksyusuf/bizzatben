@@ -401,11 +401,7 @@ function SubjectSelector({
   return (
     <Listbox value={selected} onChange={onChange}>
       <div className="relative">
-        <Listbox.Button className={`relative w-full px-4 py-3 text-left rounded-lg border transition-all duration-200 cursor-pointer ${
-          currentMode === 'programming'
-            ? 'bg-prog-dark/50 border-prog-light/30 text-prog-light focus:border-prog-neon'
-            : 'bg-civil-dark/50 border-civil-light/30 text-civil-light focus:border-civil-gold'
-        }`}>
+        <Listbox.Button className="relative w-full px-4 py-3 bg-black/20 text-left rounded-lg border transition-all duration-200 cursor-pointer">
           <span className="block truncate">{selected.name}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon className="w-5 h-5" />
