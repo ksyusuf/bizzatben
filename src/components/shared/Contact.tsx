@@ -13,8 +13,6 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger)
 
-
-
 const subjects = [
   { id: 'project', name: 'Proje Teklifi' },
   { id: 'collaboration', name: 'İş Birliği' },
@@ -33,6 +31,7 @@ export default function Contact() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [showKachow, setShowKachow] = useState(false)
 
   // GSAP refs
   const sectionRef = useRef<HTMLDivElement>(null)
@@ -232,15 +231,19 @@ export default function Contact() {
               
             </div>
             <button
-              onClick={() => setIsFormOpen(true)}
-              className={`w-full mt-8 px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer ${
-                currentMode === 'programming'
-                  ? 'bg-prog-primary/90 text-white hover:bg-prog-secondary/90 shadow-lg shadow-prog-primary/50'
-                  : 'bg-civil-primary/90 text-white hover:bg-civil-secondary/90 shadow-lg shadow-civil-primary/50'
-              }`}
-            >
-              Mesaj Gönder
-            </button>
+            onClick={() => {
+              setShowKachow(true)     // KACHOW'u tetikle
+            }}
+            className="w-full mt-8 px-6 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all backdrop-blur-xl cursor-pointer"
+          >
+            Mesaj Gönder
+          </button>
+
+          <KachowModal 
+            isOpen={showKachow} 
+            onClose={() => setShowKachow(false)} 
+            currentMode={currentMode} 
+          />
           </div>
 
           {/* Contact Form */}
@@ -448,6 +451,41 @@ function SubjectSelector({
         </Transition>
       </div>
     </Listbox>
+  )
+}
+
+function KachowModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void, currentMode: string }) {
+  return (
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={onClose}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0 scale-75"
+          enterTo="opacity-100 scale-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100 scale-100"
+          leaveTo="opacity-0 scale-75"
+        >
+          <div className="fixed inset-0 flex items-center justify-center p-4">
+            <div className="bg-black/40 backdrop-blur-2xl rounded-2xl border p-8 text-center">
+              <h2 className="text-2xl font-extrabold mb-4">
+                ⚡ KACHOW ⚡
+              </h2>
+              <p className="text-lg">
+                Mesajlar yalnızca mail ile ✨
+              </p>
+              <button
+                onClick={onClose}
+                className="w-full mt-5 px-6 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all backdrop-blur-xl cursor-pointer"
+              >
+                Tamam
+              </button>
+            </div>
+          </div>
+        </Transition.Child>
+      </Dialog>
+    </Transition>
   )
 }
 

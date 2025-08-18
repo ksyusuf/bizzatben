@@ -120,7 +120,7 @@ export default function Navbar() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg shadow-lg backdrop-blur-2xl bg-black/30 border">
+                <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg shadow-lg bg-black/30 backdrop-blur-2xl border">
                   <div className="py-1 relative">
                     {/* isHomePage prop'u eklendi */}
                     <div className="transition-all duration-300 ease-out">
