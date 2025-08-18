@@ -1,7 +1,7 @@
 import { useModeStore } from './store/modeStore'
 import Navbar from './components/shared/Navbar'
 import Footer from './components/shared/Footer'
-import Hero from './components/shared/hero/hero'
+import Hero from './components/shared/hero/Hero'
 import Projects from './components/shared/Projects'
 import Contact from './components/shared/Contact'
 import ProgrammingAbout from './components/programming/About'
