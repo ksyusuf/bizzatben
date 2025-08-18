@@ -1,252 +1,120 @@
+import { useState, useEffect, useRef } from 'react';
+import type { FC } from 'react';
 import { useModeStore } from '../../store/modeStore';
-import { useEffect, useRef, useState, useMemo } from 'react';
-import gsap from 'gsap';
-import { interpolateRgb } from 'd3-interpolate';
+import '../../assets/playstation-background.css';
 
-const programmingPalettes = [
-  ['#7B1FA2', '#D81B60', '#C62828'],
-  ['#1565C0', '#00838F', '#2E7D32']
-];
-const civilPalettes = [
-  ['#FF8A00', '#FF5722', '#F4511E'],
-  ['#303F9F', '#26A69A', '#8BC34A']
+// Renk paletleri
+const programmingPalettes: string[][] = [
+  ['#7B1FA2', '#D81B60', '#C62828'], // Dış hüzme için mor, pembe, kırmızı tonları
+  ['#1565C0', '#00838F', '#2E7D32']  // İç hüzme için mavi, turkuaz, yeşil tonları
 ];
 
-// Pre-calculate trigonometric values
-const TRIG_CACHE_SIZE = 360;
-const sinCache = new Float32Array(TRIG_CACHE_SIZE);
-const cosCache = new Float32Array(TRIG_CACHE_SIZE);
+const civilPalettes: string[][] = [
+  ['#FF8A00', '#FF5722', '#F4511E'], // Dış hüzme için turuncu, kırmızı tonları
+  ['#303F9F', '#26A69A', '#8BC34A']  // İç hüzme için lacivert, turkuaz, açık yeşil tonları
+];
 
-// Initialize trig cache
-for (let i = 0; i < TRIG_CACHE_SIZE; i++) {
-  const angle = (i * 2 * Math.PI) / TRIG_CACHE_SIZE;
-  sinCache[i] = Math.sin(angle);
-  cosCache[i] = Math.cos(angle);
-}
-
-function getCachedSin(t: number): number {
-  const index = Math.floor(((t % 1) * TRIG_CACHE_SIZE)) % TRIG_CACHE_SIZE;
-  return sinCache[index];
-}
-
-function getCachedCos(t: number): number {
-  const index = Math.floor(((t % 1) * TRIG_CACHE_SIZE)) % TRIG_CACHE_SIZE;
-  return cosCache[index];
-}
-
-// Optimized organic radius with cached trig functions
-function organicRadius(t: number, phase = 0): string {
-  const baseT = t + phase;
-  const a = 50 + 10 * getCachedSin(2 * baseT);
-  const b = 50 + 10 * getCachedSin(2 * baseT + 0.25);
-  const c = 50 + 10 * getCachedSin(2 * baseT + 0.5);
-  const d = 50 + 10 * getCachedSin(2 * baseT + 0.75);
-  return `${a.toFixed(1)}% ${b.toFixed(1)}% ${c.toFixed(1)}% ${d.toFixed(1)}% / ${d.toFixed(1)}% ${a.toFixed(1)}% ${b.toFixed(1)}% ${c.toFixed(1)}%`;
-}
-
-export default function PlayStationBackgroundOptimized() {
+// Ana uygulama bileşeni
+const App: FC = () => {
   const { currentMode } = useModeStore();
-  const [displayedMode, setDisplayedMode] = useState(currentMode);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [displayedMode, setDisplayedMode] = useState<'programming' | 'civil'>(currentMode);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  
+  // Işık hüzmeleri için ref'ler
+  const innerBeamRef = useRef<HTMLDivElement>(null);
+  const outerBeamRef = useRef<HTMLDivElement>(null);
 
-  const mainRef = useRef<HTMLDivElement>(null);
-  const innerRef = useRef<HTMLDivElement>(null);
-
-  // Memoize layer configuration
-  const layerConfig = useMemo(() => [
-    {
-      paletteDuration: 24000,
-      animDuration: 32000,
-      blur: 50,
-      scaleBase: 1,
-      scaleVar: 0.12,
-      rotateVar: 12,
-      leftBase: 38,
-      leftVar: 3,
-      topBase: 44,
-      topVar: 3,
-      phase: 0
-    },
-    {
-      paletteDuration: 18000,
-      animDuration: 24000,
-      blur: 35,
-      scaleBase: 1,
-      scaleVar: 0.15,
-      rotateVar: 15,
-      leftBase: 62,
-      leftVar: 3,
-      topBase: 56,
-      topVar: 3,
-      phase: 0.33
-    }
-  ], []);
+  // Paletleri moda göre seçen fonksiyon
+  const getPalettes = (mode: 'programming' | 'civil'): string[][] => {
+    return mode === 'programming' ? programmingPalettes : civilPalettes;
+  };
 
   useEffect(() => {
-    const layers = [
-      { el: mainRef.current, config: layerConfig[0] },
-      { el: innerRef.current, config: layerConfig[1] }
-    ];
+    const shapes = [outerBeamRef.current, innerBeamRef.current].filter(Boolean) as HTMLDivElement[];
+    if (!shapes.length) return;
+  
+    setIsAnimating(true);
+  
+    shapes.forEach(el => {
+      el.style.transition = 'opacity 5s ease-in-out';
+      // requestAnimationFrame ile bir frame gecikmeli fade-in
+      requestAnimationFrame(() => {
+        el.style.opacity = '1';
+      });
+    });
+  
+    const fadeInTimeout = setTimeout(() => setIsAnimating(false), 5000);
+    return () => clearTimeout(fadeInTimeout);
+  }, []);
 
-    if (!layers.every(layer => layer.el)) return;
+useEffect(() => {
+  if (currentMode !== displayedMode) {
+    const shapes = [outerBeamRef.current, innerBeamRef.current].filter(Boolean) as HTMLDivElement[];
+    if (!shapes.length) return;
 
-    let frameId: number;
-    const startTime = performance.now();
+    if (isAnimating) {
+      // Mevcut animasyonu durdur
+      shapes.forEach(el => {
+        const computedOpacity = getComputedStyle(el).opacity;
+        el.style.transition = '';
+        el.style.opacity = computedOpacity; // mevcut durumda bırak
+      });
+    }
 
-    const palettes = displayedMode === 'programming' ? programmingPalettes : civilPalettes;
-    const cyclicPalettes = [...palettes, palettes[0]];
+    setIsAnimating(true);
 
-    // Pre-interpolate colors for smooth transitions
-    const interpolatedPalettes = cyclicPalettes.map((palette, i) => {
-      const nextPalette = cyclicPalettes[(i + 1) % cyclicPalettes.length];
-      return palette.map((color, j) => interpolateRgb(color, nextPalette[j] || color));
+    // Kaybolma animasyonu
+    shapes.forEach(el => {
+      el.style.transition = 'opacity 0.4s ease-in-out';
+      el.style.opacity = '0';
     });
 
-    const paletteIdx = Array(layers.length).fill(0);
-    const paletteProgress = Array(layers.length).fill(0);
-    
-    // Cache for expensive calculations
-    let lastUpdateTime = 0;
-    const UPDATE_INTERVAL = 33.33; // ~30fps for smoother, slower animation
-
-    // Pre-calculate some constants
-    const TWO_PI = Math.PI * 2;
-
-    function animate(now: number) {
-      // Throttle updates to 60fps max
-      if (now - lastUpdateTime < UPDATE_INTERVAL) {
-        frameId = requestAnimationFrame(animate);
-        return;
-      }
-      lastUpdateTime = now;
-
-      const elapsed = now - startTime;
-
-      layers.forEach((layer, i) => {
-        if (!layer.el || isAnimating) return;
-
-        const config = layer.config;
-
-        // Color transition logic - simplified
-        paletteProgress[i] += (UPDATE_INTERVAL / config.paletteDuration);
-        let t = paletteProgress[i];
-        if (t >= 1) {
-          paletteProgress[i] = 0;
-          paletteIdx[i] = (paletteIdx[i] + 1) % (cyclicPalettes.length - 1);
-          t = 0;
-        }
-
-        // Use pre-interpolated colors
-        const interpolators = interpolatedPalettes[paletteIdx[i]];
-        const colors = interpolators.map(interp => interp(t));
-
-        // Animation calculations with cached trig
-        const tAnim = ((elapsed % config.animDuration) / config.animDuration + config.phase) % 1;
-        
-        const scaleX = config.scaleBase + config.scaleVar * getCachedSin(TWO_PI * tAnim);
-        const scaleY = config.scaleBase + config.scaleVar * getCachedCos(TWO_PI * tAnim);
-        const rotate = config.rotateVar * getCachedSin(TWO_PI * tAnim + config.phase);
-        const left = config.leftBase + config.leftVar * getCachedSin(TWO_PI * tAnim + config.phase);
-        const top = config.topBase + config.topVar * getCachedCos(TWO_PI * tAnim + config.phase);
-
-        // Batch style updates
-        const elStyle = layer.el.style;
-        const transforms = `translate(-50%, -50%) scale(${scaleX.toFixed(3)},${scaleY.toFixed(3)}) rotate(${rotate.toFixed(1)}deg)`;
-        
-        // Only update if values changed significantly
-        elStyle.left = `${left.toFixed(1)}%`;
-        elStyle.top = `${top.toFixed(1)}%`;
-        elStyle.borderRadius = organicRadius(tAnim, config.phase);
-        elStyle.filter = `blur(${config.blur}px)`;
-        elStyle.transform = transforms;
-        elStyle.backgroundImage = `
-          radial-gradient(circle at 15% 15%, ${colors[0]} 0%, ${colors[0]} 30%, transparent 60%),
-          radial-gradient(circle at 85% 85%, ${colors[1]} 0%, ${colors[1]} 30%, transparent 60%),
-          radial-gradient(circle at 50% 50%, ${colors[2]} 0%, ${colors[2]} 35%, transparent 70%)
-        `;
-      });
-
-      frameId = requestAnimationFrame(animate);
-    }
-
-    frameId = requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(frameId);
-    };
-  }, [displayedMode, layerConfig]);
-
-  useEffect(() => {
-    const shapes = [mainRef.current, innerRef.current];
-    if (!shapes.every(Boolean)) return;
-
-    if (currentMode !== displayedMode) {
-      // Completely kill all existing animations first
-      gsap.killTweensOf(shapes);
-      setIsAnimating(true);
-      
-      const tl = gsap.timeline({
-        onComplete: () => {
-          setDisplayedMode(currentMode);
-          setIsAnimating(false);
-          
-          // Set initial state explicitly to prevent flash
-          gsap.set(shapes, { 
-            opacity: 0,
-            scale: 1,
-            filter: 'blur(0px)',
-            clearProps: 'transform,filter'
+    setTimeout(() => {
+      setTimeout(() => {
+        setDisplayedMode(currentMode);
+        // Belirme animasyonu
+        shapes.forEach(el => {
+          el.style.opacity = '0';
+          el.style.transition = 'opacity 5s ease-in-out';
+          requestAnimationFrame(() => {
+            el.style.opacity = '1';
           });
-        }
-      });
-      
-      // Fade out current mode - faster
-      tl.to(shapes, {
-        opacity: 0,
-        duration: 0.4,
-        ease: 'power1.out'
-      });
-      
-    } else {
-      // Initial load - set initial state first
-      setIsAnimating(true);
-      gsap.set(shapes, { 
-        opacity: 0,
-        scale: 0.4,
-        filter: 'blur(0px)'
-      });
-      
-      // Simple fade in only
-      gsap.to(shapes, {
-        opacity: 1,
-        duration: 5,
-        ease: 'none',
-        delay: 1,
-        onComplete: () => setIsAnimating(false)
-      });
-    }
+        });
+      setTimeout(() => setIsAnimating(false), 5000);
+      }, 1300); // belirme öncesi delay
+    }, 400); // kaybolma animasyonu süresi
+  }
+}, [currentMode, displayedMode]);
 
-    return () => {
-      gsap.killTweensOf(shapes);
-    };
-  }, [currentMode, displayedMode]);
-
+  // Seçilen paletleri al
+  const selectedPalettes = getPalettes(displayedMode);
+  
   return (
-    <div className="fixed inset-0 -z-10">
-      <div
-        className="absolute inset-0 bg-black"
-        style={{ backgroundColor: '#0A0A0A' }}
-      />
-      <div
-        ref={mainRef}
-        className="absolute"
-        style={{ width: '72vw', height: '72vw', pointerEvents: 'none', zIndex: 1 }}
-      />
-      <div
-        ref={innerRef}
-        className="absolute"
-        style={{ width: '54vw', height: '54vw', pointerEvents: 'none', zIndex: 2 }}
-      />
+    <div className=" ">
+      {/* Işık Hüzmelerini içeren ana div */}
+      <div className="fixed inset-0 -z-10 flex items-center justify-center">
+        {/* Sizin siyah arka planınız */}
+        <div
+          className="absolute inset-0"
+          style={{ backgroundColor: '#0A0A0A' }}
+        />
+        
+        {/* Dış Işık Hüzmesi - Sizin mainRef diviniz üzerine oturtuldu */}
+        <div
+          ref={outerBeamRef}
+          className={`beam animate-outer-beam-move mix-blend-screen`}
+          style={{ width: '72vw', height: '72vw', zIndex: 1, background: `radial-gradient(circle, ${selectedPalettes[0][0]} 0%, ${selectedPalettes[0][1]} 50%, ${selectedPalettes[0][2]} 100%)` }}
+        ></div>
+        
+        {/* İç Işık Hüzmesi - Sizin innerRef diviniz üzerine oturtuldu */}
+        <div
+          ref={innerBeamRef}
+          className={`beam animate-inner-beam-move mix-blend-screen`}
+          style={{ width: '54vw', height: '54vw', zIndex: 2, background: `radial-gradient(circle, ${selectedPalettes[1][0]} 0%, ${selectedPalettes[1][1]} 50%, ${selectedPalettes[1][2]} 100%)` }}
+        ></div>
+      </div>
     </div>
   );
 }
+
+export default App;
