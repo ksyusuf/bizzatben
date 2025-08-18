@@ -54,12 +54,7 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 backdrop-blur-sm ${
-        currentMode === 'programming'
-          ? 'bg-black/20 shadow-lg shadow-prog-accent/20'
-          : 'bg-black/20 shadow-lg shadow-civil-primary/20'
-      }`}
-    >
+      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-black/20 shadow-lg">
       <div className="container-custom px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div ref={logoRef} className="flex-shrink-0">
@@ -70,9 +65,7 @@ export default function Navbar() {
                 // Ana sayfaya gidip en üste scroll yap
                 window.scrollTo(0, 0);
               }}
-              className={`text-2xl font-bold transition-all duration-200 ${
-                currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-              }`}
+              className="text-2xl font-bold transition-all duration-200"
             >
               Yusuf
             </Link>
@@ -114,11 +107,7 @@ export default function Navbar() {
 
           <div className="md:hidden">
             <Menu as="div" className="relative">
-              <Menu.Button className={`p-2 rounded-lg cursor-pointer ${
-                currentMode === 'programming'
-                  ? 'text-prog-primary hover:bg-prog-primary/20'
-                  : 'text-civil-primary hover:bg-civil-primary/20'
-              }`}>
+              <Menu.Button className="p-2 rounded-lg cursor-pointer">
                 <Bars3Icon className="h-6 w-6" />
               </Menu.Button>
 
@@ -131,18 +120,10 @@ export default function Navbar() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className={`absolute right-0 mt-2 w-48 origin-top-right rounded-lg shadow-lg backdrop-blur-2xl ${
-                  currentMode === 'programming'
-                    ? 'bg-black/80 border border-prog-accent/50 shadow-lg shadow-prog-accent/20'
-                    : 'bg-black/80 border border-civil-primary/50 shadow-lg shadow-civil-primary/20'
-                }`}>
+                <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg shadow-lg backdrop-blur-2xl border">
                   <div className="py-1 relative">
                     {/* isHomePage prop'u eklendi */}
-                    <div className={`transition-all duration-300 ease-out ${
-                      currentMode !== 'programming' 
-                        ? 'transform translate-x-0' 
-                        : 'transform -translate-x-4'
-                    }`}>
+                    <div className="transition-all duration-300 ease-out">
                       <MobileNavLink href="#about" isHomePage={isHomePage}>Hakkımda</MobileNavLink>
                     </div>
                     <div className={`transition-all duration-300 ease-out ${
@@ -152,18 +133,10 @@ export default function Navbar() {
                     }`}>
                       <MobileNavLink href="#experience" isHomePage={isHomePage}>Deneyim</MobileNavLink>
                     </div>
-                    <div className={`transition-all duration-300 ease-out ${
-                      currentMode !== 'programming' 
-                        ? 'transform translate-x-0' 
-                        : 'transform -translate-x-4'
-                    }`}>
+                    <div className="transition-all duration-300 ease-out">
                       <MobileNavLink href="#projects" isHomePage={isHomePage}>Projeler</MobileNavLink>
                     </div>
-                    <div className={`transition-all duration-300 ease-out ${
-                      currentMode !== 'programming' 
-                        ? 'transform translate-x-0' 
-                        : 'transform -translate-x-4'
-                    }`}>
+                    <div className="transition-all duration-300 ease-out">
                       <MobileNavLink href="#contact" isHomePage={isHomePage}>İletişim</MobileNavLink>
                     </div>
                   </div>
@@ -178,17 +151,12 @@ export default function Navbar() {
 }
 
 function NavLink({ href, children, isHomePage }: { href: string; children: React.ReactNode; isHomePage: boolean; }) {
-  const { currentMode } = useModeStore();
   const linkPath = isHomePage ? href : `/${href}`;
 
   return (
     <Link
       to={linkPath}
-      className={`font-medium transition-colors duration-200 hover:opacity-80 hover:scale-105 ${
-        currentMode === 'programming'
-          ? 'text-prog-light hover:text-prog-primary'
-          : 'text-civil-light hover:text-civil-primary'
-      }`}
+      className="font-medium transition-colors duration-200 hover:opacity-80 hover:scale-105"
     >
       {children}
     </Link>
@@ -196,29 +164,16 @@ function NavLink({ href, children, isHomePage }: { href: string; children: React
 }
 
 function MobileNavLink({ href, children, isHomePage }: { href: string; children: React.ReactNode; isHomePage: boolean; }) {
-  const { currentMode } = useModeStore();
   const linkPath = isHomePage ? href : `/${href}`;
   
   return (
     <Menu.Item>
-      {({ active }) => (
-        <Link
+      <Link
           to={linkPath}
-          className={`block px-4 py-2 text-sm transition-colors duration-200 ${
-            active
-              ? (currentMode === 'programming' ? 'bg-prog-primary/20 text-prog-primary' : 'bg-civil-primary/20 text-civil-primary')
-              : (currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light')
-          }`}
+          className="block px-4 py-2 text-sm transition-colors duration-200"
         >
-          {/* toggle icons
-          https://uiverse.io/reglobby/stupid-penguin-97
-          https://uiverse.io/3HugaDa3/evil-snake-3
-          https://uiverse.io/petar_4019/fuzzy-quail-99
-          https://uiverse.io/andrew-demchenk0/light-dragonfly-53 
-          */}
           {children}
         </Link>
-      )}
     </Menu.Item>
   );
 }
