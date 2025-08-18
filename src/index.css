@@ -64,6 +64,12 @@
   }
 }
 
+/* linkModals */
+.hidden-initial {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
 /* Gradient animasyonları */
 @keyframes gradientShift {
   0% {
