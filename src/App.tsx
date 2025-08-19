@@ -10,6 +10,7 @@ import PlayStationBackground from './components/shared/PlayStationBackground'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import TechProjects from './components/project/TechProjects'
 import ScrollToTop from './components/shared/ScrollToTop'
+import AllProjects from '../src/components/project/AllProjects'
 
 function App() {
   const { currentMode } = useModeStore()
@@ -44,8 +45,8 @@ function App() {
                 </div>
               )
             } />
-            {/* Teknolojiye göre filtrelenmiş projeler sayfası için yeni rota */}
             <Route path="/projects/tech/:tech" element={<TechProjects />} />
+            <Route path="/Alll-projects" element={<AllProjects />} />
           </Routes>
         </main>
         <Footer />
