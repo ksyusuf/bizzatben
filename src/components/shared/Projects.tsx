@@ -74,7 +74,7 @@ export default function Projects() {
         <div className="text-center mt-8 animate-on-scroll fade-up">
           <Link
             to="/Alll-projects"
-            className="px-6 py-3 rounded-lg font-semibold shadow-2xl transition backdrop-blur-lg border-2 cursor-pointer bg-black/10"
+            className="px-6 py-3 rounded-lg font-semibold border-2 backdrop-blur-xl cursor-pointer"
           >
             Tüm Projeleri Gör
           </Link>
