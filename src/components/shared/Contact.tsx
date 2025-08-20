@@ -147,11 +147,7 @@ export default function Contact() {
         body: new URLSearchParams(formDataToSend).toString()
       })
 
-      console.log('Response status:', response.status)
-      console.log('Response ok:', response.ok)
-
       if (response.ok) {
-        console.log('Form submitted successfully')
         setSubmitStatus('success')
         setFormData({ name: '', email: '', message: '' })
         setSelectedSubject(subjects[0])
@@ -162,7 +158,6 @@ export default function Contact() {
       }
     } catch (error) {
       setSubmitStatus('error')
-      console.error('Form submission error:', error)
     } finally {
       setIsSubmitting(false)
     }
@@ -172,14 +167,10 @@ export default function Contact() {
     <section id="contact" className="section-padding" ref={sectionRef}>
       <div className="container-custom">
         <div className="text-center mb-12">
-          <h2 ref={titleRef} className={`text-4xl font-bold mb-4 ${
-            currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-          }`}>
+          <h2 ref={titleRef} className="text-4xl font-bold mb-4">
             İletişim
           </h2>
-          <p ref={descRef} className={`text-xl max-w-3xl mx-auto ${
-            currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-          }`}>
+          <p ref={descRef} className="text-xl max-w-3xl mx-auto">
             Projeleriniz için benimle iletişime geçin
           </p>
         </div>
@@ -187,16 +178,10 @@ export default function Contact() {
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Info */}
           <div
-            className={`backdrop-blur-2xl rounded-2xl border p-8 ${
-              currentMode === 'programming' 
-                ? 'bg-prog-dark/50 border-prog-neon/30' 
-                : 'bg-civil-dark/50 border-civil-gold/30'
-            }`}
+            className="backdrop-blur-2xl rounded-2xl border p-8"
             ref={infoRef}
           >
-            <h3 className={`text-2xl font-bold mb-6 ${
-              currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-            }`}>
+            <h3 className="text-2xl font-bold mb-6">
               İletişim Bilgileri
             </h3>
             <div className="space-y-6">
@@ -232,32 +217,25 @@ export default function Contact() {
             </div>
             <button
             onClick={() => {
-              setShowKachow(true)     // KACHOW'u tetikle
+              setShowKachow(true)
             }}
             className="w-full mt-8 px-6 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all backdrop-blur-xl cursor-pointer"
-          >
-            Mesaj Gönder
-          </button>
+            >
+              Mesaj Gönder
+            </button>
 
-          <KachowModal 
-            isOpen={showKachow} 
-            onClose={() => setShowKachow(false)} 
-            currentMode={currentMode} 
-          />
+            <KachowModal 
+              isOpen={showKachow} 
+              onClose={() => setShowKachow(false)} 
+            />
           </div>
 
           {/* Contact Form */}
           <div
-            className={`backdrop-blur-2xl rounded-2xl border p-8 ${
-              currentMode === 'programming' 
-                ? 'bg-prog-dark/50 border-prog-neon/30' 
-                : 'bg-civil-dark/50 border-civil-gold/30'
-            }`}
+            className="backdrop-blur-2xl rounded-2xl border p-8"
             ref={formRef}
           >
-            <h3 className={`text-2xl font-bold mb-6 ${
-              currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-            }`}>
+            <h3 className="text-2xl font-bold mb-6">
               Hızlı İletişim
             </h3>
             <form 
@@ -276,9 +254,7 @@ export default function Contact() {
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${
-                  currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-                }`}>
+                <label className="block text-sm font-medium mb-2">
                   Ad Soyad
                 </label>
                 <input
@@ -287,19 +263,13 @@ export default function Contact() {
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
-                    currentMode === 'programming'
-                      ? 'bg-prog-dark/50 border-prog-light/30 text-prog-light placeholder-prog-light/50 focus:border-prog-neon'
-                      : 'bg-civil-dark/50 border-civil-light/30 text-civil-light placeholder-civil-light/50 focus:border-civil-gold'
-                  }`}
+                  className="w-full px-4 py-3 rounded-lg border transition-all duration-200"
                   placeholder="Adınız ve soyadınız"
                 />
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${
-                  currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-                }`}>
+                <label className="block text-sm font-medium mb-2">
                   E-posta
                 </label>
                 <input
@@ -308,19 +278,13 @@ export default function Contact() {
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 ${
-                    currentMode === 'programming'
-                      ? 'bg-prog-dark/50 border-prog-light/30 text-prog-light placeholder-prog-light/50 focus:border-prog-neon'
-                      : 'bg-civil-dark/50 border-civil-light/30 text-civil-light placeholder-civil-light/50 focus:border-civil-gold'
-                  }`}
-                  placeholder="ornek@email.com"
+                  className="w-full px-4 py-3 rounded-lg border transition-all duration-200"
+                  placeholder="ozel@mail.com"
                 />
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${
-                  currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-                }`}>
+                <label className="block text-sm font-medium mb-2">
                   Konu
                 </label>
                 <input
@@ -331,14 +295,11 @@ export default function Contact() {
                 <SubjectSelector 
                   selected={selectedSubject}
                   onChange={setSelectedSubject}
-                  currentMode={currentMode}
                 />
               </div>
 
               <div>
-                <label className={`block text-sm font-medium mb-2 ${
-                  currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-                }`}>
+                <label className="block text-sm font-medium mb-2">
                   Mesaj
                 </label>
                 <textarea
@@ -347,11 +308,7 @@ export default function Contact() {
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 resize-none ${
-                    currentMode === 'programming'
-                      ? 'bg-prog-dark/50 border-prog-light/30 text-prog-light placeholder-prog-light/50 focus:border-prog-neon'
-                      : 'bg-civil-dark/50 border-civil-light/30 text-civil-light placeholder-civil-light/50 focus:border-civil-gold'
-                  }`}
+                  className="w-full px-4 py-3 rounded-lg border transition-all duration-200 resize-none"
                   placeholder="Mesajınızı buraya yazın..."
                 />
               </div>
@@ -359,17 +316,13 @@ export default function Contact() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
-                  currentMode === 'programming'
-                    ? 'bg-prog-primary/90 text-white hover:bg-prog-secondary/90 shadow-lg shadow-prog-primary/50'
-                    : 'bg-civil-primary/90 text-white hover:bg-civil-secondary/90 shadow-lg shadow-civil-primary/50'
-                }`}
+                className="w-full px-6 py-4 rounded-xl shadow-2xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Gönderiliyor...' : 'Gönder'}
               </button>
 
               {submitStatus === 'error' && (
-                <p className={`text-sm text-red-400 text-center`}>
+                <p className="text-sm backdrop-blur-4xl text-red-400 text-center">
                   Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.
                 </p>
               )}
@@ -385,7 +338,6 @@ export default function Contact() {
           setIsFormOpen(false)
           setSubmitStatus('idle')
         }}
-        currentMode={currentMode}
       />
     </section>
   )
@@ -395,16 +347,14 @@ export default function Contact() {
 function SubjectSelector({ 
   selected, 
   onChange, 
-  currentMode 
 }: { 
   selected: any
   onChange: (subject: any) => void
-  currentMode: string 
 }) {
   return (
     <Listbox value={selected} onChange={onChange}>
       <div className="relative">
-        <Listbox.Button className="relative w-full px-4 py-3 bg-black/20 text-left rounded-lg border transition-all duration-200 cursor-pointer">
+        <Listbox.Button className="relative w-full px-4 py-3 backdrop-blur-4xl text-left rounded-lg border transition-all duration-200 cursor-pointer">
           <span className="block truncate">{selected.name}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon className="w-5 h-5" />
@@ -416,31 +366,26 @@ function SubjectSelector({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className={`absolute z-10 w-full mt-1 rounded-lg shadow-lg backdrop-blur-2xl border ${
-            currentMode === 'programming' 
-              ? 'bg-prog-dark/90 border-prog-neon/30' 
-              : 'bg-civil-dark/90 border-civil-gold/30'
-          }`}>
+          <Listbox.Options className="absolute z-50 w-full mt-1 rounded-lg shadow-xl bg-black/60 backdrop-blur-4xl border">
             {subjects.map((subject) => (
               <Listbox.Option
                 key={subject.id}
                 value={subject}
-                className={({ active }) => `relative cursor-pointer select-none py-3 px-4 ${
-                  active 
-                    ? (currentMode === 'programming' ? 'bg-prog-primary/20 text-prog-accent' : 'bg-civil-primary/20 text-civil-amber')
-                    : (currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light')
-                }`}
+                className="relative text-center cursor-pointer select-none py-3 px-4"
               >
                 {({ selected }) => (
                   <>
-                    <span className={`block truncate ${selected ? 'font-medium' : 'font-normal'}`}>
+                    {selected && (
+                      <span className="absolute inset-y-0 left-0 flex items-center pl-4">
+                        ⚡⚡
+                      </span>
+                    )}
+                    <span className={`block truncate ${selected ? 'font-' : 'font-normal'}`}>
                       {subject.name}
                     </span>
                     {selected && (
-                      <span className={`absolute inset-y-0 right-0 flex items-center pr-4 ${
-                        currentMode === 'programming' ? 'text-prog-accent' : 'text-civil-amber'
-                      }`}>
-                        <CheckIcon className="w-5 h-5" />
+                      <span className="absolute inset-y-0 right-0 flex items-center pr-4">
+                        ⚡⚡
                       </span>
                     )}
                   </>
@@ -454,7 +399,7 @@ function SubjectSelector({
   )
 }
 
-function KachowModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void, currentMode: string }) {
+function KachowModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={onClose}>
@@ -467,8 +412,8 @@ function KachowModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-75"
         >
-          <div className="fixed inset-0 flex items-center justify-center p-4">
-            <div className="bg-black/40 backdrop-blur-2xl rounded-2xl border p-8 text-center">
+          <div className="fixed inset-0 flex backdrop-blur-xl items-center justify-center p-4">
+            <div className="bg-black/40  rounded-2xl border p-8 text-center">
               <h2 className="text-2xl font-extrabold mb-4">
                 ⚡ KACHOW ⚡
               </h2>
@@ -477,7 +422,7 @@ function KachowModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void
               </p>
               <button
                 onClick={onClose}
-                className="w-full mt-5 px-6 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all backdrop-blur-xl cursor-pointer"
+                className="w-full mt-5 px-6 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all backdrop-blur-xl border cursor-pointer"
               >
                 Tamam
               </button>
@@ -492,11 +437,9 @@ function KachowModal({ isOpen, onClose }: { isOpen: boolean, onClose: () => void
 function ContactSuccessModal({ 
   isOpen, 
   onClose, 
-  currentMode
 }: { 
   isOpen: boolean
   onClose: () => void
-  currentMode: string 
 }) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -524,52 +467,34 @@ function ContactSuccessModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`w-full max-w-md transform overflow-hidden rounded-2xl backdrop-blur-2xl border ${
-                currentMode === 'programming' 
-                  ? 'bg-prog-darker/90 border-prog-neon/30' 
-                  : 'bg-civil-darker/90 border-civil-gold/30'
-              } p-6 text-center align-middle shadow-xl transition-all`}>
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl backdrop-blur-2xl border p-6 text-center align-middle shadow-xl transition-all">
                 <div className="flex justify-end">
                   <button
                     onClick={onClose}
-                    className={`p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer ${
-                      currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-                    }`}
+                    className="p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                   >
                     <XMarkIcon className="w-6 h-6" />
                   </button>
                 </div>
                 
                 <div className="mb-6">
-                  <div className={`mx-auto flex items-center justify-center h-12 w-12 rounded-full ${
-                    currentMode === 'programming' 
-                      ? 'bg-prog-accent/20 text-prog-accent' 
-                      : 'bg-civil-amber/20 text-civil-amber'
-                  }`}>
+                  <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full">
                     <BoltIcon className="h-6 w-6" />
                   </div>
                 </div>
                 
-                <Dialog.Title className={`text-2xl font-bold mb-4 ${
-                  currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-                }`}>
+                <Dialog.Title className="text-2xl font-bold mb-4">
                   Mesaj Gönderildi!
                 </Dialog.Title>
                 
-                <p className={`text-lg ${
-                  currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-                }`}>
+                <p className="text-lg">
                   Mesajınız başarıyla gönderildi. En kısa sürede size dönüş yapacağım.
                 </p>
                 
                 <div className="mt-6">
                   <button
                     onClick={onClose}
-                    className={`px-6 py-3 rounded-lg font-medium transition-all duration-200 backdrop-blur-xl cursor-pointer ${
-                      currentMode === 'programming'
-                        ? 'bg-prog-primary/90 text-white hover:bg-prog-secondary/90'
-                        : 'bg-civil-primary/90 text-white hover:bg-civil-secondary/90'
-                    }`}
+                    className="px-6 py-3 rounded-lg font-medium transition-all duration-200 backdrop-blur-xl cursor-pointer"
                   >
                     Tamam
                   </button>

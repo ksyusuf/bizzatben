@@ -3,11 +3,15 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useModeStore } from '../../../store/modeStore'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
+import { Link } from 'react-router-dom'
+
 
 // Alt componentler
 import LinkModal from './LinkModal'
 
 gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollToPlugin)
 
 export default function Hero() {
   const { currentMode } = useModeStore()
@@ -124,11 +128,13 @@ export default function Hero() {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
-                ref={btn1Ref}
-                onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 backdrop-blur-xl cursor-pointer opacity-0 scale-95"
-                >
+              ref={btn1Ref}
+              className="px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 backdrop-blur-xl cursor-pointer opacity-0 scale-95"
+            >
+              <Link to={'#about'}>
+                
                 Hakkımda
+              </Link>
             </button>
             <button
                 ref={btn2Ref}
