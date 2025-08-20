@@ -58,7 +58,7 @@ export default function Projects() {
           {featuredProjects.map((project, index) => (
             <div
               key={project.id}
-              className="project-card animate-on-scroll"
+              className="project-card animate-on-scroll backdrop-blur-xl"
               style={{ transitionDelay: `${index * 0.1}s` }}
             >
               <ProjectCard

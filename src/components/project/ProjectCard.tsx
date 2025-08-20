@@ -44,7 +44,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
   return (
     <div
-      className="relative overflow-hidden rounded-2xl backdrop-blur-xl border hover:scale-105 transition-all duration-300"
+      className="relative overflow-hidden rounded-2xl border hover:scale-105 transition-all duration-300"
     >
       {project.image && (
         <div className="relative h-48 md:h-56 lg:h-64 overflow-hidden">

@@ -58,11 +58,10 @@ export default function Navbar() {
       <div className="container-custom px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div ref={logoRef} className="flex-shrink-0">
-            {/* Logo bileşeninizi buraya ekleyebilirsiniz, örneğin */}
             <Link 
               to="/" 
               onClick={() => {
-                // Ana sayfaya gidip en üste scroll yap
+                // sayfayı yenilemeden ana sayfa ve yukarı git
                 window.scrollTo(0, 0);
               }}
               className="text-2xl font-bold transition-all duration-200"
@@ -92,7 +91,7 @@ export default function Navbar() {
                 ? 'transform translate-x-0' 
                 : 'transform -translate-x-4'
             }`}>
-              <NavLink href="#projects" isHomePage={isHomePage}>Projeler</NavLink>
+              <NavLink href="/Alll-projects" isHomePage={isHomePage}>Projeler</NavLink>
             </div>
             <div className={`transition-all duration-300 ease-out ${
               currentMode !== 'programming' 
@@ -120,21 +119,23 @@ export default function Navbar() {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right rounded-lg shadow-lg bg-black/30 backdrop-blur-2xl border">
+                <Menu.Items
+                  className="absolute right-0 mt-2 w-35 origin-top-right rounded-lg shadow-lg border
+                            bg-black/90 text-center"
+                >
                   <div className="py-1 relative">
-                    {/* isHomePage prop'u eklendi */}
                     <div className="transition-all duration-300 ease-out">
                       <MobileNavLink href="#about" isHomePage={isHomePage}>Hakkımda</MobileNavLink>
                     </div>
                     <div className={`transition-all duration-300 ease-out ${
-                      currentMode !== 'programming' 
-                        ? 'opacity-100 transform translate-x-0 relative' 
+                      currentMode !== 'programming'
+                        ? 'opacity-100 transform translate-x-0 relative'
                         : 'opacity-0 transform -translate-x-4 absolute pointer-events-none'
                     }`}>
                       <MobileNavLink href="#experience" isHomePage={isHomePage}>Deneyim</MobileNavLink>
                     </div>
                     <div className="transition-all duration-300 ease-out">
-                      <MobileNavLink href="#projects" isHomePage={isHomePage}>Projeler</MobileNavLink>
+                      <MobileNavLink href="/Alll-projects" isHomePage={isHomePage}>Projeler</MobileNavLink>
                     </div>
                     <div className="transition-all duration-300 ease-out">
                       <MobileNavLink href="#contact" isHomePage={isHomePage}>İletişim</MobileNavLink>
@@ -142,6 +143,7 @@ export default function Navbar() {
                   </div>
                 </Menu.Items>
               </Transition>
+
             </Menu>
           </div>
         </div>
