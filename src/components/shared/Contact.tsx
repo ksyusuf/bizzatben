@@ -3,7 +3,6 @@ import { Fragment, useState, useEffect, useRef } from 'react'
 import { 
   EnvelopeIcon, 
   MapPinIcon, 
-  CheckIcon,
   BoltIcon,
   ChevronUpDownIcon,
   XMarkIcon
