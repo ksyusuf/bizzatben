@@ -72,8 +72,10 @@ export default function ContactForm() {
         setSubmitStatus('success')
         setFormData({ name: '', email: '', message: '' })
         setSelectedSubject(subjects[0])
+        setIsFormOpen(true)
       } else {
         setSubmitStatus('error')
+        console.error('Form submission failed:', response.status, response.statusText)
       }
     } catch {
       setSubmitStatus('error')
@@ -212,7 +214,7 @@ function SubjectSelector({
                         ⚡⚡
                       </span>
                     )}
-                    <span className={`block truncate ${selected ? 'font-' : 'font-normal'}`}>
+                    <span className={`block truncate ${selected ? 'font-bold' : 'font-normal'}`}>
                       {subject.name}
                     </span>
                     {selected && (
