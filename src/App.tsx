@@ -3,7 +3,7 @@ import Navbar from './components/shared/Navbar'
 import Footer from './components/shared/Footer'
 import Hero from './components/shared/hero/Hero'
 import Projects from './components/shared/Projects'
-import Contact from './components/shared/Contact'
+import ContactSection from './components/shared/contacts/ContactSection'
 import ProgrammingAbout from './components/programming/About'
 import CivilAbout from './components/civil/About'
 import PlayStationBackground from './components/shared/PlayStationBackground'
@@ -34,14 +34,14 @@ function App() {
                   <Hero />
                   <ProgrammingAbout />
                   <Projects/>
-                  <Contact />
+                  <ContactSection />
                 </div>
               ) : (
                 <div key="civil">
                   <Hero />
                   <CivilAbout />
                   <Projects/>
-                  <Contact />
+                  <ContactSection />
                 </div>
               )
             } />
