@@ -4,14 +4,14 @@ import { useModeStore } from '../../store/modeStore';
 import '../../assets/playstation-background.css';
 
 // Renk paletleri
-const programmingPalettes: string[][] = [
-  ['#7B1FA2', '#D81B60', '#C62828'], // Dış hüzme için mor, pembe, kırmızı tonları
-  ['#1565C0', '#00838F', '#2E7D32']  // İç hüzme için mavi, turkuaz, yeşil tonları
+const programmingPalettes = [
+  ['#670B8E', '#C4074C', '#B21414'], // Dış hüzme için mor, pembe, kırmızı tonları
+  ['#0151AC', '#006F7B', '#1A691E']  // İç hüzme için mavi, turkuaz, yeşil tonları
 ];
 
-const civilPalettes: string[][] = [
-  ['#FF8A00', '#FF5722', '#F4511E'], // Dış hüzme için turuncu, kırmızı tonları
-  ['#303F9F', '#26A69A', '#8BC34A']  // İç hüzme için lacivert, turkuaz, açık yeşil tonları
+const civilPalettes = [
+  ['#D56900', '#CD3E0A', '#C93507'], // Dış hüzme için turuncu, kırmızı tonları
+  ['#1E2B80', '#11837B', '#649C25']  // İç hüzme için lacivert, turkuaz, açık yeşil tonları
 ];
 
 // Ana uygulama bileşeni
