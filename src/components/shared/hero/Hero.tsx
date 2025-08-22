@@ -1,17 +1,81 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, type Ref } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { useModeStore } from '../../../store/modeStore'
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { Link } from 'react-router-dom'
-
+import { Quote } from "lucide-react";
 
 // Alt componentler
 import LinkModal from './LinkModal'
 
 gsap.registerPlugin(ScrollTrigger)
 gsap.registerPlugin(ScrollToPlugin)
+
+export function HeroQuote({ mode, ref }: { mode: string, ref: Ref<SVGSVGElement>[] }) {
+  const text =
+    mode === 'programming'
+      ? 'Programlama, bir dünyayı satır satır inşa etmektir.'
+      : 'İnşaat mühendisliğinde 2 x 2, üç aşağı↓ beş yukarı↑ dörttür.';
+
+  const lines = text.split('\n');
+
+  return (
+    <div className="relative max-w-3xl mx-auto space-y-2">
+      <Quote ref={ref[0]} className="absolute -left-4 -top-8 w-16 h-16 rotate-180" />
+      <Quote ref={ref[1]} className="absolute -right-0 -bottom-10 w-16 h-16" />
+      {lines.map((line, li) => (
+        <div
+          key={`line-${li}`}
+          className="relative inline-block px-4 py-2"
+          style={mode === 'programming'
+            ? {
+              fontFamily: '"Edu NSW ACT Cursive", cursive',
+              fontWeight: 400,
+              fontStyle: 'normal',
+              fontSize: '1.5rem',
+              lineHeight: 1.35
+              }
+            : {
+              fontFamily: '"Montserrat", sans-serif',
+              fontSize: '1.5rem',
+              fontWeight: 400,
+              fontStyle: 'italic',
+              lineHeight: 1.35
+              }
+          }
+        >
+          {/* Maskelenmiş arka plan katmanı */}
+          <div
+            className="absolute inset-0 rounded-lg backdrop-blur-xs"
+            style={{
+              WebkitMaskImage: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+              maskImage: 'radial-gradient(ellipse 50% 50% at 50% 50%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(0,0,0,0) 100%)',
+            }}
+          ></div>
+  
+          {/* Metin içeriği katmanı */}
+          <div className="relative z-10">
+            {line
+              .split(' ')
+              .map((word, wi) => (
+                <span key={`word-${li}-${wi}`} style={{ whiteSpace: 'nowrap' }}>
+                  {word.split('').map((char, ci) => (
+                    <span key={`char-${li}-${wi}-${ci}`} className="inline-block gsap-char">
+                      {char}
+                    </span>
+                  ))}
+                </span>
+              ))
+              .reduce<React.ReactNode[]>((acc, curr, i) => (i === 0 ? [curr] : [...acc, ' ', curr]), [])}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 
 export default function Hero() {
   const { currentMode } = useModeStore()
@@ -23,6 +87,8 @@ export default function Hero() {
   const btn2Ref = useRef<HTMLButtonElement>(null)
   const descRef = useRef<HTMLParagraphElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
+  const quoteRef = useRef<SVGSVGElement>(null)
+  const quoteRef2 = useRef<SVGSVGElement>(null)
 
  // GSAP animasyonları
  useGSAP(() => {
@@ -77,6 +143,19 @@ export default function Hero() {
           ease: 'none',
         }
       )
+
+      // quote ikonlar
+      gsap.fromTo(
+        [quoteRef.current, quoteRef2.current],
+        { opacity: 0, scale: 1 },
+        {
+          opacity: 0.3,
+          scale: 1,
+          delay: 1,
+          duration: 5,
+          ease: 'power1.out',
+        }
+      )
     }, contentRef)
 
     return () => ctx.revert()
@@ -107,22 +186,7 @@ export default function Hero() {
 
           {/* Description */}
           <p ref={descRef} className="text-lg md:text-xl mb-12 max-w-3xl mx-auto">
-            {(
-              currentMode === 'programming'
-                ? 'Modern web teknolojileri ile kullanıcı dostu ve performanslı uygulamalar geliştiriyorum. React, TypeScript ve Node.js uzmanıyım.'
-                : 'Sürdürülebilir ve güvenli yapılar tasarlayarak topluma değer katıyorum. Yapı analizi ve deprem mühendisliği konularında uzmanım.'
-            )
-            .split(' ')
-            .map((word, wi) => (
-              <span key={`${currentMode}-word-${wi}`} className="whitespace-nowrap">
-                {word.split('').map((char, ci) => (
-                  <span key={`${currentMode}-char-${wi}-${ci}`} className="inline-block gsap-char">{char}</span>
-                ))}
-              </span>
-            ))
-            .reduce<React.ReactNode[]>((acc, curr, i) =>
-              i === 0 ? [curr] : [...acc, ' ', curr], [])
-            }
+            <HeroQuote ref={[quoteRef, quoteRef2]} mode={currentMode} />
           </p>
 
           {/* CTA Buttons */}
