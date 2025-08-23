@@ -69,16 +69,14 @@ export default function Projects() {
               />
             </div>
           ))}
-        </div>
-
-        <div className="relative text-center mt-8 animate-on-scroll fade-up">
-          <div className="absolute inset-0 rounded-lg" /> {/* Blur'un çalışması için boş arka plan katmanı */}
-          <Link
-            to="/Alll-projects"
-            className="relative px-6 py-3 rounded-lg font-semibold border-2 backdrop-blur-xl cursor-pointer"
-          >
-            Tüm Projeleri Gör
-          </Link>
+          <div className="relative text-center mt-8 animate-on-scroll fade-up">
+            <Link
+              to="/Alll-projects"
+              className="relative px-6 py-3 rounded-lg font-semibold border-2 backdrop-blur-xl cursor-pointer"
+            >
+              Tüm Projeleri Gör
+            </Link>
+          </div>
         </div>
       </div>
 
