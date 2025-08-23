@@ -64,7 +64,7 @@ export default function AllProjects() {
         <h2 className="gsap-title-word text-4xl font-bold mb-8 text-center">
           Tüm Projeler
         </h2>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
           {projects
             .slice()
             .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
