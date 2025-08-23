@@ -153,7 +153,13 @@ export default function Navbar() {
 }
 
 function NavLink({ href, children, isHomePage }: { href: string; children: React.ReactNode; isHomePage: boolean; }) {
-  const linkPath = isHomePage ? href : `/${href}`;
+  // Eğer href zaten / ile başlıyorsa, doğrudan kullan
+  // Eğer href # ile başlıyorsa (anchor link), isHomePage true ise kullan, false ise / ile birleştir
+  const linkPath = href.startsWith('/') 
+    ? href 
+    : isHomePage 
+      ? href 
+      : `/${href}`;
 
   return (
     <Link
@@ -166,7 +172,13 @@ function NavLink({ href, children, isHomePage }: { href: string; children: React
 }
 
 function MobileNavLink({ href, children, isHomePage }: { href: string; children: React.ReactNode; isHomePage: boolean; }) {
-  const linkPath = isHomePage ? href : `/${href}`;
+  // Eğer href zaten / ile başlıyorsa, doğrudan kullan
+  // Eğer href # ile başlıyorsa (anchor link), isHomePage true ise kullan, false ise / ile birleştir
+  const linkPath = href.startsWith('/') 
+    ? href 
+    : isHomePage 
+      ? href 
+      : `/${href}`;
   
   return (
     <Menu.Item>
