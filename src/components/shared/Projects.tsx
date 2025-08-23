@@ -54,7 +54,7 @@ export default function Projects() {
         </div>
 
         {/* Vitrinsss */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
           {featuredProjects.map((project, index) => (
             <div
               key={project.id}
@@ -72,9 +72,10 @@ export default function Projects() {
         </div>
 
         <div className="text-center mt-8 animate-on-scroll fade-up">
+        <div className="absolute inset-0" /> {/* butonun arkası blurlansın diye boş katman */}
           <Link
             to="/Alll-projects"
-            className="px-6 py-3 rounded-lg font-semibold border-2 backdrop-blur-xl cursor-pointer"
+            className="px-6 py-3 rounded-lg font-semibold border-2 bg-white/0 backdrop-blur-xl cursor-pointer"
           >
             Tüm Projeleri Gör
           </Link>
