@@ -11,6 +11,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import TechProjects from './components/project/TechProjects'
 import ScrollToTop from './components/shared/ScrollToTop'
 import AllProjects from '../src/components/project/AllProjects'
+import CertificateShowcase from './components/certificates/CertificateShowcase'
+import AllCertificates from './components/certificates/AllCertificates'
 
 function App() {
   const { currentMode } = useModeStore()
@@ -34,6 +36,7 @@ function App() {
                   <Hero />
                   <ProgrammingAbout />
                   <Projects/>
+                  <CertificateShowcase />
                   <ContactSection />
                 </div>
               ) : (
@@ -41,12 +44,14 @@ function App() {
                   <Hero />
                   <CivilAbout />
                   <Projects/>
+                  <CertificateShowcase />
                   <ContactSection />
                 </div>
               )
             } />
             <Route path="/projects/tech/:tech" element={<TechProjects />} />
             <Route path="/Alll-projects" element={<AllProjects />} />
+            <Route path="/certificates" element={<AllCertificates />} />
           </Routes>
         </main>
         <Footer />
