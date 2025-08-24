@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalendarIcon, BuildingOfficeIcon, DocumentIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 
 export interface Certificate {
   id: string;
@@ -55,18 +55,20 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
       className="relative overflow-hidden rounded-2xl border hover:scale-105 transition-all duration-300"
     >
         {certificate.image && (
-         <div className="relative h-35 md:h-40 lg:h-40 overflow-hidden flex items-center justify-center">
-          <DocumentIcon className="h-15 w-15" />
-           <div className="absolute inset-0 bg-gradient-to-t to-transparent">
-           </div>
-           {expired && (
-             <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-               Süresi Dolmuş
-             </div>
-           )}
-         </div>
-       )}
-
+          <div className="relative aspect-w-16 aspect-h-9 overflow-hidden flex items-center justify-center">
+            <img
+              src={certificate.image}
+              alt={certificate.title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t to-transparent"></div>
+            {expired && (
+              <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                Süresi Dolmuş
+              </div>
+            )}
+          </div>
+        )}
       <div className="p-6">
         <h3 className="text-xl font-bold mb-2">
           {certificate.title}
