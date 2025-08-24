@@ -12,6 +12,21 @@ import { Link, useLocation } from 'react-router-dom'
 
 gsap.registerPlugin(useGSAP, ScrollToPlugin)
 
+// Navigation links yapısını tanımlama
+interface NavLinkItem {
+  href: string;
+  label: string;
+  showInProgrammingMode?: boolean;
+}
+
+const NAVIGATION_LINKS: NavLinkItem[] = [
+  { href: "#about", label: "Hakkımda", showInProgrammingMode: true },
+  { href: "#experience", label: "Deneyim", showInProgrammingMode: false },
+  { href: "/Alll-projects", label: "Projeler", showInProgrammingMode: true },
+  { href: "/certificates", label: "Sertifikalar", showInProgrammingMode: true },
+  { href: "#contact", label: "İletişim", showInProgrammingMode: true },
+];
+
 export default function Navbar() {
   const { currentMode } = useModeStore()
   const navRef = useRef<HTMLElement>(null)
@@ -51,6 +66,11 @@ export default function Navbar() {
 
   const isHomePage = location.pathname === '/';
 
+  // Filtrelenmiş navigation links
+  const filteredLinks = NAVIGATION_LINKS.filter(link => 
+    currentMode === 'programming' ? link.showInProgrammingMode !== false : true
+  );
+
   return (
     <nav
       ref={navRef}
@@ -70,40 +90,27 @@ export default function Navbar() {
             </Link>
           </div>
           
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8 relative">
-            {/* isHomePage prop'u eklendi */}
-            <div className={`transition-all duration-300 ease-out ${
-              currentMode !== 'programming' 
-                ? 'transform translate-x-0' 
-                : 'transform -translate-x-4'
-            }`}>
-              <NavLink href="#about" isHomePage={isHomePage}>Hakkımda</NavLink>
-            </div>
-            <div className={`transition-all duration-300 ease-out ${
-              currentMode !== 'programming' 
-                ? 'opacity-100 transform translate-x-0 relative' 
-                : 'opacity-0 transform -translate-x-4 absolute pointer-events-none'
-            }`}>
-              <NavLink href="#experience" isHomePage={isHomePage}>Deneyim</NavLink>
-            </div>
-            <div className={`transition-all duration-300 ease-out ${
-              currentMode !== 'programming' 
-                ? 'transform translate-x-0' 
-                : 'transform -translate-x-4'
-            }`}>
-              <NavLink href="/Alll-projects" isHomePage={isHomePage}>Projeler</NavLink>
-            </div>
-            <div className={`transition-all duration-300 ease-out ${
-              currentMode !== 'programming' 
-                ? 'transform translate-x-0' 
-                : 'transform -translate-x-4'
-            }`}>
-              <NavLink href="#contact" isHomePage={isHomePage}>İletişim</NavLink>
-            </div>
+            {filteredLinks.map((link) => (
+              <div 
+                key={link.href}
+                className={`transition-all duration-300 ease-out ${
+                  currentMode !== 'programming' || link.showInProgrammingMode
+                    ? 'transform translate-x-0' 
+                    : 'transform -translate-x-4'
+                }`}
+              >
+                <NavLink href={link.href} isHomePage={isHomePage}>
+                  {link.label}
+                </NavLink>
+              </div>
+            ))}
           </div>
 
           <ToggleButton />
 
+          {/* Mobile Navigation */}
           <div className="md:hidden">
             <Menu as="div" className="relative">
               <Menu.Button className="p-2 rounded-lg cursor-pointer">
@@ -124,26 +131,23 @@ export default function Navbar() {
                             bg-black/90 text-center"
                 >
                   <div className="py-1 relative">
-                    <div className="transition-all duration-300 ease-out">
-                      <MobileNavLink href="#about" isHomePage={isHomePage}>Hakkımda</MobileNavLink>
-                    </div>
-                    <div className={`transition-all duration-300 ease-out ${
-                      currentMode !== 'programming'
-                        ? 'opacity-100 transform translate-x-0 relative'
-                        : 'opacity-0 transform -translate-x-4 absolute pointer-events-none'
-                    }`}>
-                      <MobileNavLink href="#experience" isHomePage={isHomePage}>Deneyim</MobileNavLink>
-                    </div>
-                    <div className="transition-all duration-300 ease-out">
-                      <MobileNavLink href="/Alll-projects" isHomePage={isHomePage}>Projeler</MobileNavLink>
-                    </div>
-                    <div className="transition-all duration-300 ease-out">
-                      <MobileNavLink href="#contact" isHomePage={isHomePage}>İletişim</MobileNavLink>
-                    </div>
+                    {filteredLinks.map((link) => (
+                      <div 
+                        key={link.href}
+                        className={`transition-all duration-300 ease-out ${
+                          currentMode !== 'programming' || link.showInProgrammingMode
+                            ? 'opacity-100 transform translate-x-0 relative'
+                            : 'opacity-0 transform -translate-x-4 absolute pointer-events-none'
+                        }`}
+                      >
+                        <MobileNavLink href={link.href} isHomePage={isHomePage}>
+                          {link.label}
+                        </MobileNavLink>
+                      </div>
+                    ))}
                   </div>
                 </Menu.Items>
               </Transition>
-
             </Menu>
           </div>
         </div>
@@ -153,7 +157,13 @@ export default function Navbar() {
 }
 
 function NavLink({ href, children, isHomePage }: { href: string; children: React.ReactNode; isHomePage: boolean; }) {
-  const linkPath = isHomePage ? href : `/${href}`;
+  // Eğer href zaten / ile başlıyorsa, doğrudan kullan
+  // Eğer href # ile başlıyorsa (anchor link), isHomePage true ise kullan, false ise / ile birleştir
+  const linkPath = href.startsWith('/') 
+    ? href 
+    : isHomePage 
+      ? href 
+      : `/${href}`;
 
   return (
     <Link
@@ -166,7 +176,13 @@ function NavLink({ href, children, isHomePage }: { href: string; children: React
 }
 
 function MobileNavLink({ href, children, isHomePage }: { href: string; children: React.ReactNode; isHomePage: boolean; }) {
-  const linkPath = isHomePage ? href : `/${href}`;
+  // Eğer href zaten / ile başlıyorsa, doğrudan kullan
+  // Eğer href # ile başlıyorsa (anchor link), isHomePage true ise kullan, false ise / ile birleştir
+  const linkPath = href.startsWith('/') 
+    ? href 
+    : isHomePage 
+      ? href 
+      : `/${href}`;
   
   return (
     <Menu.Item>
