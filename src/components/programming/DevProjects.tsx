@@ -86,7 +86,7 @@ export const programmingProjects: Project[] = [
     description: 'Çevre, Şehircilik ve İklim Değişikliği Bakanlığı Yapı İşleri Genel Müdürlüğü\'nün mevcut Yapı Denetim Sistemi (YDS) içerisinde yer alan "YİBF Listesi" sekmesi için daha gelişmiş bir prototip versiyonudur. Proje, gerçekçi veri simülasyonu için ChatGPT ile yapay veriler oluşturmuş ve bu verileri NoSQL veritabanı simülasyonu yapan fonksiyonlarla derlemiştir. Sistem, YİBF (Yapıya İlişkin Bilgi Formu) numaralarını referans alarak işlem geçmişini takip eder, filtrelenmiş, sıralanmış ve sayfalanmış listeler sunar. Bu çalışma, sektördeki ruhsatlandırma ve yasal takip süreçlerinin dijitalleştirilmesine odaklanmaktadır.',
     image: programmingImages['./img/csb-yds.jpeg'].default,
     technologies: [
-      { name: 'React', slug: 'React' },
+      { name: 'React.js', slug: 'React_js' },
       { name: 'Redux', slug: 'Redux' },
       { name: 'TailwindCSS', slug: 'TailwindCSS' },
       { name: 'Node.js', slug: 'Node_js' },
@@ -193,7 +193,7 @@ export const programmingProjects: Project[] = [
   {
     id: '10',
     title: 'İHA Kiralama Projesi',
-    description: 'BaykarTech Akıllı Web Sistemleri Arka Uç Yazılım Uzmanı...',
+    description: 'BaykarTech Akıllı Web Sistemleri Arka Uç Yazılım Uzmanı başvuru için hazırlamış olduğum İHA kiralama çalışması.',
     image: programmingImages['./img/IHA-AnaSayfa(ziyaretci).png'].default,
     technologies: [
       { name: 'Python', slug: 'Python' },
@@ -206,6 +206,30 @@ export const programmingProjects: Project[] = [
     prod: '',
     medium: '',
     date: '2024-05-06',
+  },
+  {
+    id: '11',
+    title: 'ReserveL',
+    description: "ReserveL, HackPera hackathonu için geliştirilmiş, Web3 tabanlı bir rezervasyon sistemidir. Temel amacı, işletmelerin rezervasyonlara gelinmemesi (no-show) nedeniyle yaşadığı gelir kayıplarını azaltmaktır. Bu sistem, rezervasyon yapan kullanıcılardan bir depozito talep ederek çalışır; eğer müşteri gelmezse, depozito işletmeye aktarılır. Rezervasyonuna sadık kalan müşteriler ise, ReserveL ağı içindeki diğer işletmelerde kullanabilecekleri sadakat token'ları ile ödüllendirilir. Proje, işletmeleri bir pazar yeri olarak konumlandırarak Web3 teknolojilerini daha geniş bir kitleye ulaştırmayı hedeflemektedir.",
+    image: programmingImages['./img/ReserveL-Restaurant-Reservation-System.png'].default,
+    technologies: [
+      { name: 'Rust', slug: 'Rust' },
+      { name: 'Node.JS', slug: 'Node_js' },
+      { name: 'Rise In', slug: 'Rise_In' },
+      { name: 'Stellar', slug: 'Stellar' },
+      { name: 'React.js', slug: 'React_js' },
+      { name: 'TypeScript', slug: 'TypeScript' },
+      { name: 'Web3', slug: 'Web3' },
+      { name: 'Tailwind CSS', slug: 'Tailwind_CSS' },
+      { name: 'MongoDB', slug: 'MongoDB' },
+      { name: 'Hackathon', slug: 'Hackathon' },
+      { name: 'Vercel', slug: 'Vercel' },
+    ],
+    link: 'https://www.linkedin.com/feed/update/urn:li:activity:7374089387082498048',
+    github: 'https://github.com/ksyusuf/ReserveL',
+    prod: 'https://reserve-l.vercel.app',
+    medium: 'https://medium.com/@ksyusuf85/rise-in-and-stellar-hackathon-59bef375726e',
+    date: '2025-09-17',
   }
 ]
 
