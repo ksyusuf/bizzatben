@@ -28,24 +28,48 @@ const NAVIGATION_LINKS: NavLinkItem[] = [
 ];
 
 export default function Navbar() {
-  const { currentMode } = useModeStore()
   const navRef = useRef<HTMLElement>(null)
   const logoRef = useRef<HTMLDivElement>(null)
   const location = useLocation()
+  const { currentMode } = useModeStore()
 
+  // İlk yüklemede navbar ve logo animasyonu
   useGSAP(() => {
-    // Initial navbar animation
-    gsap.fromTo(navRef.current,
+    gsap.fromTo(
+      navRef.current,
       { y: -100, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, ease: "power2.out" }
+      { y: 0, opacity: 1, duration: 0.8, ease: 'power2.out' }
     )
-    
-    // Logo animation
-    gsap.fromTo(logoRef.current,
+
+    gsap.fromTo(
+      logoRef.current,
       { scale: 0.8, opacity: 0 },
-      { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.7)" }
+      { scale: 1, opacity: 1, duration: 0.6, ease: 'back.out(1.7)' }
     )
   }, { scope: navRef })
+
+  // Mod geçişlerinde navbar link animasyonu
+  useGSAP(() => {
+    const links = navRef.current?.querySelectorAll('[data-nav-link]')
+    if (!links || links.length === 0) return
+
+    const fromX =
+      currentMode === 'programming'
+        ? -40 // dev moduna geçerken soldan sağa
+        : 40  // civil moduna geçerken sağdan sola (veya diğer modlar)
+
+    gsap.fromTo(
+      links,
+      { x: fromX, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.6,
+        stagger: 0.05,
+        ease: 'power2.out',
+      }
+    )
+  }, { scope: navRef, dependencies: [currentMode] })
 
   // Sayfa yüklendiğinde veya location.hash değiştiğinde kaydırma işlemini kontrol eden hook
   useEffect(() => {
@@ -65,12 +89,7 @@ export default function Navbar() {
   }, [location])
 
   const isHomePage = location.pathname === '/';
-
-  // Filtrelenmiş navigation links
-  const filteredLinks = NAVIGATION_LINKS.filter(link => 
-    currentMode === 'programming' ? link.showInProgrammingMode !== false : true
-  );
-
+  
   return (
     <nav
       ref={navRef}
@@ -92,14 +111,11 @@ export default function Navbar() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8 relative">
-            {filteredLinks.map((link) => (
-              <div 
+            {NAVIGATION_LINKS.map((link) => (
+              <div
                 key={link.href}
-                className={`transition-all duration-300 ease-out ${
-                  currentMode !== 'programming' || link.showInProgrammingMode
-                    ? 'transform translate-x-0' 
-                    : 'transform -translate-x-4'
-                }`}
+                data-nav-link
+                className="transition-all duration-300 ease-out transform"
               >
                 <NavLink href={link.href} isHomePage={isHomePage}>
                   {link.label}
@@ -131,14 +147,11 @@ export default function Navbar() {
                             bg-black/90 text-center"
                 >
                   <div className="py-1 relative">
-                    {filteredLinks.map((link) => (
-                      <div 
+                    {NAVIGATION_LINKS.map((link) => (
+                      <div
                         key={link.href}
-                        className={`transition-all duration-300 ease-out ${
-                          currentMode !== 'programming' || link.showInProgrammingMode
-                            ? 'opacity-100 transform translate-x-0 relative'
-                            : 'opacity-0 transform -translate-x-4 absolute pointer-events-none'
-                        }`}
+                        data-nav-link
+                        className="transition-all duration-300 ease-out relative"
                       >
                         <MobileNavLink href={link.href} isHomePage={isHomePage}>
                           {link.label}

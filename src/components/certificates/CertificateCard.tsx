@@ -1,5 +1,5 @@
 import React from 'react';
-import { CalendarIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, BuildingOfficeIcon, KeyIcon } from '@heroicons/react/24/outline';
 
 export interface Certificate {
   id: string;
@@ -17,7 +17,6 @@ export interface Certificate {
 interface CertificateCardProps {
   certificate: Certificate;
   index: number;
-  onViewDetails?: () => void;
 }
 
 const truncateDescription = (text: string, maxLength: number) => {
@@ -43,12 +42,38 @@ const isExpired = (expiryDate: string | null) => {
 };
 
 export const CertificateCard: React.FC<CertificateCardProps> = ({ 
-  certificate, 
-  onViewDetails 
+  certificate
 }) => {
-  const { truncatedDescriptionText } = truncateDescription(certificate.description, 150);
+  const { truncatedDescriptionText, isTruncated } = truncateDescription(certificate.description, 150);
   const expired = isExpired(certificate.expiryDate);
-  
+  const [showFullDescription, setShowFullDescription] = React.useState(false);
+  const [copied, setCopied] = React.useState(false);
+
+  const displayCredentialId =
+    certificate.credentialId.length > 10
+      ? `${certificate.credentialId.slice(0, 10)}...`
+      : certificate.credentialId;
+
+  const handleCopyCredentialId = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(certificate.credentialId);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = certificate.credentialId;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch (error) {
+      console.error('Credential ID kopyalanırken hata oluştu:', error);
+    }
+  };
 
   return (
     <div
@@ -74,26 +99,64 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
           {certificate.title}
         </h3>
 
-        {/* Issuer and Date */}
-        <div className="flex items-center gap-4 mb-3 text-sm text-cyan-100">
-          <div className="flex items-center gap-1">
-            <BuildingOfficeIcon className="h-4 w-4" />
-            <span>{certificate.issuer}</span>
+        {/* Issuer, Date and Credential ID */}
+        <div className="flex flex-col gap-1 mb-3 text-sm text-cyan-100">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-1">
+              <BuildingOfficeIcon className="h-4 w-4" />
+              <span className="whitespace-nowrap">{certificate.issuer}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <CalendarIcon className="h-4 w-4" />
+              <span className="whitespace-nowrap">{formatDate(certificate.issueDate)}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <CalendarIcon className="h-4 w-4" />
-            <span>{formatDate(certificate.issueDate)}</span>
-          </div>
+
+          {certificate.credentialId && certificate.credentialId !== '' && (
+            <div className="flex items-center gap-1 relative">
+              <KeyIcon className="h-4 w-4" />
+              {certificate.credentialUrl && 
+               certificate.credentialUrl !== '' && 
+               (certificate.credentialUrl.startsWith('http://') || certificate.credentialUrl.startsWith('https://')) ? (
+                <a
+                  href={certificate.credentialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="max-w-[180px] truncate underline underline-offset-2 hover:text-blue-300 transition-colors duration-200"
+                >
+                  {displayCredentialId}
+                </a>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    onClick={handleCopyCredentialId}
+                    className="max-w-[180px] truncate text-left underline underline-offset-2 hover:text-blue-300 transition-colors duration-200 cursor-pointer bg-transparent border-none p-0"
+                  >
+                    {displayCredentialId}
+                  </button>
+                  {copied && (
+                    <div
+                      className="absolute left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-xs px-3 py-1 rounded-full shadow-lg"
+                      style={{ bottom: 'calc(100% + 5px)' }}
+                    >
+                      Copied
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         <p className="mb-4 text-sm">
-          {truncatedDescriptionText}
-          {onViewDetails && (
+          {showFullDescription ? certificate.description : truncatedDescriptionText}
+          {isTruncated && (
             <button
-              onClick={onViewDetails}
+              onClick={() => setShowFullDescription((prev) => !prev)}
               className="ml-1 text-blue-100 underline decoration-2 underline-offset-2 hover:text-blue-300 transition-colors duration-200 cursor-pointer bg-transparent border-none p-0"
             >
-              Devamını oku
+              {showFullDescription ? 'Daha az göster' : 'Devamını oku'}
             </button>
           )}
         </p>
@@ -116,7 +179,6 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
           </div>
         </div>
 
-        
       </div>
     </div>
   );
