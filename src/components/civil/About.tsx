@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useModeStore } from '../../store/modeStore'
+import { civilExperiences } from './CivilExperiences'
+import { ExperienceItem } from '../experience/ExperienceItem'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function CivilAbout() {
@@ -141,28 +143,9 @@ export default function CivilAbout() {
               Deneyim
             </h3>
             <div className="space-y-4">
-              {[
-                {
-                  title: 'İnşaat Mühendisliği (Dönemlik)',
-                  company: 'Esedoğlu İnşaat',
-                  period: '07/24 – 01/25',
-                  description: 'Taşeron bünyesinde ataşmanlı hak ediş hazırlanıp üst firmaya sunulması. Ekip hak edişlerinin hazırlanması. Saha, ekip ve puantaj takibi. Birim fiyat teklif formu hazırlama işleri. Şap, duvar, sıva, seramik ve boya ağırlıklı iş yönetimi.'
-                },
-                {
-                  title: 'İhale Subaylığı (Askerlik Görevi)',
-                  company: 'TSK İhale Komisyon Başkanlığı',
-                  period: '04/23 – 04/24',
-                  description: 'Türk Silahlı Kuvvetleri 108. Topçu Alay Komutanlığı İhale Komisyon Başkanlığı biriminde alayın tüm ihalelerinin yapılması. Teklif formlarının alınması, yaklaşık maliyet kontrolü, ihale kazananı belirlenmesi, sözleşmelerin yapılması ve ihale dosyasının hazırlanması işlerinin yapılması.'
-                },
-                {
-                  title: 'Proje Mühendisliği (Tekirdağ)',
-                  company: 'Biberoğlu Mimarlık',
-                  period: '08/21 – 12/22',
-                  description: 'Yapım, yıkım ve isim değişikliği ruhsatı alma işlemlerinde baştan sona iş takibi. İmar durumu kontrolü, belediye başvuruları, harç kontrolü, yapı denetim, iş bitirme, iskân alınması. Mimari, inşaat, mekanik, elektrik, zemin etüdü projelerinin başvurulması ve organizasyonunun sağlanması. Gerektiği durumlarda şantiye proje uygunluk kontrolü.'
-                }
-              ].map((exp, i) => (
+              {civilExperiences.map((exp, i) => (
                 <div key={exp.title} ref={el => { expRefs.current[i] = el; }}>
-                  <ExperienceItem {...exp} />
+                  <ExperienceItem {...exp}/>
                 </div>
               ))}
             </div>
@@ -187,26 +170,4 @@ function SkillItem({ name, level }: { name: string; level: number }) {
       </div>
     </div>
   )
-}
-
-function ExperienceItem({ 
-  title, 
-  company, 
-  period, 
-  description 
-}: { 
-  title: string; 
-  company: string; 
-  period: string; 
-  description: string 
-}) {
-  return (
-    <div className="relative border-l-4 border-civil-primary pl-6 pb-8 last:pb-0">
-      <div className="absolute -left-2 top-0 h-4 w-4 rounded-full bg-civil-primary"></div>
-      <h4 className="font-semibold text-xl text-civil-light dark:text-gray-100">{title}</h4>
-      <p className="font-medium text-civil-accent mt-1 dark:text-civil-accent-light">{company}</p>
-      <p className="text-sm text-civil-light/60 mb-3 mt-1">{period}</p>
-      <p className="text-civil-light/80 leading-relaxed dark:text-gray-300">{description}</p>
-    </div>
-  );
 }
