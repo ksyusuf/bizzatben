@@ -9,20 +9,20 @@ export const certificateImages = import.meta.glob<{ default: string }>(
 export const certificates: Certificate[] = [
   {
     id: '1',
-    title: 'İstanbul Yarı Maraton Sertifikası',
+    title: '20. İstanbul Yarı Maraton Gönüllülük Sertifikası',
     issuer: 'Spor İstanbul',
     issueDate: '2025-05-02',
     expiryDate: null,
     credentialId: '2F779997-D8CE-4341-B948-0444B6936925',
     credentialUrl: '',
-    description: 'İstanbul Yarı Maraton\'u başarıyla tamamladığım için verilen katılım sertifikası.',
+    description: 'Spor İstanbul kapsamında yürütülen 20. İstanbul Yarı Maraton\'unda gönüllü olarak görev aldım.',
     tags: [
       { name: 'Spor', slug: 'spor' },
       { name: 'Maraton', slug: 'maraton' },
       { name: 'Dayanıklılık', slug: 'dayaniklilik' },
       { name: 'Fitness', slug: 'fitness' }
     ],
-    image: certificateImages['./certificate_docs/istanbul_yari_maraton.jpg'].default,
+    image: certificateImages['./certificate_docs/spor_istanbul_20_istanbul_yari_maraton.jpg'].default,
   },
   {
     id: '2',
@@ -210,6 +210,43 @@ export const certificates: Certificate[] = [
       { name: 'Eğitim', slug: 'egitim' }
     ],
     image: certificateImages['./certificate_docs/Python_Programlamaya_Giris_Sertifikasi-iSMEK.png'].default,
+  },
+  {
+    id: '13',
+    title: '20. İstanbul Yarı Maraton Gönüllülük Sertifikası',
+    issuer: 'Spor İstanbul',
+    issueDate: '2025-11-02',
+    expiryDate: null,
+    credentialId: '08C9AF9F-9F94-44AD-AA11-D26823EFC8C9',
+    credentialUrl: '',
+    description: 'Spor İstanbul kapsamında yürütülen 47. İstanbul Maraton\'unda gönüllü olarak görev aldım.',
+    tags: [
+      { name: 'Spor', slug: 'spor' },
+      { name: 'Maraton', slug: 'maraton' },
+      { name: 'Dayanıklılık', slug: 'dayaniklilik' },
+      { name: 'Fitness', slug: 'fitness' }
+    ],
+    image: certificateImages['./certificate_docs/spor_istanbul_47_istanbul_maraton.jpg'].default,
+  },
+  {
+    id: '14',
+    title: 'RiseIn HackStellar Hackathon',
+    issuer: 'RiseIn',
+    issueDate: '2025-11-30',
+    expiryDate: null,
+    credentialId: 'OqAg8ZQT',
+    credentialUrl: 'https://www.risein.com/certificates/OqAg8ZQT',
+    description: 'Rise In’in düzenlediği hackstellar hackathonundaydık. İki kişilik bir ekip ile katıldım ve 36 saat boyunca kodladık.',
+    tags: [
+      { name: 'Hackathon', slug: 'hackathon' },
+      { name: 'RiseIn', slug: 'risein' },
+      { name: 'Stellar', slug: 'stellar' },
+      { name: 'Blockchain', slug: 'blockchain' },
+      { name: 'Video Doğrulama', slug: 'video-dogrulama' },
+      { name: 'Web3', slug: 'web3' },
+      { name: 'Hackathon', slug: 'hackathon' },
+    ],
+    image: certificateImages['./certificate_docs/RiseIn_HackStellar_Hackathon.png'].default,
   }
 ]
 

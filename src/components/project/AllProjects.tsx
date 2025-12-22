@@ -2,8 +2,10 @@ import { useModeStore } from '../../store/modeStore'
 import { programmingProjects } from '../programming/DevProjects'
 import { civilProjects } from '../civil/CivilProjects'
 import { ProjectCard } from './ProjectCard'
+import { ProjectDetailModal } from './ProjectDetailModal'
+import { type Project } from '../project/ProjectCard'
 import { useRef, useEffect, useState } from 'react'
-import { gsap } from "gsap";
+import { gsap } from 'gsap'
 
 export default function AllProjects() {
   const { currentMode } = useModeStore()
@@ -12,6 +14,7 @@ export default function AllProjects() {
   const [projects, setProjects] = useState(
     currentMode === 'programming' ? programmingProjects : civilProjects
   )
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
   useEffect(() => {
     if (!contentRef.current) return
@@ -74,15 +77,22 @@ export default function AllProjects() {
                 className="project-card backdrop-blur-xl"
               >
                 <ProjectCard
-                  key={project.id}
                   project={project}
                   index={index}
                   currentMode={currentMode}
+                  onViewDetails={() => setSelectedProject(project)}
                 />
               </div>
             ))}
         </div>
       </div>
+
+      <ProjectDetailModal
+        project={selectedProject}
+        isOpen={!!selectedProject}
+        onClose={() => setSelectedProject(null)}
+        currentMode={currentMode}
+      />
     </section>
   )
 }
