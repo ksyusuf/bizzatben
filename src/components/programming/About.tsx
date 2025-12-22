@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useModeStore } from '../../store/modeStore'
+import { devExperiences } from './DevExperiences'
+import { ExperienceItem } from '../experience/ExperienceItem'
 gsap.registerPlugin(ScrollTrigger)
 
 export default function DevAbout() {
@@ -123,8 +125,8 @@ export default function DevAbout() {
             Modern web teknolojileri ile kullanıcı dostu ve performanslı uygulamalar geliştiriyorum.
           </p>
         </div>
-        <div className="grid place-items-center">
-          <div className="glass-darker rounded-xl border border-prog-accent/50 p-6 shadow-xl shadow-prog-accent/20 w-full md:w-1/2">
+        <div className="grid gap-8 md:grid-cols-2">
+          <div className="glass-darker rounded-xl border border-prog-accent/50 p-6 shadow-xl shadow-prog-accent/20">
             <h3 className="text-2xl font-semibold text-prog-primary mb-6">
               Yetkinlikler
             </h3>
@@ -141,8 +143,24 @@ export default function DevAbout() {
                 { name: 'Tailwind CSS', level: 75 },
                 { name: 'Matlab', level: 75 },
               ].map((skill, i) => (
-                <div key={skill.name} ref={el => { skillRefs.current[i] = el; }}>
+                <div key={skill.name} ref={el => { skillRefs.current[i] = el }}>
                   <SkillItem name={skill.name} level={skill.level} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div
+            id="experience"
+            className="glass-darker rounded-xl border border-prog-accent/50 p-6 shadow-xl shadow-prog-accent/20"
+          >
+            <h3 className="text-2xl font-semibold text-prog-primary mb-6">
+              Deneyim
+            </h3>
+            <div className="space-y-4">
+              {devExperiences.map((exp, i) => (
+                <div key={exp.title} ref={el => { expRefs.current[i] = el }}>
+                  <ExperienceItem {...exp}/>
                 </div>
               ))}
             </div>
@@ -161,9 +179,7 @@ function SkillItem({ name, level }: { name: string; level: number }) {
         <span className="text-sm text-prog-accent">{level}%</span>
       </div>
       <div className="w-full bg-black/50 rounded-full h-2">
-        <div
-          className="bg-gradient-to-r from-prog-primary to-prog-accent h-2 rounded-full shadow-lg shadow-prog-primary/50"
-        />
+        <div className="bg-gradient-to-r from-prog-primary to-prog-accent h-2 rounded-full shadow-lg shadow-prog-primary/50" />
       </div>
     </div>
   )
