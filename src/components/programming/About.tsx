@@ -1,18 +1,119 @@
-import { useEffect, useRef } from 'react'
-import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useModeStore } from '../../store/modeStore'
-import { devExperiences } from './DevExperiences'
-import { ExperienceItem } from '../experience/ExperienceItem'
-gsap.registerPlugin(ScrollTrigger)
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useModeStore } from "../../store/modeStore";
+import { devExperiences } from "./DevExperiences";
+import { ExperienceItem } from "../experience/ExperienceItem";
+import { Link } from "react-router-dom";
+gsap.registerPlugin(ScrollTrigger);
+
+function SkillBadge({ name, slug }: { name: string; slug: string }) {
+  return (
+    <Link
+      to={`/projects/tech/${slug}`}
+      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm
+        bg-black/30 border border-prog-accent/30 text-prog-light
+        hover:border-prog-accent hover:bg-prog-accent/10 transition-all duration-200"
+    >
+      {name}
+    </Link>
+  );
+}
+
+const skillGroups = [
+  {
+    label: "Diller & Frameworkler",
+    skills: [
+      { name: "Python", slug: "Python" },
+      { name: "React.js", slug: "React_js" },
+      { name: "TypeScript", slug: "TypeScript" },
+      { name: "Node.js", slug: "Node_js" },
+      { name: "Rust", slug: "Rust" },
+      { name: "Matlab", slug: "Matlab" },
+    ],
+  },
+  {
+    label: "Backend & API",
+    skills: [
+      { name: "FastAPI", slug: "FastAPI" },
+      { name: "Express.js", slug: "Express_js" },
+      { name: "Django", slug: "Django" },
+      { name: "JWT", slug: "JWT" },
+      { name: "OAuth2", slug: "OAuth2" },
+    ],
+  },
+  {
+    label: "Veri Tabanı",
+    skills: [
+      { name: "MongoDB", slug: "MongoDB" },
+      { name: "PostgreSQL", slug: "PostgreSQL" },
+      { name: "MongoDB Atlas", slug: "MongoDB_Atlas" },
+    ],
+  },
+  {
+    label: "Makine Öğrenmesi & Yapay Zeka",
+    skills: [
+      { name: "Makine Öğrenmesi", slug: "Makine_Ogrenmesi" },
+      { name: "Derin Öğrenme", slug: "Derin_Ogrenme" },
+      { name: "CNN", slug: "Konvolusyonel_Sinir_Aglari_CNN" },
+      { name: "Doğal Dil İşleme (NLP)", slug: "Dogal_Dil_Isleme_NLP" },
+      { name: "Görüntü İşleme", slug: "Goruntu_Isleme" },
+      { name: "Word Embedding", slug: "Word_Embedding" },
+      { name: "XGBoost", slug: "XGBoost" },
+      { name: "Scikit-learn", slug: "Scikit_learn" },
+      { name: "TensorFlow", slug: "TensorFlow" },
+      { name: "Keras", slug: "Keras" },
+    ],
+  },
+  {
+    label: "Veri Analizi & Görselleştirme",
+    skills: [
+      { name: "Veri Analizi", slug: "Veri_Analizi" },
+      { name: "Veri Görselleştirme", slug: "Veri_Gorsellestirme" },
+      { name: "Pandas", slug: "Pandas" },
+      { name: "NumPy", slug: "NumPy" },
+      { name: "Matplotlib", slug: "Matplotlib" },
+      { name: "Zaman Serisi Analizi", slug: "Zaman_Serisi_Analizi" },
+      { name: "Regresyon", slug: "Regresyon" },
+    ],
+  },
+  {
+    label: "DevOps & Altyapı",
+    skills: [
+      { name: "Docker", slug: "Docker" },
+      { name: "GitHub Actions", slug: "GitHub_Actions" },
+      { name: "CI/CD", slug: "CI_CD" },
+      { name: "Vercel", slug: "Vercel" },
+      { name: "Netlify", slug: "Netlify" },
+      { name: "Render.com", slug: "Render_com" },
+      { name: "Semantic Versioning", slug: "Semantic_Versioning_SemVer" },
+    ],
+  },
+  {
+    label: "Frontend & Stil",
+    skills: [
+      { name: "Tailwind CSS", slug: "Tailwind_CSS" },
+      { name: "Redux", slug: "Redux" },
+      { name: "Bootstrap", slug: "Bootstrap" },
+    ],
+  },
+  {
+    label: "Web3 & Blockchain",
+    skills: [
+      { name: "Web3", slug: "Web3" },
+      { name: "Stellar", slug: "Stellar" },
+      { name: "Rust", slug: "Rust" },
+    ],
+  },
+];
 
 export default function DevAbout() {
-  const { currentMode } = useModeStore()
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const titleRef = useRef<HTMLHeadingElement>(null)
-  const descRef = useRef<HTMLParagraphElement>(null)
-  const skillRefs = useRef<(HTMLDivElement | null)[]>([])
-  const expRefs = useRef<(HTMLDivElement | null)[]>([])
+  const { currentMode } = useModeStore();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const skillRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const expRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     if (sectionRef.current) {
@@ -23,14 +124,14 @@ export default function DevAbout() {
           opacity: 1,
           y: 0,
           duration: 0.8,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-        }
-      )
+        },
+      );
     }
     if (titleRef.current) {
       gsap.fromTo(
@@ -40,14 +141,14 @@ export default function DevAbout() {
           opacity: 1,
           y: 0,
           duration: 0.7,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: titleRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+            start: "top 85%",
+            toggleActions: "play none none none",
           },
-        }
-      )
+        },
+      );
     }
     if (descRef.current) {
       gsap.fromTo(
@@ -58,14 +159,14 @@ export default function DevAbout() {
           y: 0,
           duration: 0.7,
           delay: 0.2,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: descRef.current,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
+            start: "top 85%",
+            toggleActions: "play none none none",
           },
-        }
-      )
+        },
+      );
     }
     if (skillRefs.current.length > 0) {
       gsap.fromTo(
@@ -76,14 +177,14 @@ export default function DevAbout() {
           y: 0,
           duration: 0.7,
           stagger: 0.15,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-        }
-      )
+        },
+      );
     }
     if (expRefs.current.length > 0) {
       gsap.fromTo(
@@ -94,21 +195,21 @@ export default function DevAbout() {
           y: 0,
           duration: 0.7,
           stagger: 0.15,
-          ease: 'power3.out',
+          ease: "power3.out",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none none',
+            start: "top 80%",
+            toggleActions: "play none none none",
           },
-        }
-      )
+        },
+      );
     }
     return () => {
-      ScrollTrigger.getAll().forEach(t => t.kill())
-    }
-  }, [currentMode])
+      ScrollTrigger.getAll().forEach((t) => t.kill());
+    };
+  }, [currentMode]);
 
-  if (currentMode !== 'programming') return null
+  if (currentMode !== "programming") return null;
 
   return (
     <section
@@ -118,11 +219,18 @@ export default function DevAbout() {
     >
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
-          <h2 ref={titleRef} className="text-4xl font-bold text-prog-primary mb-4">
+          <h2
+            ref={titleRef}
+            className="text-4xl font-bold text-prog-primary mb-4"
+          >
             Yazılım Geliştirici
           </h2>
-          <p ref={descRef} className="text-xl text-prog-light max-w-3xl mx-auto">
-            Modern web teknolojileri ile kullanıcı dostu ve performanslı uygulamalar geliştiriyorum.
+          <p
+            ref={descRef}
+            className="text-xl text-prog-light max-w-3xl mx-auto"
+          >
+            Modern web teknolojileri ile kullanıcı dostu ve performanslı
+            uygulamalar geliştiriyorum.
           </p>
         </div>
         <div className="grid gap-8 md:grid-cols-2">
@@ -130,21 +238,21 @@ export default function DevAbout() {
             <h3 className="text-2xl font-semibold text-prog-primary mb-6">
               Yetkinlikler
             </h3>
-            <div className="space-y-4">
-              {[
-                { name: 'Python', level: 95 },
-                { name: 'Makine Öğrenmesi', level: 90 },
-                { name: 'React.js', level: 90 },
-                { name: 'Görüntü İşleme', level: 85 },
-                { name: 'DevOps & CI/CD', level: 85 },
-                { name: 'Veri Analizi', level: 85 },
-                { name: 'Node.js', level: 80 },
-                { name: 'TypeScript', level: 80 },
-                { name: 'Tailwind CSS', level: 75 },
-                { name: 'Matlab', level: 75 },
-              ].map((skill, i) => (
-                <div key={skill.name} ref={el => { skillRefs.current[i] = el }}>
-                  <SkillItem name={skill.name} level={skill.level} />
+            <div className="space-y-5">
+              {skillGroups.map((group) => (
+                <div key={group.label}>
+                  <p className="text-xs font-medium text-prog-accent/70 uppercase tracking-wider mb-2">
+                    {group.label}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {group.skills.map((skill) => (
+                      <SkillBadge
+                        key={skill.slug}
+                        name={skill.name}
+                        slug={skill.slug}
+                      />
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -159,8 +267,13 @@ export default function DevAbout() {
             </h3>
             <div className="space-y-4">
               {devExperiences.map((exp, i) => (
-                <div key={exp.title} ref={el => { expRefs.current[i] = el }}>
-                  <ExperienceItem {...exp}/>
+                <div
+                  key={exp.title}
+                  ref={(el) => {
+                    expRefs.current[i] = el;
+                  }}
+                >
+                  <ExperienceItem {...exp} />
                 </div>
               ))}
             </div>
@@ -168,19 +281,5 @@ export default function DevAbout() {
         </div>
       </div>
     </section>
-  )
-}
-
-function SkillItem({ name, level }: { name: string; level: number }) {
-  return (
-    <div>
-      <div className="flex justify-between items-center mb-2">
-        <span className="font-medium text-prog-light">{name}</span>
-        <span className="text-sm text-prog-accent">{level}%</span>
-      </div>
-      <div className="w-full bg-black/50 rounded-full h-2">
-        <div className="bg-gradient-to-r from-prog-primary to-prog-accent h-2 rounded-full shadow-lg shadow-prog-primary/50" />
-      </div>
-    </div>
-  )
+  );
 }
