@@ -1,5 +1,12 @@
 export const devExperiences = [
   {
+    title: 'ERP Mühendisliği',
+    company: 'Dafne Mühendislik',
+    period: '01/26 – Halen',
+    description:
+      "Google ekosistemi içerisinde özellikle Apps Script ve Google Sheets kullanarak şirketin ERP sistemini geliştirmekteyim. Bu kapsamda, şirketin ihtiyaçlarına göre özelleştirilmiş çözümler üretiyor, süreçleri otomatikleştiriyor ve veri yönetimini optimize ediyorum. Ayrıca, kullanıcı geri bildirimlerine dayanarak sistemde sürekli iyileştirmeler yapıyorum.",
+  },
+  {
     title: 'Python Eğitmenliği',
     company: 'Kodland',
     period: '05/25 – Halen',

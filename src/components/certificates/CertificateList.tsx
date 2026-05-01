@@ -247,6 +247,22 @@ export const certificates: Certificate[] = [
       { name: 'Hackathon', slug: 'hackathon' },
     ],
     image: certificateImages['./certificate_docs/RiseIn_HackStellar_Hackathon.png'].default,
+  },
+  {
+    id: '15',
+    title: 'Kütahya Murathanlar Hatıra Ormanı Fidan Bağışı Hediyesi',
+    issuer: 'GDG Zonguldak',
+    issueDate: '2026-04-27',
+    expiryDate: null,
+    credentialId: '7662a5b0-17ce-482c-9122-2ff771299434',
+    credentialUrl: 'https://cdn-tema.mncdn.com/Uploads/Certificate/7662a5b0-17ce-482c-9122-2ff771299434.pdf',
+    description: "GDG Zonguldak Google Cloud Workshop'unda kazanılmış tatlı bir birincilik ödülü :)",
+    tags: [
+      { name: 'Fidan Bağışı', slug: 'fidan_bagisi' },
+      { name: 'GDG Zonguldak', slug: 'gdg-zonguldak' },
+      { name: 'Bağış', slug: 'bagis' },
+    ],
+    image: certificateImages['./certificate_docs/GDG_Zonguldak_Tema_Bagisi.png'].default,
   }
 ]
 
