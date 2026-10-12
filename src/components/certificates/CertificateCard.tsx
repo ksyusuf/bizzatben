@@ -80,10 +80,11 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
       className="relative overflow-hidden rounded-2xl border hover:scale-105 transition-all duration-300"
     >
         {certificate.image && (
-          <div className="relative aspect-w-16 aspect-h-9 overflow-hidden flex items-center justify-center">
+          <div className="relative overflow-hidden flex items-center justify-center">
             <img
               src={certificate.image}
               alt={certificate.title}
+              loading="lazy"
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
             <div className="absolute inset-0 bg-gradient-to-t to-transparent"></div>
@@ -140,7 +141,7 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
                       className="absolute left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-xs px-3 py-1 rounded-full shadow-lg"
                       style={{ bottom: 'calc(100% + 5px)' }}
                     >
-                      Copied
+                      Kopyalandı
                     </div>
                   )}
                 </>

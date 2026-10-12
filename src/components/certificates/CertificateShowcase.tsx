@@ -8,6 +8,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 export default function CertificateShowcase() {
   // En son 3 sertifikayı al
   const latestCertificates = certificates
+    .slice()
     .sort((a, b) => new Date(b.issueDate).getTime() - new Date(a.issueDate).getTime())
     .slice(0, 3);
 

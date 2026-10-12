@@ -3,14 +3,12 @@ import { Fragment, useRef } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { gsap } from 'gsap'
 
-export default function LinkModal({ 
-  isOpen, 
-  onClose, 
-  currentMode 
-}: { 
+export default function LinkModal({
+  isOpen,
+  onClose
+}: {
   isOpen: boolean
   onClose: () => void
-  currentMode: string 
 }) {
 
   const listRef = useRef<HTMLUListElement>(null)
@@ -54,22 +52,15 @@ export default function LinkModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className={`w-full max-w-md transform overflow-hidden rounded-2xl backdrop-blur-xl border ${
-                currentMode === 'programming' 
-                  ? 'bg-prog-darker/90 border-prog-neon/30' 
-                  : 'bg-civil-darker/90 border-civil-gold/30'
-              } p-6 text-left align-middle shadow-xl transition-all`}>
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl backdrop-blur-xl border p-6 text-left align-middle shadow-xl transition-all">
                 <div className="flex justify-between items-center mb-4">
-                  <Dialog.Title className={`text-2xl font-bold ${
-                    currentMode === 'programming' ? 'text-prog-neon' : 'text-civil-gold'
-                  }`}>
+                  <Dialog.Title className="text-2xl font-bold">
                     Bağlantılar
                   </Dialog.Title>
                   <button
                     onClick={onClose}
-                    className={`p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer ${
-                      currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-                    }`}
+                    aria-label="Kapat"
+                    className="p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                   >
                     <XMarkIcon className="w-6 h-6" />
                   </button>

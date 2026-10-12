@@ -12,7 +12,7 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const projects = currentMode === 'programming' ? programmingProjects : civilProjects
 
-  // sadece vitrin için 2 proje
+  // sadece vitrin için 3 proje
   const featuredProjects = projects
     .slice()
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
