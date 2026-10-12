@@ -129,7 +129,7 @@ export default function Navbar() {
           {/* Mobile Navigation */}
           <div className="md:hidden">
             <Menu as="div" className="relative">
-              <Menu.Button className="p-2 rounded-lg cursor-pointer">
+              <Menu.Button aria-label="Menüyü aç" className="p-2 rounded-lg cursor-pointer">
                 <Bars3Icon className="h-6 w-6" />
               </Menu.Button>
 

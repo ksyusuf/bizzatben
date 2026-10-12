@@ -32,10 +32,10 @@ const skillGroups = [
 function SkillBadge({ name, level }: { name: string; level: string | null }) {
   return (
     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm
-      bg-black/30 border border-civil-primary/30 text-civil-light">
+      bg-black/30 border">
       {name}
       {level && (
-        <span className="text-xs font-medium text-civil-accent border border-civil-accent/30 rounded-full px-1.5 py-0.5 leading-none">
+        <span className="text-xs font-medium border rounded-full px-1.5 py-0.5 leading-none">
           {level}
         </span>
       )}
@@ -91,22 +91,22 @@ export default function CivilAbout() {
     <section id="about" className="section-padding relative overflow-hidden" ref={sectionRef}>
       <div className="container-custom relative z-10">
         <div className="text-center mb-12">
-          <h2 ref={titleRef} className="text-4xl font-bold text-civil-primary mb-4">
+          <h2 ref={titleRef} className="text-4xl font-bold mb-4">
             İnşaat Mühendisi
           </h2>
-          <p ref={descRef} className="text-xl text-civil-light max-w-3xl mx-auto">
+          <p ref={descRef} className="text-xl max-w-3xl mx-auto">
             Sürdürülebilir ve güvenli yapılar tasarlayarak topluma değer katıyorum.
           </p>
         </div>
         <div className="grid md:grid-cols-2 gap-8">
-          <div className="glass-darker rounded-xl border border-civil-primary/50 p-6 shadow-xl shadow-civil-primary/20">
-            <h3 className="text-2xl font-semibold text-civil-primary mb-6">
+          <div className="glass-darker rounded-xl border p-6 shadow-xl">
+            <h3 className="text-2xl font-semibold mb-6">
               Yetkinlikler
             </h3>
             <div className="space-y-5">
               {skillGroups.map((group, gi) => (
                 <div key={group.label} ref={el => { skillRefs.current[gi] = el }}>
-                  <p className="text-xs font-medium text-civil-accent/70 uppercase tracking-wider mb-2">
+                  <p className="text-xs font-medium uppercase tracking-wider mb-2">
                     {group.label}
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -119,8 +119,8 @@ export default function CivilAbout() {
             </div>
           </div>
 
-          <div id="experience" className="glass-darker rounded-xl border border-civil-primary/50 p-6 shadow-xl shadow-civil-primary/20">
-            <h3 className="text-2xl font-semibold text-civil-primary mb-6">
+          <div id="experience" className="glass-darker rounded-xl border p-6 shadow-xl">
+            <h3 className="text-2xl font-semibold mb-6">
               Deneyim
             </h3>
             <div className="space-y-4">

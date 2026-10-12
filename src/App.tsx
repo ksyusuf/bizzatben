@@ -10,7 +10,8 @@ import PlayStationBackground from './components/shared/PlayStationBackground'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import TechProjects from './components/project/TechProjects'
 import ScrollToTop from './components/shared/ScrollToTop'
-import AllProjects from '../src/components/project/AllProjects'
+import AllProjects from './components/project/AllProjects'
+import NotFound from './components/shared/NotFound'
 import CertificateShowcase from './components/certificates/CertificateShowcase'
 import AllCertificates from './components/certificates/AllCertificates'
 
@@ -52,6 +53,7 @@ function App() {
             <Route path="/projects/tech/:tech" element={<TechProjects />} />
             <Route path="/Alll-projects" element={<AllProjects />} />
             <Route path="/certificates" element={<AllCertificates />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />

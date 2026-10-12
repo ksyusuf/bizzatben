@@ -8,7 +8,9 @@ import { BoltIcon } from '@heroicons/react/24/outline'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const subjects = [
+type Subject = { id: string; name: string }
+
+const subjects: Subject[] = [
   { id: 'project', name: 'Proje Teklifi' },
   { id: 'collaboration', name: 'İş Birliği' },
   { id: 'consultation', name: 'Danışmanlık' },
@@ -106,8 +108,9 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Ad Soyad</label>
+          <label htmlFor="contact-name" className="block text-sm font-medium mb-2">Ad Soyad</label>
           <input
+            id="contact-name"
             type="text"
             name="name"
             required
@@ -119,8 +122,9 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">E-posta</label>
+          <label htmlFor="contact-email" className="block text-sm font-medium mb-2">E-posta</label>
           <input
+            id="contact-email"
             type="email"
             name="email"
             required
@@ -138,8 +142,9 @@ export default function ContactForm() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-2">Mesaj</label>
+          <label htmlFor="contact-message" className="block text-sm font-medium mb-2">Mesaj</label>
           <textarea
+            id="contact-message"
             name="message"
             required
             rows={4}
@@ -182,8 +187,8 @@ function SubjectSelector({
   selected,
   onChange,
 }: {
-  selected: any
-  onChange: (subject: any) => void
+  selected: Subject
+  onChange: (subject: Subject) => void
 }) {
   return (
     <Listbox value={selected} onChange={onChange}>

@@ -294,7 +294,6 @@ export const certificates: Certificate[] = [
       { name: "Blockchain", slug: "blockchain" },
       { name: "Video Doğrulama", slug: "video-dogrulama" },
       { name: "Web3", slug: "web3" },
-      { name: "Hackathon", slug: "hackathon" },
     ],
     image:
       certificateImages["./certificate_docs/RiseIn_HackStellar_Hackathon.png"]
