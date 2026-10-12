@@ -68,7 +68,7 @@ export default function CertificateShowcase() {
         <div className="relative text-center mt-8 animate-on-scroll">
           <Link
             to="/certificates"
-            className="relative px-6 py-3 rounded-lg font-semibold border-2 backdrop-blur-xl cursor-pointer inline-flex items-center gap-2"
+            className="relative px-6 py-3 rounded-lg font-semibold border backdrop-blur-xl cursor-pointer inline-flex items-center gap-2"
           >
             Tüm Sertifikalarımı Görüntüle
             <ArrowRightIcon className="h-5 w-5" />
