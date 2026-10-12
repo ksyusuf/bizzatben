@@ -93,7 +93,9 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className="fixed top-0 left-0 right-0 z-50 backdrop-blur-sm bg-black/20 shadow-lg">
+      className="fixed top-0 left-0 right-0 z-50 bg-black/20 shadow-lg">
+      {/* Blur ayrı katmanda: nav'ın kendisi backdrop-filter taşırsa mobil menüdeki blur arkadaki sayfayı göremez */}
+      <div aria-hidden className="absolute inset-0 -z-10 backdrop-blur-sm" />
       <div className="container-custom px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div ref={logoRef} className="flex-shrink-0">
@@ -144,7 +146,7 @@ export default function Navbar() {
               >
                 <Menu.Items
                   className="absolute right-0 mt-2 w-35 origin-top-right rounded-lg shadow-lg border
-                            bg-black/90 text-center"
+                            bg-black/60 backdrop-blur-xl text-center"
                 >
                   <div className="py-1 relative">
                     {NAVIGATION_LINKS.map((link) => (

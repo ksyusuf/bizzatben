@@ -88,9 +88,11 @@ export default function ContactForm() {
 
   return (
     <div
-      className="backdrop-blur-2xl rounded-2xl border p-8"
+      className="relative isolate rounded-2xl border p-8"
       ref={formRef}
     >
+      {/* Blur ayrı katmanda: kartın kendisi backdrop-filter taşırsa içindeki dropdown arkadaki sayfayı bulanıklaştıramaz */}
+      <div aria-hidden className="absolute -inset-px -z-10 rounded-2xl backdrop-blur-2xl" />
       <h3 className="text-2xl font-bold mb-6">Hızlı İletişim</h3>
       <form
         name="contact"
@@ -164,7 +166,7 @@ export default function ContactForm() {
         </button>
 
         {submitStatus === 'error' && (
-          <p className="text-sm backdrop-blur-4xl text-red-400 text-center">
+          <p className="text-sm backdrop-blur-3xl text-red-400 text-center">
             Mesaj gönderilirken bir hata oluştu. Lütfen tekrar deneyin.
           </p>
         )}
@@ -193,7 +195,7 @@ function SubjectSelector({
   return (
     <Listbox value={selected} onChange={onChange}>
       <div className="relative">
-        <Listbox.Button className="relative w-full px-4 py-3 backdrop-blur-4xl text-left rounded-lg border transition-all duration-200 cursor-pointer">
+        <Listbox.Button className="relative w-full px-4 py-3 backdrop-blur-3xl text-left rounded-lg border transition-all duration-200 cursor-pointer">
           <span className="block truncate">{selected.name}</span>
           <span className="absolute inset-y-0 right-0 flex items-center pr-2">
             <ChevronUpDownIcon className="w-5 h-5" />
@@ -205,7 +207,7 @@ function SubjectSelector({
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Listbox.Options className="absolute z-50 w-full mt-1 rounded-lg shadow-xl bg-black/60 backdrop-blur-4xl border">
+          <Listbox.Options className="absolute z-50 w-full mt-1 rounded-lg shadow-xl bg-black/60 backdrop-blur-3xl border">
             {subjects.map(subject => (
               <Listbox.Option
                 key={subject.id}
