@@ -92,7 +92,7 @@ export default function ContactForm() {
       ref={formRef}
     >
       {/* Blur ayrı katmanda: kartın kendisi backdrop-filter taşırsa içindeki dropdown arkadaki sayfayı bulanıklaştıramaz */}
-      <div aria-hidden className="absolute -inset-px -z-10 rounded-2xl backdrop-blur-2xl" />
+      <div aria-hidden className="absolute inset-0 -z-10 rounded-[15px] backdrop-blur-2xl" />
       <h3 className="text-2xl font-bold mb-6">Hızlı İletişim</h3>
       <form
         name="contact"
@@ -160,7 +160,7 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full px-6 py-4 rounded-xl shadow-2xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full px-6 py-4 rounded-xl border shadow-2xl font-semibold text-lg transition-all duration-300 backdrop-blur-xl cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isSubmitting ? 'Gönderiliyor...' : 'Gönder'}
         </button>

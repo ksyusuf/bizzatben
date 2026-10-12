@@ -74,7 +74,7 @@ export default function ContactInfo() {
       </div>
       <button
         onClick={() => setShowKachow(true)}
-        className="w-full mt-8 px-6 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all backdrop-blur-xl cursor-pointer"
+        className="w-full mt-8 px-6 py-4 rounded-xl border font-semibold text-lg shadow-lg transition-all backdrop-blur-xl cursor-pointer"
       >
         Mesaj Gönder
       </button>
