@@ -38,7 +38,7 @@ export function HeroQuote({ mode, ref }: { mode: string, ref: Ref<SVGSVGElement>
               lineHeight: 1.35
               }
             : {
-              fontFamily: '"Montserrat", sans-serif',
+              fontFamily: 'sans-serif',
               fontSize: '1.5rem',
               fontWeight: 400,
               fontStyle: 'italic',
@@ -83,7 +83,7 @@ export default function Hero() {
   
   // GSAP refs
   const contentRef = useRef<HTMLDivElement>(null)
-  const btn1Ref = useRef<HTMLButtonElement>(null)
+  const btn1Ref = useRef<HTMLAnchorElement>(null)
   const btn2Ref = useRef<HTMLButtonElement>(null)
   const descRef = useRef<HTMLParagraphElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
@@ -191,15 +191,13 @@ export default function Hero() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button
+            <Link
               ref={btn1Ref}
-              className="px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 backdrop-blur-xl cursor-pointer opacity-0 scale-95"
+              to={'#about'}
+              className="inline-block text-center px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 backdrop-blur-xl cursor-pointer opacity-0 scale-95"
             >
-              <Link to={'#about'}>
-                
-                Hakkımda
-              </Link>
-            </button>
+              Hakkımda
+            </Link>
             <button
                 ref={btn2Ref}
                 onClick={() => setisLinkModalOpen(true)}
@@ -214,8 +212,7 @@ export default function Hero() {
       {/* Modal */}
       <LinkModal 
         isOpen={isLinkModalOpen} 
-        onClose={() => setisLinkModalOpen(false)} 
-        currentMode={currentMode}
+        onClose={() => setisLinkModalOpen(false)}
       />
     </section>
   )

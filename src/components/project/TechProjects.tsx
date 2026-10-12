@@ -55,13 +55,13 @@ export default function TechProjects() {
       <div className="container-custom">
         <div className="text-center mb-12">
           <h2 className="animate-on-scroll fade-up text-4xl font-bold mb-4">
-            {techByfirstProject} Projeleri
+            {techByfirstProject
+              ? `${techByfirstProject} Projeleri`
+              : 'Bu teknolojiyle eşleşen proje bulunamadı'}
           </h2>
           <Link
             to="/#projects"
-            className={`animate-on-scroll fade-up text-xl underline ${
-              currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-            }`}
+            className="animate-on-scroll fade-up text-xl underline"
           >
             Tüm Projelere Geri Dön
           </Link>

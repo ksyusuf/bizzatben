@@ -12,7 +12,7 @@ export default function Projects() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   const projects = currentMode === 'programming' ? programmingProjects : civilProjects
 
-  // sadece vitrin için 2 proje
+  // sadece vitrin için 3 proje
   const featuredProjects = projects
     .slice()
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -74,7 +74,7 @@ export default function Projects() {
         <div className="relative text-center mt-8 animate-on-scroll fade-up">
           <Link
             to="/Alll-projects"
-            className="relative px-6 py-3 rounded-lg font-semibold border-2 backdrop-blur-xl cursor-pointer"
+            className="relative inline-block px-6 py-3 rounded-lg font-semibold border backdrop-blur-xl cursor-pointer"
           >
             Tüm Projeleri Gör
           </Link>

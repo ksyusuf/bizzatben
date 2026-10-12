@@ -54,6 +54,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
                             </Dialog.Title>
                             <button
                                 onClick={onClose}
+                                aria-label="Kapat"
                                 className="p-2 rounded-lg hover:bg-white/10 transition-colors cursor-pointer"
                             >
                                 <XMarkIcon className="w-6 h-6" />

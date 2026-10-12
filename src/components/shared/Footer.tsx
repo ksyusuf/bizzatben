@@ -17,11 +17,7 @@ export default function Footer() {
       <div className="container-custom px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between">
           {/* Copyright */}
-          <div 
-            className={`text-sm ${
-              currentMode === 'programming' ? 'text-prog-light' : 'text-civil-light'
-            }`}
-          >
+          <div className="text-sm">
             © 2039 BizzatBen. Tüm hakları saklıdır.
           </div>
 
@@ -38,16 +34,10 @@ export default function Footer() {
 }
 
 function SocialLink({ href, icon, label }: { href: string; icon: string; label: string }) {
-  const { currentMode } = useModeStore()
-  
   return (
     <a
       href={href}
-      className={`text-2xl transition-all duration-200 hover:opacity-80 ${
-        currentMode === 'programming' 
-          ? 'text-prog-light hover:text-prog-neon hover:animate-glow' 
-          : 'text-civil-light hover:text-civil-gold hover:animate-glow'
-      }`}
+      className="text-2xl transition-all duration-200 hover:opacity-80 hover:animate-glow"
       aria-label={label}
     >
       {icon}

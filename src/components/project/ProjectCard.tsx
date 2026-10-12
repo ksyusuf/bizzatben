@@ -51,6 +51,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
           <img
             src={project.image}
             alt={project.title}
+            loading="lazy"
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />
           <div className="absolute inset-0 bg-gradient-to-t to-transparent">
@@ -89,7 +90,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
 
         {/* Action Buttons */}
         <div className="flex items-center space-x-2">
-          {project.link != '' && (
+          {project.link && (
             <a
               href={project.link}
               target="_blank"
@@ -106,7 +107,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               </span>
             </a>
           )}
-          {project.github != '' && (
+          {project.github && (
             <a
               href={project.github}
               target="_blank"
@@ -123,7 +124,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               </span>
             </a>
           )}
-          {project.prod != '' && (
+          {project.prod && (
             <a
               href={project.prod}
               target="_blank"
@@ -140,7 +141,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
               </span>
             </a>
           )}
-          {project.medium != '' && (
+          {project.medium && (
             <a
               href={project.medium}
               target="_blank"
