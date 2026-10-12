@@ -10,7 +10,7 @@ export default function NotFound() {
         </p>
         <Link
           to="/"
-          className="px-6 py-3 rounded-lg font-semibold border-2 backdrop-blur-xl cursor-pointer"
+          className="inline-block px-6 py-3 rounded-lg font-semibold border-2 backdrop-blur-xl cursor-pointer"
         >
           Ana Sayfaya Dön
         </Link>
