@@ -5,7 +5,7 @@
 Merhaba! 👋  
 Artık benim de kişisel bir web sitem var. Tasarımında popüler olan **glassmorphism** yaklaşımını benimsedim, yani cam gibi yarı saydam ve modern bir görünüm var. Sayfa animasyonlarını **GSAP** ile hareketlendirdim, durum yönetimini **Zustand** ile yaptım (Backend Developer / İnşaat Mühendisi) ve tüm siteyi **React + Vite** ile oluşturdum. Stil kısmında ise **TailwindCSS** ve bileşenlerde **Headless UI** kullandım.  
 
-Formlar çalışıyor, mesaj gönderebiliyorsunuz ve her şey **Netlify** üzerinde yayında.  
+Formlar çalışıyor, mesaj gönderebiliyorsunuz ve site artık [**akcakaya.me**](https://akcakaya.me) adresinde yayında.  
 
 ---
 
