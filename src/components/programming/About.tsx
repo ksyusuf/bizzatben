@@ -12,8 +12,8 @@ function SkillBadge({ name, slug }: { name: string; slug: string }) {
     <Link
       to={`/projects/tech/${slug}`}
       className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm
-        bg-black/30 border border-prog-accent/30 text-prog-light
-        hover:border-prog-accent hover:bg-prog-accent/10 transition-all duration-200"
+        bg-black/30 border
+        transition-all duration-200"
     >
       {name}
     </Link>
@@ -221,27 +221,27 @@ export default function DevAbout() {
         <div className="text-center mb-12">
           <h2
             ref={titleRef}
-            className="text-4xl font-bold text-prog-primary mb-4"
+            className="text-4xl font-bold mb-4"
           >
             Yazılım Geliştirici
           </h2>
           <p
             ref={descRef}
-            className="text-xl text-prog-light max-w-3xl mx-auto"
+            className="text-xl max-w-3xl mx-auto"
           >
             Modern web teknolojileri ile kullanıcı dostu ve performanslı
             uygulamalar geliştiriyorum.
           </p>
         </div>
         <div className="grid gap-8 md:grid-cols-2">
-          <div className="glass-darker rounded-xl border border-prog-accent/50 p-6 shadow-xl shadow-prog-accent/20">
-            <h3 className="text-2xl font-semibold text-prog-primary mb-6">
+          <div className="glass-darker rounded-xl border p-6 shadow-xl">
+            <h3 className="text-2xl font-semibold mb-6">
               Yetkinlikler
             </h3>
             <div className="space-y-5">
               {skillGroups.map((group) => (
                 <div key={group.label}>
-                  <p className="text-xs font-medium text-prog-accent/70 uppercase tracking-wider mb-2">
+                  <p className="text-xs font-medium uppercase tracking-wider mb-2">
                     {group.label}
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -260,9 +260,9 @@ export default function DevAbout() {
 
           <div
             id="experience"
-            className="glass-darker rounded-xl border border-prog-accent/50 p-6 shadow-xl shadow-prog-accent/20"
+            className="glass-darker rounded-xl border p-6 shadow-xl"
           >
-            <h3 className="text-2xl font-semibold text-prog-primary mb-6">
+            <h3 className="text-2xl font-semibold mb-6">
               Deneyim
             </h3>
             <div className="space-y-4">

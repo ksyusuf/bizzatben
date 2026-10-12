@@ -34,62 +34,45 @@ Komutlar: `npm run dev`, `npm run build` (tsc -b + vite build), `npm run lint`. 
 
 ## Bilinen tuzaklar
 
-- `tailwind.config.js` Tailwind v4'te yüklenmiyor. `prog-*`, `civil-*` renk sınıfları ve `aspect-w-*` hiçbir CSS üretmiyor. Yeni renk gerekirse `index.css` içinde `@theme` kullan.
+- Tailwind v4 kullanılıyor, JS config yok (eski `tailwind.config.js` ve ölü `prog-*`/`civil-*`/`aspect-w-*` sınıfları silindi). Özel renk, font veya animasyon gerekirse `index.css` içinde `@theme` kullan; `@tailwindcss/aspect-ratio` yerine native `aspect-video` vb.
 - Proje kartında opsiyonel alanlar (`link`, `github`, `prod`, `medium`) için `!= ''` yerine truthy kontrol kullan.
 - `ScrollTrigger.getAll().forEach(kill)` birkaç bileşende global temizlik yapıyor; yeni animasyon eklerken `useGSAP`/`gsap.context` ile kapsamla.
 - Veri dosyalarında slug'lar tutarlı olmalı (örn. `Tailwind_CSS` ve `TailwindCSS` ayrı sayfa üretir). Aynı kartta tekrarlı etiket olmamalı (React `key`).
 
+## Sahibinin bilinçli kararları (DOKUNMA)
+
+Bunlar hata değil, geliştiricinin kararıdır. Açıkça istenmedikçe değiştirme, "düzeltme" olarak önerme.
+
+- `/Alll-projects` adresi kasıtlı (easter egg). Adı olduğu gibi kalsın.
+- `PlayStationBackground` (ve `playstation-background.css`) emekle yazıldı, sağlıklı çalışıyor. Kritik bir sorun olmadıkça dokunma; `exhaustive-deps` uyarısı da kalsın.
+- Arka plan ve geçiş animasyonları beğeniliyor; azaltma / `prefers-reduced-motion` önerme.
+- Sertifika kartı görselleri kendi oranında kalır (`aspect-*` ile sabitleme yok). Görsel boyut ve oranlarına dokunma.
+- Sertifika #13'ün başlığına dokunma.
+- Footer'daki "© 2039 BizzatBen" Börü 2039 dizisinden bir gönderme, kasıtlı. Yılı "düzeltme".
+- İnşaat modu alıntısı sistemin varsayılan `sans-serif` yazı tipiyle görünür ve bu beğeniliyor; Montserrat'a geri dönme.
+
 ## Geliştirme fikirleri
 
-2026-10-12 tarihli ilk analizden. `tsc` ve build temiz, `eslint` 2 hata + 1 uyarı veriyor. Önem sırasına göre. Bir madde yapılınca buradan sil veya `[x]` ile işaretle.
+2026-10-12 tarihli analizden. Yapılan işler buradan silinir, geçmiş için git log kullanılır. Yeni madde eklerken yukarıdaki "DOKUNMA" listesine uy.
 
-### Gerçekten bozuk olanlar
+### Açık: karar veya araştırma gerekir
 
-- [ ] **Ölü buton (inşaat modu):** `ProjectCard.tsx` satır ~92, 109, 126, 143 `project.link != ''` gibi kontroller kullanıyor. `CivilProjects.tsx` id 3'te `link` alanı yok, `undefined != ''` true döner ve href'siz boş bir ok butonu çıkar. `ProjectDetailModal`daki gibi `project.link &&` yap.
-- [ ] **Yanlış sertifika başlığı:** `CertificateList.tsx` id 13 başlığı "20. İstanbul Yarı Maraton" ama açıklama ve görsel 47. İstanbul Maratonu. Ana sayfada görünüyor.
-- [ ] **Hero "Hakkımda" butonu:** `Hero.tsx` ~194, `<button>` içinde `<Link>` var; sadece yazı tıklanabilir ve HTML geçersiz. Butonu `Link` yap veya `onClick` ile `navigate`.
-- [ ] **Ölü Tailwind sınıfları:** ~35 `text/bg/border/shadow-prog-*` ve `*-civil-*` kullanımı ile `aspect-w-16 aspect-h-9` (CertificateCard) çalışmıyor. Karar ver: modlara özel renkler istenen bir şeyse `index.css`'e `@theme` ile tanımla, değilse sınıfları sil. Sonra `tailwind.config.js` dosyasını sil veya `@config` ile bağla; `@tailwindcss/aspect-ratio` yerine native `aspect-video`.
-- [ ] **Montserrat yüklenmiyor:** `Hero.tsx` ~41 inşaat modu alıntı fontu. Google Fonts `@import`una ekle veya başka bir font seç.
-- [ ] **404 sayfası:** `App.tsx`'e `path="*"` rotası ekle. `TechProjects`'te eşleşen proje yoksa boş başlık yerine "Bulunamadı" mesajı göster.
-- [ ] **`/Alll-projects` adresi:** `/projects` gibi bir adrese taşı (App.tsx, Navbar, Projects.tsx). Eski adres paylaşıldıysa `public/_redirects`'e 301 ekle.
-- [ ] **Tekrarlı etiket:** `CertificateList.tsx` id 14'te `hackathon` iki kez; birini sil.
+- [ ] **Form barındırma:** site artık Netlify'da değil (akcakaya.me). `index.html` gizli formu, `ContactForm.tsx` `data-netlify`, `public/_redirects` ve `NETLIFY_FORM_SETUP.md` Netlify Forms'a göre. Yeni barındırıcıda form çalışıyor mu doğrula; çalışmıyorsa Formspree / e-posta API'sine taşı. Netlify'a ait kalıntıları ancak o zaman temizle. (Honeypot `bot-field` eksikliği de bu karara bağlı.)
+- [ ] "Mesaj Gönder" butonu (`ContactInfo.tsx`) KACHOW modalı açıyor, mesaj göndermiyor. Karar: kalsın mı?
 
-### Performans
+### Açık: performans
 
-- [ ] **Görseller ~23 MB.** Ana sayfa ~7,7 MB görsel çekiyor. En büyükler: `GDG_Zonguldak_Tema_Bagisi.png` 3,4 MB, `Motosiklet.jpg` 2,9 MB, `spor_istanbul_20...jpg` 2 MB, `Polat_Enerji...png` 1,9 MB, `cilek-final.jpg` 1,8 MB, `ilk_Yardim...png` 1,25 MB, `Python_Programlamaya...png` 1,2 MB. WebP'ye çevir, makul genişliğe küçült. `public/heisenberggg-yatay.png` (1,4 MB) OG görseli için ~1200×630'a indir.
-- [ ] Tüm `<img>` etiketlerine `loading="lazy"` (ilk ekrandakiler hariç), mümkünse `width`/`height`.
-- [ ] JS tek parça 603 KB (198 KB gzip). `React.lazy` ile rota bazlı bölme (AllProjects, AllCertificates, TechProjects). `ToggleButton` için styled-components yerine CSS dosyası düşünülebilir.
-- [ ] Kullanılmayan bağımlılıkları sil: `@react-spring/web`, `d3-interpolate`, `@types/d3-interpolate`, `react-use-measure`.
+- [ ] **Görseller ~23 MB.** Ana sayfa ~7,7 MB çekiyordu (lazy loading sonrası azalır, ölçülmedi). En büyükler: `GDG_Zonguldak_Tema_Bagisi.png` 3,4 MB, `Motosiklet.jpg` 2,9 MB, `spor_istanbul_20...jpg` 2 MB, `Polat_Enerji...png` 1,9 MB, `cilek-final.jpg` 1,8 MB. Boyut/oran değişikliği sahibinin onayıyla.
+- [ ] JS tek parça ~604 KB (198 KB gzip). `React.lazy` ile rota bazlı bölme.
+- [ ] Kullanılmayan bağımlılıklar: `@react-spring/web`, `d3-interpolate`, `@types/d3-interpolate`, `react-use-measure`.
+- [ ] Site client-side render; botlar boş görür. İstenirse prerender.
+- [ ] `public/heisenberggg-yatay.png` (OG görseli) 1,4 MB; ~1200×630'a küçültülebilir.
 
-### Paylaşım önizlemesi ve SEO (`index.html`)
+### Açık: kod sağlığı (hepsi düşük öncelik)
 
-- [ ] `og:image:width/height` 50×50 yazıyor, gerçek 1248×832. Düzelt veya OG görseli yeniden üretince güncelle.
-- [ ] `og:image` ve `twitter:image` mutlak URL olmalı (site alan adıyla). İkisi aynı görsele işaret etmeli; `twitter:image` şu an 50×50 ikon ama kart `summary_large_image`.
-- [ ] `og:url` ve `canonical` ekle. `<html lang="en">` → `tr`. Favicon `type` değeri `image/x-icon` olmalı. Geçersiz `netlify-forms` ve `publish_date` meta etiketlerini kaldır.
-- [ ] Site client-side render; botlar boş görür. İstenirse prerender (ör. vite-plugin-prerender / react-snap benzeri) değerlendir.
-
-### Kod sağlığı
-
-- [ ] **Lint:** `ContactForm.tsx` ~185 `SubjectSelector` içindeki `any`'leri `{ id: string; name: string }` ile değiştir. `PlayStationBackground.tsx` ~87 eksik `isAnimating` bağımlılığı uyarısı.
-- [ ] **Global ScrollTrigger kill:** `ContactForm`, `ContactInfo`, `ContactSection`, `programming/About`, `civil/About` içindeki `ScrollTrigger.getAll().forEach(kill)` yerine `useGSAP` + `scope` kullan.
-- [ ] **PlayStationBackground:** iç içe `setTimeout`lar temizlenmiyor; hızlı mod değiştirmede yarış/titreme riski (sadece okuyarak görüldü, test edilmedi). Zamanlayıcıları ref'te tutup effect cleanup'ında temizle.
-- [ ] **AllProjects:** çıkış animasyonu efekti ilk mount'ta da çalışıyor; `currentMode` gerçekten değiştiğinde çalışacak şekilde sınırla.
-- [ ] **ProjectDetailModal:** `if (!project) return null` kapanış animasyonunu yutuyor; modalı her zaman render edip `show={isOpen}` ile yönet.
-- [ ] `CertificateShowcase.tsx` `certificates.sort()` modül dizisini yerinde değiştiriyor; `.slice()` ekle.
-- [ ] `TechProjects` iki moddaki projeleri birleştiriyor ve `key={project.id}` kullanıyor; iki listede de id `'1'..'3'` var. Şu an çakışma yok ama kırılgan, `key`e mod ekle.
-- [ ] `App.tsx` içindeki `'../src/components/project/AllProjects'` import yolunu `./components/project/AllProjects` yap. `PlayStationBackground.tsx` içindeki bileşen adı `App`, yeniden adlandır. Eski yorumları düzelt (Projects.tsx "2 proje" diyor, 3 gösteriyor).
-- [ ] Sertifika etiketleri `cursor-pointer` ama tıklanamıyor; ya linkle ya imleci kaldır. Ayrıca sertifika kartında tarih iki kez gösteriliyor. "Copied" mesajı Türkçe olmalı. Slug biçimi tutarsız (`fidan_bagisi` vs `gdg-zonguldak`).
-
-### Form ve iletişim
-
-- [ ] **Honeypot çalışmıyor:** `index.html` gizli formuna `<input name="bot-field">` ekle, `ContactForm.tsx` fetch gövdesine `bot-field` değerini dahil et.
-- [ ] `NETLIFY_FORM_SETUP.md` olmayan `Contact.tsx`'e atıf yapıyor (gerçek dosya `ContactForm.tsx`). `public/_redirects` içindeki `/#contact` satırı anlamsız (fragment sunucuya gitmez), sil.
-- [ ] "Mesaj Gönder" butonu (`ContactInfo.tsx`) mesaj göndermeyip KACHOW modalı açıyor; hemen yanında gerçek form var. Karar: kalsın mı, kaldırılsın mı, forma kaydırsın mı.
-- [ ] Footer'da "© 2039 BizzatBen" yazıyor. Şaka değilse yılı düzelt.
-
-### Erişilebilirlik
-
-- [ ] `ContactForm` label'larına `htmlFor`/`id` ekle.
-- [ ] Mobil hamburger butonuna `aria-label`; modal kapatma butonlarına `aria-label`.
-- [ ] `ToggleButton` gizli checkbox'ı klavye odağında görünür bir odak halkası göstermiyor.
-- [ ] `prefers-reduced-motion` için GSAP ve arka plan animasyonlarını azalt.
+- [ ] `ScrollTrigger.getAll().forEach(kill)` `ContactForm`, `ContactInfo`, `ContactSection`, `programming/About`, `civil/About` içinde global. Şu an `key` ile komple yeniden mount edildiği için zararsız; `useGSAP` + `scope` ile kapsamlanabilir.
+- [ ] `AllProjects`: çıkış animasyonu efekti ilk mount'ta da çalışıyor.
+- [ ] `ProjectDetailModal`: `if (!project) return null` kapanış animasyonunu yutuyor.
+- [ ] `TechProjects` iki modu birleştirip `key={project.id}` kullanıyor; iki listede de id `'1'..'3'` var (şu an çakışma yok, kırılgan).
+- [ ] Sertifika etiketleri `cursor-pointer` ama tıklanamıyor; sertifika kartında tarih iki kez; slug biçimi tutarsız (`fidan_bagisi` vs `gdg-zonguldak`).
+- [ ] `ToggleButton` gizli checkbox'ı klavye odağında görünür halka göstermiyor.
