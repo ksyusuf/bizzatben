@@ -1,277 +1,376 @@
- // src/components/certificates/certificates.tsx
-import { type Certificate } from './CertificateCard'
+// src/components/certificates/certificates.tsx
+import { type Certificate } from "./CertificateCard";
 
 export const certificateImages = import.meta.glob<{ default: string }>(
-  './certificate_docs/*.{png,jpg,jpeg,pdf}',
-  { eager: true }
+  "./certificate_docs/*.{png,jpg,jpeg,pdf}",
+  { eager: true },
 );
 
 export const certificates: Certificate[] = [
   {
-    id: '1',
-    title: '20. İstanbul Yarı Maraton Gönüllülük Sertifikası',
-    issuer: 'Spor İstanbul',
-    issueDate: '2025-05-02',
+    id: "1",
+    title: "20. İstanbul Yarı Maraton Gönüllülük Sertifikası",
+    issuer: "Spor İstanbul",
+    issueDate: "2025-05-02",
     expiryDate: null,
-    credentialId: '2F779997-D8CE-4341-B948-0444B6936925',
-    credentialUrl: '',
-    description: 'Spor İstanbul kapsamında yürütülen 20. İstanbul Yarı Maraton\'unda gönüllü olarak görev aldım.',
+    credentialId: "2F779997-D8CE-4341-B948-0444B6936925",
+    credentialUrl: "",
+    description:
+      "Spor İstanbul kapsamında yürütülen 20. İstanbul Yarı Maraton'unda gönüllü olarak görev aldım.",
     tags: [
-      { name: 'Spor', slug: 'spor' },
-      { name: 'Maraton', slug: 'maraton' },
-      { name: 'Dayanıklılık', slug: 'dayaniklilik' },
-      { name: 'Fitness', slug: 'fitness' }
+      { name: "Spor", slug: "spor" },
+      { name: "Maraton", slug: "maraton" },
+      { name: "Dayanıklılık", slug: "dayaniklilik" },
+      { name: "Fitness", slug: "fitness" },
     ],
-    image: certificateImages['./certificate_docs/spor_istanbul_20_istanbul_yari_maraton.jpg'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/spor_istanbul_20_istanbul_yari_maraton.jpg"
+      ].default,
   },
   {
-    id: '2',
-    title: 'YTÜ Kitap Bağış Teşekkür Sertifikası',
-    issuer: 'Yıldız Teknik Üniversitesi',
-    issueDate: '2024-07-08',
+    id: "2",
+    title: "YTÜ Kitap Bağış Teşekkür Sertifikası",
+    issuer: "Yıldız Teknik Üniversitesi",
+    issueDate: "2024-07-08",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'Yıldız Teknik Üniversitesi kütüphanesine yapılan kitap bağışı için teşekkür sertifikası.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "Yıldız Teknik Üniversitesi kütüphanesine yapılan kitap bağışı için teşekkür sertifikası.",
     tags: [
-      { name: 'Eğitim', slug: 'egitim' },
-      { name: 'Bağış', slug: 'bagis' },
-      { name: 'Kütüphane', slug: 'kutuphane' },
-      { name: 'YTÜ', slug: 'ytu' }
+      { name: "Eğitim", slug: "egitim" },
+      { name: "Bağış", slug: "bagis" },
+      { name: "Kütüphane", slug: "kutuphane" },
+      { name: "YTÜ", slug: "ytu" },
     ],
-    image: certificateImages['./certificate_docs/YTU_Kitap_Bagis_Tesekkurler.png'].default,
+    image:
+      certificateImages["./certificate_docs/YTU_Kitap_Bagis_Tesekkurler.png"]
+        .default,
   },
   {
-    id: '3',
-    title: 'Generative AI',
-    issuer: 'Akbank',
-    issueDate: '2025-01-30',
+    id: "3",
+    title: "Generative AI",
+    issuer: "Akbank",
+    issueDate: "2025-01-30",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'Akbank tarafından düzenlenen Generative AI eğitimi kapsamında alınan sertifika.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "Akbank tarafından düzenlenen Generative AI eğitimi kapsamında alınan sertifika.",
     tags: [
-      { name: 'Yapay Zeka', slug: 'yapay-zeka' },
-      { name: 'Generative AI', slug: 'generative-ai' },
-      { name: 'Akbank', slug: 'akbank' },
-      { name: 'Eğitim', slug: 'egitim' }
+      { name: "Yapay Zeka", slug: "yapay-zeka" },
+      { name: "Generative AI", slug: "generative-ai" },
+      { name: "Akbank", slug: "akbank" },
+      { name: "Eğitim", slug: "egitim" },
     ],
-    image: certificateImages['./certificate_docs/Generative_Ai-Akbank_2025-02-05_09_21_03.png'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/Generative_Ai-Akbank_2025-02-05_09_21_03.png"
+      ].default,
   },
   {
-    id: '4',
-    title: 'AWS Training',
-    issuer: 'Limon Cloud',
-    issueDate: '2024-05-06',
+    id: "4",
+    title: "AWS Training",
+    issuer: "Limon Cloud",
+    issueDate: "2024-05-06",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'Limon Cloud tarafından verilen AWS (Amazon Web Services) eğitimi sertifikası.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "Limon Cloud tarafından verilen AWS (Amazon Web Services) eğitimi sertifikası.",
     tags: [
-      { name: 'AWS', slug: 'aws' },
-      { name: 'Cloud Computing', slug: 'cloud-computing' },
-      { name: 'Limon Cloud', slug: 'limon-cloud' },
-      { name: 'Eğitim', slug: 'egitim' }
+      { name: "AWS", slug: "aws" },
+      { name: "Cloud Computing", slug: "cloud-computing" },
+      { name: "Limon Cloud", slug: "limon-cloud" },
+      { name: "Eğitim", slug: "egitim" },
     ],
-    image: certificateImages['./certificate_docs/AWS_Training-Limon_Cloud.png'].default,
+    image:
+      certificateImages["./certificate_docs/AWS_Training-Limon_Cloud.png"]
+        .default,
   },
   {
-    id: '5',
-    title: 'İlk Yardım Eğitimi',
-    issuer: 'Milli Eğitim Bakanlığı (MEB)',
-    issueDate: '2023-12-19',
+    id: "5",
+    title: "İlk Yardım Eğitimi",
+    issuer: "Milli Eğitim Bakanlığı (MEB)",
+    issueDate: "2023-12-19",
     expiryDate: null,
-    credentialId: '20787820230085018640',
-    credentialUrl: '',
-    description: 'Milli Eğitim Bakanlığı tarafından verilen ilk yardım eğitimi sertifikası.',
+    credentialId: "20787820230085018640",
+    credentialUrl: "",
+    description:
+      "Milli Eğitim Bakanlığı tarafından verilen ilk yardım eğitimi sertifikası.",
     tags: [
-      { name: 'İlk Yardım', slug: 'ilk-yardim' },
-      { name: 'MEB', slug: 'meb' },
-      { name: 'Sağlık', slug: 'saglik' },
-      { name: 'Eğitim', slug: 'egitim' }
+      { name: "İlk Yardım", slug: "ilk-yardim" },
+      { name: "MEB", slug: "meb" },
+      { name: "Sağlık", slug: "saglik" },
+      { name: "Eğitim", slug: "egitim" },
     ],
-    image: certificateImages['./certificate_docs/ilk_Yardim_Egitimi-MEB.png'].default,
+    image:
+      certificateImages["./certificate_docs/ilk_Yardim_Egitimi-MEB.png"]
+        .default,
   },
   {
-    id: '6',
-    title: 'Akbank Makine Öğrenmesi Bootcamp',
-    issuer: 'Global AI Hub',
-    issueDate: '2023-11-06',
+    id: "6",
+    title: "Akbank Makine Öğrenmesi Bootcamp",
+    issuer: "Global AI Hub",
+    issueDate: "2023-11-06",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'Global AI Hub ve Akbank işbirliğiyle düzenlenen Makine Öğrenmesi Bootcamp sertifikası.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "Global AI Hub ve Akbank işbirliğiyle düzenlenen Makine Öğrenmesi Bootcamp sertifikası.",
     tags: [
-      { name: 'Makine Öğrenmesi', slug: 'makine-ogrenmesi' },
-      { name: 'Global AI Hub', slug: 'global-ai-hub' },
-      { name: 'Akbank', slug: 'akbank' },
-      { name: 'Bootcamp', slug: 'bootcamp' }
+      { name: "Makine Öğrenmesi", slug: "makine-ogrenmesi" },
+      { name: "Global AI Hub", slug: "global-ai-hub" },
+      { name: "Akbank", slug: "akbank" },
+      { name: "Bootcamp", slug: "bootcamp" },
     ],
-    image: certificateImages['./certificate_docs/Akbank_Makine_ogrenmesi_Bootcamp-Global_Ai_Hub.png'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/Akbank_Makine_ogrenmesi_Bootcamp-Global_Ai_Hub.png"
+      ].default,
   },
   {
-    id: '7',
-    title: 'Miuul Machine Learning',
-    issuer: 'Miuul',
-    issueDate: '2023-11-05',
+    id: "7",
+    title: "Miuul Machine Learning",
+    issuer: "Miuul",
+    issueDate: "2023-11-05",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'Miuul tarafından verilen Makine Öğrenmesi eğitimi sertifikası.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "Miuul tarafından verilen Makine Öğrenmesi eğitimi sertifikası.",
     tags: [
-      { name: 'Makine Öğrenmesi', slug: 'makine-ogrenmesi' },
-      { name: 'Miuul', slug: 'miuul' },
-      { name: 'Eğitim', slug: 'egitim' },
-      { name: 'Veri Bilimi', slug: 'veri-bilimi' }
+      { name: "Makine Öğrenmesi", slug: "makine-ogrenmesi" },
+      { name: "Miuul", slug: "miuul" },
+      { name: "Eğitim", slug: "egitim" },
+      { name: "Veri Bilimi", slug: "veri-bilimi" },
     ],
-    image: certificateImages['./certificate_docs/Miuul_Machine_Learning-2023-11-05.png'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/Miuul_Machine_Learning-2023-11-05.png"
+      ].default,
   },
   {
-    id: '8',
-    title: 'Introduction to Machine Learning',
-    issuer: 'Global AI Hub',
-    issueDate: '2023-10-07',
+    id: "8",
+    title: "Introduction to Machine Learning",
+    issuer: "Global AI Hub",
+    issueDate: "2023-10-07",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'Global AI Hub tarafından verilen Makine Öğrenmesine Giriş eğitimi sertifikası.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "Global AI Hub tarafından verilen Makine Öğrenmesine Giriş eğitimi sertifikası.",
     tags: [
-      { name: 'Makine Öğrenmesi', slug: 'makine-ogrenmesi' },
-      { name: 'Global AI Hub', slug: 'global-ai-hub' },
-      { name: 'Eğitim', slug: 'egitim' },
-      { name: 'Giriş Seviyesi', slug: 'giris-seviyesi' }
+      { name: "Makine Öğrenmesi", slug: "makine-ogrenmesi" },
+      { name: "Global AI Hub", slug: "global-ai-hub" },
+      { name: "Eğitim", slug: "egitim" },
+      { name: "Giriş Seviyesi", slug: "giris-seviyesi" },
     ],
-    image: certificateImages['./certificate_docs/introduction_to_Machine_Learning-Global_Ai_Hub.png'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/introduction_to_Machine_Learning-Global_Ai_Hub.png"
+      ].default,
   },
   {
-    id: '9',
-    title: 'Yapay Zekaya İlk Adım',
-    issuer: 'Global AI Hub',
-    issueDate: '2023-10-01',
+    id: "9",
+    title: "Yapay Zekaya İlk Adım",
+    issuer: "Global AI Hub",
+    issueDate: "2023-10-01",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'Global AI Hub tarafından verilen Yapay Zekaya İlk Adım eğitimi sertifikası.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "Global AI Hub tarafından verilen Yapay Zekaya İlk Adım eğitimi sertifikası.",
     tags: [
-      { name: 'Yapay Zeka', slug: 'yapay-zeka' },
-      { name: 'Global AI Hub', slug: 'global-ai-hub' },
-      { name: 'Eğitim', slug: 'egitim' },
-      { name: 'Giriş Seviyesi', slug: 'giris-seviyesi' }
+      { name: "Yapay Zeka", slug: "yapay-zeka" },
+      { name: "Global AI Hub", slug: "global-ai-hub" },
+      { name: "Eğitim", slug: "egitim" },
+      { name: "Giriş Seviyesi", slug: "giris-seviyesi" },
     ],
-    image: certificateImages['./certificate_docs/Yapay_Zekaya_ilk_Adim-Global_Ai_Hub.png'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/Yapay_Zekaya_ilk_Adim-Global_Ai_Hub.png"
+      ].default,
   },
   {
-    id: '10',
-    title: 'Location Of Strawberry Fruit RealTime Processing',
-    issuer: 'ISARC',
-    issueDate: '2022-10-08',
+    id: "10",
+    title: "Location Of Strawberry Fruit RealTime Processing",
+    issuer: "ISARC",
+    issueDate: "2022-10-08",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: '4. INTERNATIONAL GOBEKLITEPE SCIENTIFIC RESEARCH CONGRESS konferansında sunulan çilek algılama projesi için verilen sertifika.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "4. INTERNATIONAL GOBEKLITEPE SCIENTIFIC RESEARCH CONGRESS konferansında sunulan çilek algılama projesi için verilen sertifika.",
     tags: [
-      { name: 'Konferans', slug: 'konferans' },
-      { name: 'Bilimsel Araştırma', slug: 'bilimsel-arastirma' },
-      { name: 'Görüntü İşleme', slug: 'goruntu-isleme' },
-      { name: 'Çilek Algılama', slug: 'cilek-algilama' }
+      { name: "Konferans", slug: "konferans" },
+      { name: "Bilimsel Araştırma", slug: "bilimsel-arastirma" },
+      { name: "Görüntü İşleme", slug: "goruntu-isleme" },
+      { name: "Çilek Algılama", slug: "cilek-algilama" },
     ],
-    image: certificateImages['./certificate_docs/Location_Of_Strawberry_Fruit_RealTime_Processing.png'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/Location_Of_Strawberry_Fruit_RealTime_Processing.png"
+      ].default,
   },
   {
-    id: '11',
-    title: 'Separation of Okra Image Processing',
-    issuer: 'Association of Science and Technology',
-    issueDate: '2022-07-28',
+    id: "11",
+    title: "Separation of Okra Image Processing",
+    issuer: "Association of Science and Technology",
+    issueDate: "2022-07-28",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'II. INTERNATIONAL CONFERENCE ON GLOBAL PRACTICE OF MULTIDISCIPLINARY SCIENTIFIC STUDIES konferansında sunulan bamya algılama projesi için verilen sertifika.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "II. INTERNATIONAL CONFERENCE ON GLOBAL PRACTICE OF MULTIDISCIPLINARY SCIENTIFIC STUDIES konferansında sunulan bamya algılama projesi için verilen sertifika.",
     tags: [
-      { name: 'Konferans', slug: 'konferans' },
-      { name: 'Bilimsel Araştırma', slug: 'bilimsel-arastirma' },
-      { name: 'Görüntü İşleme', slug: 'goruntu-isleme' },
-      { name: 'Bamya Algılama', slug: 'bamya-algilama' }
+      { name: "Konferans", slug: "konferans" },
+      { name: "Bilimsel Araştırma", slug: "bilimsel-arastirma" },
+      { name: "Görüntü İşleme", slug: "goruntu-isleme" },
+      { name: "Bamya Algılama", slug: "bamya-algilama" },
     ],
-    image: certificateImages['./certificate_docs/Separation_of_Okra_image_Processing.png'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/Separation_of_Okra_image_Processing.png"
+      ].default,
   },
   {
-    id: '12',
-    title: 'Python Programlamaya Giriş',
-    issuer: 'İSMEK',
-    issueDate: '2021-03-18',
+    id: "12",
+    title: "Python Programlamaya Giriş",
+    issuer: "İSMEK",
+    issueDate: "2021-03-18",
     expiryDate: null,
-    credentialId: '',
-    credentialUrl: '',
-    description: 'İSMEK tarafından verilen Python Programlamaya Giriş eğitimi sertifikası.',
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "İSMEK tarafından verilen Python Programlamaya Giriş eğitimi sertifikası.",
     tags: [
-      { name: 'Python', slug: 'python' },
-      { name: 'İSMEK', slug: 'ismek' },
-      { name: 'Programlama', slug: 'programlama' },
-      { name: 'Eğitim', slug: 'egitim' }
+      { name: "Python", slug: "python" },
+      { name: "İSMEK", slug: "ismek" },
+      { name: "Programlama", slug: "programlama" },
+      { name: "Eğitim", slug: "egitim" },
     ],
-    image: certificateImages['./certificate_docs/Python_Programlamaya_Giris_Sertifikasi-iSMEK.png'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/Python_Programlamaya_Giris_Sertifikasi-iSMEK.png"
+      ].default,
   },
   {
-    id: '13',
-    title: '20. İstanbul Yarı Maraton Gönüllülük Sertifikası',
-    issuer: 'Spor İstanbul',
-    issueDate: '2025-11-02',
+    id: "13",
+    title: "20. İstanbul Yarı Maraton Gönüllülük Sertifikası",
+    issuer: "Spor İstanbul",
+    issueDate: "2025-11-02",
     expiryDate: null,
-    credentialId: '08C9AF9F-9F94-44AD-AA11-D26823EFC8C9',
-    credentialUrl: '',
-    description: 'Spor İstanbul kapsamında yürütülen 47. İstanbul Maraton\'unda gönüllü olarak görev aldım.',
+    credentialId: "08C9AF9F-9F94-44AD-AA11-D26823EFC8C9",
+    credentialUrl: "",
+    description:
+      "Spor İstanbul kapsamında yürütülen 47. İstanbul Maraton'unda gönüllü olarak görev aldım.",
     tags: [
-      { name: 'Spor', slug: 'spor' },
-      { name: 'Maraton', slug: 'maraton' },
-      { name: 'Dayanıklılık', slug: 'dayaniklilik' },
-      { name: 'Fitness', slug: 'fitness' }
+      { name: "Spor", slug: "spor" },
+      { name: "Maraton", slug: "maraton" },
+      { name: "Dayanıklılık", slug: "dayaniklilik" },
+      { name: "Fitness", slug: "fitness" },
     ],
-    image: certificateImages['./certificate_docs/spor_istanbul_47_istanbul_maraton.jpg'].default,
+    image:
+      certificateImages[
+        "./certificate_docs/spor_istanbul_47_istanbul_maraton.jpg"
+      ].default,
   },
   {
-    id: '14',
-    title: 'RiseIn HackStellar Hackathon',
-    issuer: 'RiseIn',
-    issueDate: '2025-11-30',
+    id: "14",
+    title: "RiseIn HackStellar Hackathon",
+    issuer: "RiseIn",
+    issueDate: "2025-11-30",
     expiryDate: null,
-    credentialId: 'OqAg8ZQT',
-    credentialUrl: 'https://www.risein.com/certificates/OqAg8ZQT',
-    description: 'Rise In’in düzenlediği hackstellar hackathonundaydık. İki kişilik bir ekip ile katıldım ve 36 saat boyunca kodladık.',
+    credentialId: "OqAg8ZQT",
+    credentialUrl: "https://www.risein.com/certificates/OqAg8ZQT",
+    description:
+      "Rise In’in düzenlediği hackstellar hackathonundaydık. İki kişilik bir ekip ile katıldım ve 36 saat boyunca kodladık.",
     tags: [
-      { name: 'Hackathon', slug: 'hackathon' },
-      { name: 'RiseIn', slug: 'risein' },
-      { name: 'Stellar', slug: 'stellar' },
-      { name: 'Blockchain', slug: 'blockchain' },
-      { name: 'Video Doğrulama', slug: 'video-dogrulama' },
-      { name: 'Web3', slug: 'web3' },
-      { name: 'Hackathon', slug: 'hackathon' },
+      { name: "Hackathon", slug: "hackathon" },
+      { name: "RiseIn", slug: "risein" },
+      { name: "Stellar", slug: "stellar" },
+      { name: "Blockchain", slug: "blockchain" },
+      { name: "Video Doğrulama", slug: "video-dogrulama" },
+      { name: "Web3", slug: "web3" },
+      { name: "Hackathon", slug: "hackathon" },
     ],
-    image: certificateImages['./certificate_docs/RiseIn_HackStellar_Hackathon.png'].default,
+    image:
+      certificateImages["./certificate_docs/RiseIn_HackStellar_Hackathon.png"]
+        .default,
   },
   {
-    id: '15',
-    title: 'Kütahya Murathanlar Hatıra Ormanı Fidan Bağışı Hediyesi',
-    issuer: 'GDG Zonguldak',
-    issueDate: '2026-04-27',
+    id: "15",
+    title: "Kütahya Murathanlar Hatıra Ormanı Fidan Bağışı Hediyesi",
+    issuer: "GDG Zonguldak",
+    issueDate: "2026-04-27",
     expiryDate: null,
-    credentialId: '7662a5b0-17ce-482c-9122-2ff771299434',
-    credentialUrl: 'https://cdn-tema.mncdn.com/Uploads/Certificate/7662a5b0-17ce-482c-9122-2ff771299434.pdf',
-    description: "GDG Zonguldak Google Cloud Workshop'unda kazanılmış tatlı bir birincilik ödülü :)",
+    credentialId: "7662a5b0-17ce-482c-9122-2ff771299434",
+    credentialUrl:
+      "https://cdn-tema.mncdn.com/Uploads/Certificate/7662a5b0-17ce-482c-9122-2ff771299434.pdf",
+    description:
+      "GDG Zonguldak Google Cloud Workshop'unda kazanılmış tatlı bir birincilik ödülü :)",
     tags: [
-      { name: 'Fidan Bağışı', slug: 'fidan_bagisi' },
-      { name: 'GDG Zonguldak', slug: 'gdg-zonguldak' },
-      { name: 'Bağış', slug: 'bagis' },
+      { name: "Fidan Bağışı", slug: "fidan_bagisi" },
+      { name: "GDG Zonguldak", slug: "gdg-zonguldak" },
+      { name: "Bağış", slug: "bagis" },
     ],
-    image: certificateImages['./certificate_docs/GDG_Zonguldak_Tema_Bagisi.png'].default,
-  }
-]
+    image:
+      certificateImages["./certificate_docs/GDG_Zonguldak_Tema_Bagisi.png"]
+        .default,
+  },
+  {
+    id: "16",
+    title: "Yeşilay Yarı Maratonu 10K",
+    issuer: "Yeşilay",
+    issueDate: "2026-08-23",
+    expiryDate: null,
+    credentialId: "",
+    credentialUrl:
+      "https://hurratiming.com/assets/temp/a01fbf1735f242f5b3b1fba250bf4e2e.png",
+    description:
+      "İstanbul'da düzenlenen Yeşilay Yarı Maratonu'nda ilk 10K koşumu. Net süre 1:13:56, genel klasman 244.",
+    tags: [
+      { name: "Spor", slug: "spor" },
+      { name: "Maraton", slug: "maraton" },
+      { name: "10K", slug: "10k" },
+      { name: "Koşu", slug: "kosu" },
+    ],
+    image:
+      certificateImages["./certificate_docs/yesilay-yari-maraton.png"].default,
+  },
+  {
+    id: "17",
+    title: "Decathlon Büyükada Yarı Maratonu 10K",
+    issuer: "Decathlon",
+    issueDate: "2026-09-27",
+    expiryDate: null,
+    credentialId: "",
+    credentialUrl:
+      "https://my.raceresult.com/425077/details/certificate/38462/All%20Certificates",
+    description:
+      "İstanbul Büyükada'da düzenlenen Decathlon Büyükada Yarı Maratonu'nda ikinci 10K koşumu. Net süre 1:11:08, genel sıralama 811.",
+    tags: [
+      { name: "Spor", slug: "spor" },
+      { name: "Maraton", slug: "maraton" },
+      { name: "10K", slug: "10k" },
+      { name: "Koşu", slug: "kosu" },
+    ],
+    image:
+      certificateImages["./certificate_docs/buyukada-yari-maraton.png"].default,
+  },
+];
 
-export const certificateTagMap = certificates.reduce((acc, certificate) => {
-  certificate.tags.forEach((tag) => {
-    if (!acc[tag.slug]) {
-      acc[tag.slug] = [];
-    }
-    acc[tag.slug].push(certificate.id);
-  });
-  return acc;
-}, {} as Record<string, string[]>);
+export const certificateTagMap = certificates.reduce(
+  (acc, certificate) => {
+    certificate.tags.forEach((tag) => {
+      if (!acc[tag.slug]) {
+        acc[tag.slug] = [];
+      }
+      acc[tag.slug].push(certificate.id);
+    });
+    return acc;
+  },
+  {} as Record<string, string[]>,
+);
