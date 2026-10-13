@@ -1,5 +1,11 @@
 import React from 'react';
-import { CalendarIcon, BuildingOfficeIcon, KeyIcon } from '@heroicons/react/24/outline';
+import {
+  CalendarIcon,
+  BuildingOfficeIcon,
+  KeyIcon,
+  ClipboardDocumentIcon,
+  ArrowTopRightOnSquareIcon,
+} from '@heroicons/react/24/outline';
 
 export interface Certificate {
   id: string;
@@ -53,6 +59,10 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
     certificate.credentialId.length > 10
       ? `${certificate.credentialId.slice(0, 10)}...`
       : certificate.credentialId;
+
+  const hasCredentialUrl =
+    certificate.credentialUrl.startsWith('http://') ||
+    certificate.credentialUrl.startsWith('https://');
 
   const handleCopyCredentialId = async () => {
     try {
@@ -113,29 +123,21 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
             </div>
           </div>
 
-          {certificate.credentialId && certificate.credentialId !== '' && (
-            <div className="flex items-center gap-1 relative">
-              <KeyIcon className="h-4 w-4" />
-              {certificate.credentialUrl && 
-               certificate.credentialUrl !== '' && 
-               (certificate.credentialUrl.startsWith('http://') || certificate.credentialUrl.startsWith('https://')) ? (
-                <a
-                  href={certificate.credentialUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="max-w-[180px] truncate underline underline-offset-2 hover:text-blue-300 transition-colors duration-200"
-                >
-                  {displayCredentialId}
-                </a>
-              ) : (
-                <>
+          {(certificate.credentialId || hasCredentialUrl) && (
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+              {certificate.credentialId && (
+                <div className="flex items-center gap-1 relative">
+                  <KeyIcon className="h-4 w-4" />
                   <button
                     type="button"
                     onClick={handleCopyCredentialId}
-                    className="max-w-[180px] truncate text-left underline underline-offset-2 hover:text-blue-300 transition-colors duration-200 cursor-pointer bg-transparent border-none p-0"
+                    title="Credential ID'yi kopyala"
+                    aria-label={`Credential ID'yi kopyala: ${certificate.credentialId}`}
+                    className="max-w-[180px] truncate text-left hover:text-blue-300 transition-colors duration-200 cursor-pointer bg-transparent border-none p-0"
                   >
                     {displayCredentialId}
                   </button>
+                  <ClipboardDocumentIcon className="h-4 w-4 opacity-70" aria-hidden="true" />
                   {copied && (
                     <div
                       className="absolute left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-xs px-3 py-1 rounded-full shadow-lg"
@@ -144,7 +146,19 @@ export const CertificateCard: React.FC<CertificateCardProps> = ({
                       Kopyalandı
                     </div>
                   )}
-                </>
+                </div>
+              )}
+              {hasCredentialUrl && (
+                <a
+                  href={certificate.credentialUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 underline underline-offset-2 hover:text-blue-300 transition-colors duration-200"
+                >
+                  <ArrowTopRightOnSquareIcon className="h-4 w-4" aria-hidden="true" />
+                  <span>Sertifikayı görüntüle</span>
+                  <span className="sr-only"> (yeni sekmede açılır)</span>
+                </a>
               )}
             </div>
           )}
