@@ -286,7 +286,7 @@ export const certificates: Certificate[] = [
     credentialId: "OqAg8ZQT",
     credentialUrl: "https://www.risein.com/certificates/OqAg8ZQT",
     description:
-      "Rise In’in düzenlediği hackstellar hackathonundaydık. İki kişilik bir ekip ile katıldım ve 36 saat boyunca kodladık.",
+      "Rise In'in düzenlediği hackstellar hackathonundaydık. İki kişilik bir ekip ile katıldım ve 36 saat boyunca kodladık.",
     tags: [
       { name: "Hackathon", slug: "hackathon" },
       { name: "RiseIn", slug: "risein" },
@@ -325,7 +325,7 @@ export const certificates: Certificate[] = [
     issuer: "Yeşilay",
     issueDate: "2026-08-23",
     expiryDate: null,
-    credentialId: "",
+    credentialId: "a01fbf1735f242f5b3b1fba250bf4e2e",
     credentialUrl:
       "https://hurratiming.com/assets/temp/a01fbf1735f242f5b3b1fba250bf4e2e.png",
     description:
@@ -345,7 +345,7 @@ export const certificates: Certificate[] = [
     issuer: "Decathlon",
     issueDate: "2026-09-27",
     expiryDate: null,
-    credentialId: "",
+    credentialId: "38462",
     credentialUrl:
       "https://my.raceresult.com/425077/details/certificate/38462/All%20Certificates",
     description:
