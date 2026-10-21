@@ -4,7 +4,7 @@ export const devExperiences = [
     company: "Dafne Mühendislik",
     period: "01/26 - Halen",
     description:
-      "Google Workspace içerisinde özellikle Apps Script ve Google Sheets kullanarak şirketin ERP sistemini geliştirmekteyim. Bu kapsamda, şirketin ihtiyaçlarına göre özelleştirilmiş çözümler üretiyor, süreçleri otomatikleştiriyor ve veri yönetimini optimize ediyorum. Ayrıca, personellere sistem eğitimleri veriyor ve kullanıcı geri bildirimlerine dayanarak sistemde sürekli iyileştirmeler yapıyorum.",
+      "Google Workspace üzerinde, özellikle Apps Script ve Google Sheets kullanarak çeşitli birimlerde 50 personelin kullandığı şirket ERP sistemini geliştiriyorum. İhtiyaçlara göre özelleştirilmiş çözümler üretiyor, süreçleri otomatikleştiriyor ve veri yönetimini optimize ediyorum. Çalışanlara eğitimler veriyor, aldığım geri bildirimlere göre sürekli iyileştirmeler yapıyorum.",
   },
   {
     title: "Python Eğitmenliği",
