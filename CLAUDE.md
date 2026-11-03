@@ -26,7 +26,7 @@ Komutlar: `npm run dev`, `npm run build` (tsc -b + vite build), `npm run lint`. 
 - `src/components/programming/`: `About.tsx` (yetkinlik rozetleri, `/projects/tech/<slug>` linkleri), `DevProjects.tsx` (13 proje, `devTechMap`), `DevExperiences.tsx`, `img/`.
 - `src/components/civil/`: `About.tsx`, `CivilProjects.tsx` (3 proje), `CivilExperiences.tsx`, `img/`.
 - `src/components/project/`: `ProjectCard.tsx` (`Project` tipi burada), `ProjectDetailModal.tsx`, `AllProjects.tsx`, `TechProjects.tsx` (iki moddaki projeleri birleştirir).
-- `src/components/certificates/`: `CertificateList.tsx` (veri, 15 sertifika), `CertificateCard.tsx`, `CertificateShowcase.tsx` (son 3), `AllCertificates.tsx`, `certificate_docs/` (görseller).
+- `src/components/certificates/`: `CertificateList.tsx` (veri, 20 sertifika), `CertificateCard.tsx`, `CertificateShowcase.tsx` (son 3), `AllCertificates.tsx`, `certificate_docs/` (görseller).
 - `src/components/shared/`: `Navbar`, `Footer`, `Projects` (ana sayfa vitrini, son 3 proje), `PlayStationBackground` (+ `src/assets/playstation-background.css`), `ToggleButton` (731 satır styled-components), `ScrollToTop`, `hero/` (Hero, LinkModal), `contacts/` (ContactSection, ContactInfo, ContactForm).
 - `src/index.css`: Tailwind, font `@import`ları, `.glass-*`, `.animate-on-scroll`, mod geçiş overlay animasyonları.
 - `index.html`: meta etiketleri + Netlify için gizli algılama formu. `public/_redirects`: SPA yönlendirmesi.
