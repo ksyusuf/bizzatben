@@ -359,6 +359,67 @@ export const certificates: Certificate[] = [
     image:
       certificateImages["./certificate_docs/buyukada-yari-maraton.png"].default,
   },
+  {
+    id: "18",
+    title: "İstanbul'u Koşuyorum Avrupa Etabı 10K",
+    issuer: "Spor İstanbul",
+    issueDate: "2026-10-04",
+    expiryDate: null,
+    credentialId: "FEFBC783-0261-4EDB-AE6F-FD1E75D60A05",
+    credentialUrl: "",
+    description:
+      "İstanbul'u Koşuyorum serisinin Avrupa Etabı'nda 10K koşumu. Net süre 1:02:55.",
+    tags: [
+      { name: "Spor", slug: "spor" },
+      { name: "Maraton", slug: "maraton" },
+      { name: "10K", slug: "10k" },
+      { name: "Koşu", slug: "kosu" },
+    ],
+    image:
+      certificateImages[
+        "./certificate_docs/istanbulu-kosuyorum-avrupa-etabi-10k.jpg"
+      ].default,
+  },
+  {
+    id: "19",
+    title: "Türkiye İş Bankası 48. İstanbul Maratonu 15.5K",
+    issuer: "Spor İstanbul",
+    issueDate: "2026-11-01",
+    expiryDate: null,
+    credentialId: "FBF3B486-3217-4FEF-9767-014D7D1F4B5E",
+    credentialUrl: "",
+    description:
+      "Dünyanın kıtalar arası koşulan tek maratonu olan 48. İstanbul Maratonu'nda 15.5K kategorisinde koştum. Net süre 1:46:46.",
+    tags: [
+      { name: "Spor", slug: "spor" },
+      { name: "Maraton", slug: "maraton" },
+      { name: "15.5K", slug: "15-5k" },
+      { name: "Koşu", slug: "kosu" },
+    ],
+    image:
+      certificateImages["./certificate_docs/istanbul-maratonu-48-15-5k.jpg"]
+        .default,
+  },
+  {
+    id: "20",
+    title: "Future AI Summit'26 Katılım Belgesi",
+    issuer: "Bahçeşehir Üniversitesi",
+    issueDate: "2026-06-23",
+    expiryDate: null,
+    credentialId: "",
+    credentialUrl: "",
+    description:
+      "22-23 Haziran 2026'da Bahçeşehir Üniversitesi Beşiktaş Kampüsü'nde gerçekleştirilen International Future AI Summit'26 İstanbul etkinliğine katıldım.",
+    tags: [
+      { name: "Yapay Zeka", slug: "yapay-zeka" },
+      { name: "Future AI Summit", slug: "future-ai-summit" },
+      { name: "Etkinlik", slug: "etkinlik" },
+      { name: "Bahçeşehir Üniversitesi", slug: "bahcesehir-universitesi" },
+    ],
+    image:
+      certificateImages["./certificate_docs/future-ai-summit-2026-katilim.png"]
+        .default,
+  },
 ];
 
 export const certificateTagMap = certificates.reduce(
